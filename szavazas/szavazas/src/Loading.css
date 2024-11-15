@@ -1,0 +1,33 @@
+/* src/Loading.css */
+
+body {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f8f8; /* Töltőképernyő háttérszín */
+    color: black;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 1s ease-out;
+  }
+  
+  .loading-container.hidden {
+    opacity: 0; /* Elhalványulás */
+  }
+  
+  .loading-image {
+    width: 150px; /* Méret a képet igazítva */
+    height: auto;
+  }
+  
