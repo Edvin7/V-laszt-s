@@ -1,5 +1,6 @@
 import React from 'react';
 import './Section2.css'; // Ha van saját CSS fájlod a Section2-hez
+import { Link } from 'react-router-dom';
 
 const Section2 = () => {
   return (
@@ -13,9 +14,9 @@ const Section2 = () => {
           <a href="/create/#poll" className="button is-primary">
             Információk a szavazásról
           </a>
-          <a href="loging.html" className="text-sm font-bold leading-6 text-gray-900 dark:text-white">
+          <Link to ="/login" className="text-sm font-bold leading-6 text-gray-900 dark:text-white">
             Bejelentkezés<span aria-hidden="true">→</span>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

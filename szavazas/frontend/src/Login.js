@@ -23,7 +23,6 @@ function Login() {
             <figure>
               <img src={loginImage} alt="login logo" />
             </figure>
-            {/* Itt használd a Link komponenst a navigáláshoz */}
             <Link to="/register" className="signup-image-link">Nincs még fiókom</Link>
             <br />
             <Link to="/" className="signup-image-link kezdolap">Kezdőlap</Link>

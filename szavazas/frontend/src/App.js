@@ -16,16 +16,26 @@ import './Register.css';
 
 const App = () => {
   return (
-    <Router>  {/* A Router beágyazása az egész alkalmazásba */}
+    <Router>
       <div>
-        <Navbar />  {/* Navigáció */}
-        <Routes>  {/* A különböző útvonalak */}
-          <Route path="/login" element={<Login />} />  {/* Bejelentkezés oldal */}
-          <Route path="/register" element={<Register />} />  {/* Regisztráció oldal */}
+        <Routes>
+          {/* Regisztrációs és Bejelentkezési oldalak, nem tartalmazzák a Navbar-t */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          
+          {/* Alapértelmezett oldal, amely tartalmazza a Navbar-t, Section1 és Section2-t */}
+          <Route
+            path="/"
+            element={
+              <>
+                <Navbar />
+                <Section1 />
+                <Section2 />
+                <Footer />
+              </>
+            }
+          />
         </Routes>
-        <Section1 />
-        <Section2 />
-        <Footer />
       </div>
     </Router>
   );

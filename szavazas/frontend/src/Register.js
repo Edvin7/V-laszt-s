@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Importáld a Link komponenst
+import axios from 'axios'; // Axios importálása
 import './Register.css';
-import loginImage from './images/loginregister.png';
+import { Link } from 'react-router-dom'; // Link a bejelentkezéshez
+import loginImage from './images/loginregister.png'; // Kép a regisztrációs oldalhoz
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const Register = () => {
     re_pass: '',
     personal_id: '',
     agreeTerm: false,
+    message: '', // Hibaüzenet vagy sikerüzenet megjelenítése
   });
 
   const handleChange = (e) => {
@@ -21,14 +23,37 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (formData.pass !== formData.re_pass) {
       alert('A jelszavak nem egyeznek!');
       return;
     }
-    console.log('Form Data:', formData);
+    
+    try {
+      // POST kérés küldése a backend felé
+      const response = await axios.post('http://localhost:5000/register', formData);
+      console.log('Regisztráció sikeres:', response.data);
+    } catch (error) {
+      // Hibák kezelése
+      if (error.response) {
+        // Ha van válasz a szervertől
+        console.error('Hiba történt a regisztráció során:', error.response.data);
+        alert(`Hiba: ${error.response.data.message || 'Ismeretlen hiba történt.'}`);
+      } else if (error.request) {
+        // Ha nincs válasz, de a kérés elindult
+        console.error('A kérés nem érkezett vissza:', error.request);
+        alert('A kérés nem érkezett vissza. Ellenőrizd a szerver elérhetőségét!');
+      } else {
+        // Ha a kérés sem lett elküldve
+        console.error('Hiba történt a kérés küldése közben:', error.message);
+        alert(`Hiba: ${error.message}`);
+      }
+    }
   };
+  
+  
 
   return (
     <section className="signup">
@@ -36,6 +61,7 @@ const Register = () => {
         <div className="signup-content">
           <div className="signup-form">
             <h2 className="form-title">Regisztráció</h2>
+            {formData.message && <p>{formData.message}</p>} {/* Üzenet megjelenítése */}
             <form method="POST" className="register-form" id="register-form" onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="name"><i className="zmdi zmdi-account material-icons-name"></i></label>
@@ -46,6 +72,7 @@ const Register = () => {
                   placeholder="Teljes név"
                   value={formData.name}
                   onChange={handleChange}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -57,6 +84,7 @@ const Register = () => {
                   placeholder="Email cím"
                   value={formData.email}
                   onChange={handleChange}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -68,6 +96,7 @@ const Register = () => {
                   placeholder="Jelszó"
                   value={formData.pass}
                   onChange={handleChange}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -79,6 +108,7 @@ const Register = () => {
                   placeholder="Ismételje meg a jelszavát"
                   value={formData.re_pass}
                   onChange={handleChange}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -90,6 +120,7 @@ const Register = () => {
                   placeholder="Személyi ig. szám"
                   value={formData.personal_id}
                   onChange={handleChange}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -100,6 +131,7 @@ const Register = () => {
                   className="agree-term"
                   checked={formData.agreeTerm}
                   onChange={handleChange}
+                  required
                 />
                 <label htmlFor="agree-term" className="label-agree-term">
                   <span><span></span></span>Elfogadom az <a href="#" className="term-service">Általános Szerződési Feltételeket</a>
@@ -118,7 +150,6 @@ const Register = () => {
           </div>
           <div className="signup-image">
             <figure><img src={loginImage} alt="login logo" /></figure>
-            {/* Itt is Link-et használj */}
             <Link to="/login" className="signup-image-link">Már van fiókom</Link>
           </div>
         </div>

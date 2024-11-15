@@ -1,6 +1,7 @@
 import React from 'react';
 import './Section1.css';
-import probaImage from './images/proba.jpg'; // Kép importálása
+import probaImage from './images/proba.jpg';
+import { Link } from 'react-router-dom';
 
 const Section = () => {
   return (
@@ -29,9 +30,7 @@ const Section = () => {
                   <a href="vote.html" className="flex items-center justify-center rounded-md border border-transparent bg-white px-3 py-2 text-base font-medium text-indigo-700 shadow-sm hover:bg-indigo-50 sm:px-6">
                     Szavazok
                   </a>
-                  <a href="loading.html" className="flex items-center justify-center rounded-md border border-transparent bg-indigo-500 bg-opacity-60 px-3 py-2 text-base font-medium text-white shadow-sm hover:bg-opacity-70 sm:px-6">
-                    Bejelentkezés
-                  </a>
+                  <Link to="/login" className="flex items-center justify-center rounded-md border border-transparent bg-indigo-500 bg-opacity-60 px-3 py-2 text-base font-medium text-white shadow-sm hover:bg-opacity-70 sm:px-6">Bejelentkezés </Link>
                 </div>
               </div>
               <div className="hidden sm:block ml-12 text-sm mt-4 text-indigo-200">Regisztráljon vagy jelentkezzen be ha már van fiókja.</div>
