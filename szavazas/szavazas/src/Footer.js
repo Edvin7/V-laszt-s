@@ -1,6 +1,5 @@
-// src/Footer.js
 import React from 'react';
-import './Footer.css'; // Ha van CSS fájl a footerhez
+import './Footer.css';
 
 const Footer = () => {
   return (
@@ -23,4 +22,4 @@ const Footer = () => {
   );
 };
 
-export default Footer; // FONTOS: Az alapértelmezett export
+export default Footer;

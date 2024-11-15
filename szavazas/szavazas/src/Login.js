@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './loginform.css';  // Ez a stílus fájl az alkalmazásod CSS fájljához kapcsolódik
+import './Login.css';  // Ez a stílus fájl az alkalmazásod CSS fájljához kapcsolódik
 import loginImage from './images/loginregister.png';  // Kép importálása
 
 function Login() {
@@ -24,7 +24,7 @@ function Login() {
           <div className="signin-image">
             <figure>
               {/* Kép megjelenítése az importált változóval */}
-              <img src={loginImage} alt="login illustration" />
+              <img src={loginImage} alt="login logo" />
             </figure>
             <a href="/register" className="signup-image-link">Nincs még fiókom</a>
             <br />

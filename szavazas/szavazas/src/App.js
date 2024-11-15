@@ -1,15 +1,16 @@
-// src/App.js
 import React from 'react';
-import Navbar from './Navbar'; // A Navbar komponenst importálod
-import Section1 from './Section1'; // Az előző Section1 komponens importálása
-import Section2 from './Section2'; // Az új Section2 komponens importálása
-import Footer from './Footer'; // Az új Footer komponenst importálása
-import './App.css'; // Alap CSS fájl
-import './Section1.css'; // Az előző Section1 CSS fájl
-import './Section2.css'; // Az új Section2 CSS fájl
-import './Footer.css'; // A Footer CSS fájl
-import './loginform.css';  // importáld be a css fájlt
+import Navbar from './Navbar';
+import Section1 from './Section1';
+import Section2 from './Section2';
+import Footer from './Footer';
 import Login from './Login';
+import Register from './Register';
+import './App.css';
+import './Section1.css';
+import './Section2.css';
+import './Footer.css';
+import './Login.css';
+import './Register.css';
 
 
 
@@ -17,11 +18,13 @@ import Login from './Login';
 const App = () => {
   return (
     <div>
-      {/*<Navbar />
+      <Navbar />
       <Section1 />
       <Section2 />
-      <Footer />*/ }{/* Footer hozzáadása az oldal aljához */}
-      <Login/>
+      <Footer />
+      {/* 
+      {/<Login/>
+      <Register/>*/}
     </div>
   );
 };
