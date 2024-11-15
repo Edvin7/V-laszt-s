@@ -8,6 +8,10 @@ import './App.css'; // Alap CSS fájl
 import './Section1.css'; // Az előző Section1 CSS fájl
 import './Section2.css'; // Az új Section2 CSS fájl
 import './Footer.css'; // A Footer CSS fájl
+import './loginform.css';  // importáld be a css fájlt
+
+
+
 
 const App = () => {
   return (
