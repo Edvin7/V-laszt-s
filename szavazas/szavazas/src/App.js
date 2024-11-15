@@ -17,6 +17,10 @@ import Login from './Login';
 const App = () => {
   return (
     <div>
+      {/*<Navbar />
+      <Section1 />
+      <Section2 />
+      <Footer />*/ }{/* Footer hozzáadása az oldal aljához */}
       <Login/>
     </div>
   );

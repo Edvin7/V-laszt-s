@@ -61,17 +61,9 @@ function Login() {
                 />
               </div>
               <div className="form-group">
-                <input
-                  type="checkbox"
-                  name="remember-me"
-                  id="remember-me"
-                  className="agree-term"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                />
-                <label htmlFor="remember-me" className="label-agree-term">
-                  <span><span></span></span>Emlékezz rám
-                </label>
+               
+                
+                
               </div>
               <div className="form-group form-button">
                 <input type="submit" name="signin" id="signin" className="form-submit" value="Bejelentkezés" />
