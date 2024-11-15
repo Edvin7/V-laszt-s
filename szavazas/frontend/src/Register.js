@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Importáld a Link komponenst
 import './Register.css';
 import loginImage from './images/loginregister.png';
 
@@ -22,12 +23,10 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Validáció (opcionális)
     if (formData.pass !== formData.re_pass) {
       alert('A jelszavak nem egyeznek!');
       return;
     }
-    // Adatok küldése szerverre
     console.log('Form Data:', formData);
   };
 
@@ -118,8 +117,9 @@ const Register = () => {
             </form>
           </div>
           <div className="signup-image">
-            <figure><img src={loginImage} alt="login logo"/></figure>
-            <a href="login.html" className="signup-image-link">Már van fiókom</a>
+            <figure><img src={loginImage} alt="login logo" /></figure>
+            {/* Itt is Link-et használj */}
+            <Link to="/login" className="signup-image-link">Már van fiókom</Link>
           </div>
         </div>
       </div>

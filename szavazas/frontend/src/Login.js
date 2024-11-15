@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Importáld a Link komponenst
 import './Login.css';  // Ez a stílus fájl az alkalmazásod CSS fájljához kapcsolódik
 import loginImage from './images/loginregister.png';  // Kép importálása
 
 function Login() {
-  // Állapotok a form mezőihez
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
-  // Bejelentkezési függvény
   const handleLogin = (e) => {
     e.preventDefault();
-    // Itt tudod a bejelentkezést kezelni, például API hívással
     console.log('Email:', email);
     console.log('Password:', password);
     console.log('Remember Me:', rememberMe);
@@ -23,12 +21,12 @@ function Login() {
         <div className="signin-content">
           <div className="signin-image">
             <figure>
-              {/* Kép megjelenítése az importált változóval */}
               <img src={loginImage} alt="login logo" />
             </figure>
-            <a href="/register" className="signup-image-link">Nincs még fiókom</a>
+            {/* Itt használd a Link komponenst a navigáláshoz */}
+            <Link to="/register" className="signup-image-link">Nincs még fiókom</Link>
             <br />
-            <a href="/" className="signup-image-link kezdolap">Kezdőlap</a>
+            <Link to="/" className="signup-image-link kezdolap">Kezdőlap</Link>
           </div>
 
           <div className="signin-form flex">
@@ -59,11 +57,6 @@ function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-              </div>
-              <div className="form-group">
-               
-                
-                
               </div>
               <div className="form-group form-button">
                 <input type="submit" name="signin" id="signin" className="form-submit" value="Bejelentkezés" />
