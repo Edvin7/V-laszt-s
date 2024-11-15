@@ -9,6 +9,7 @@ import './Section1.css'; // Az előző Section1 CSS fájl
 import './Section2.css'; // Az új Section2 CSS fájl
 import './Footer.css'; // A Footer CSS fájl
 import './loginform.css';  // importáld be a css fájlt
+import Login from './Login';
 
 
 
@@ -16,10 +17,7 @@ import './loginform.css';  // importáld be a css fájlt
 const App = () => {
   return (
     <div>
-      <Navbar />
-      <Section1 />
-      <Section2 />
-      <Footer /> {/* Footer hozzáadása az oldal aljához */}
+      <Login/>
     </div>
   );
 };
