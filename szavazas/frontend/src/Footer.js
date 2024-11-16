@@ -1,5 +1,6 @@
 import React from 'react';
 import './Footer.css';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -11,7 +12,7 @@ const Footer = () => {
             <li><a href="#">Szavazok</a></li>
             <li><a href="#">Adatvédelmi szabályzat</a></li>
             <li><a href="#">Általános Szerződési Feltételek</a></li>
-            <li><a href="#">Bejelentkezés</a></li>
+            <li><Link to="/login">Bejelentkezés</Link></li>
           </ul>
         </div>
         <div className="row">
