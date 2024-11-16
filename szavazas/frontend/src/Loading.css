@@ -1,33 +1,36 @@
-/* src/Loading.css */
+body.loading {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f8f8; /* Töltőképernyő háttérszín */
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+}
 
-body {
-    font-family: "Poppins", sans-serif;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f8f8f8; /* Töltőképernyő háttérszín */
-    color: black;
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .loading-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 1;
-    transition: opacity 1s ease-out;
-  }
-  
-  .loading-container.hidden {
-    opacity: 0; /* Elhalványulás */
-  }
-  
-  .loading-image {
-    width: 150px; /* Méret a képet igazítva */
-    height: auto;
-  }
-  
+body:not(.loading) {
+  height: auto; /* Visszaállítja az alapértelmezett magasságot */
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1); /* Simább átmenet */
+}
+
+.loading-container.hidden {
+  opacity: 0; /* Elhalványulás */
+  pointer-events: none; /* Megakadályozza az interakciókat */
+}
+
+.loading-image {
+  width: 150px; /* Alapértelmezett méret */
+  max-width: 90%; /* A képernyőmérettől függően zsugorodik */
+  height: auto; /* Az arányok megtartása */
+}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Importáld a Link komponenst
-import './Login.css';  // Ez a stílus fájl az alkalmazásod CSS fájljához kapcsolódik
-import loginImage from './images/loginregister.png';  // Kép importálása
+import { Link } from 'react-router-dom';
+import './Login.css';
+import loginImage from './images/loginregister.png';
 
 function Login() {
   const [email, setEmail] = useState('');
