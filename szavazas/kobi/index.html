@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Választólap</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ballot-wrapper">
+    <div class="ballot-container">
+      <h1>Európai Parlamenti Választás</h1>
+      <div class="parties">
+        <div class="party">
+          <img src="images/fidesz_logo.png" alt="Fidesz">
+          <p>Fidesz</p>
+          <div class="vote-circle" onclick="toggleVote(this)"></div>
+        </div>
+        <div class="separator"></div>
+        <div class="party">
+          <img src="images/momentum_logo.png" alt="Momentum">
+          <p>Momentum</p>
+          <div class="vote-circle" onclick="toggleVote(this)"></div>
+        </div>
+        <div class="separator"></div>
+        <div class="party">
+          <img src="images/mszp_logo.png" alt="MSZP">
+          <p>MSZP</p>
+          <div class="vote-circle" onclick="toggleVote(this)"></div>
+        </div>
+        <div class="separator"></div>
+        <div class="party">
+          <img src="images/jobbik_logo.png" alt="Jobbik">
+          <p>Jobbik</p>
+          <div class="vote-circle" onclick="toggleVote(this)"></div>
+        </div>
+        <div class="separator"></div>
+        <div class="party">
+          <img src="images/dk_logo.png" alt="DK">
+          <p>DK</p>
+          <div class="vote-circle" onclick="toggleVote(this)"></div>
+        </div>
+        <div class="separator"></div>
+        <div class="party">
+          <img src="images/lmp_logo.png" alt="LMP">
+          <p>LMP</p>
+          <div class="vote-circle" onclick="toggleVote(this)"></div>
+        </div>
+        <div class="separator"></div>
+        <div class="party">
+          <img src="images/parbeszed_logo.png" alt="Párbeszéd">
+          <p>Párbeszéd</p>
+          <div class="vote-circle" onclick="toggleVote(this)"></div>
+        </div>
+        <div class="separator"></div>
+        <div class="party">
+          <img src="images/mihazank_logo.png" alt="Mi Hazánk">
+          <p>Mi Hazánk</p>
+          <div class="vote-circle" onclick="toggleVote(this)"></div>
+        </div>
+      </div>
+    </div>
+    <button class="submit-btn" onclick="submitVote()">Szavazat leadása</button>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
