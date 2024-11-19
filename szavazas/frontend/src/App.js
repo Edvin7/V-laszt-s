@@ -7,7 +7,8 @@ import Section2 from './Section2';
 import Footer from './Footer';
 import Login from './Login';
 import Register from './Register';
-import Contacts from './Contacts';  // Importáld a ContactUs komponenst
+import Contacts from './Contacts';
+import NewsFeed from './NewsFeed';  // Importáljuk a hírek komponenst
 
 import './App.css';
 import './Transitions.css'; // Az animációhoz tartozó CSS fájl
@@ -33,8 +34,11 @@ const Main = () => {
             <Route path="/" element={<><Section1 /><Section2 /><Footer /></>} />
             
             {/* Kontakt oldal */}
-            <Route path="/contact" element={<Contacts/>} /> {/* Helyesen használjuk a ContactUs komponenst */}
+            <Route path="/contact" element={<Contacts />} />
 
+            {/* Hírek oldal */}
+            <Route path="/news" element={<NewsFeed />} /> {/* Hírek oldal hozzáadása */}
+            
             {/* Bejelentkezés és regisztráció oldalak */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
