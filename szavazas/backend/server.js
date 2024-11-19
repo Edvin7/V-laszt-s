@@ -1,59 +1,65 @@
 const express = require('express');
+const mysql = require('mysql2');
+const bodyParser = require('body-parser');
 const cors = require('cors');
-const mysql = require('mysql');
+const bcrypt = require('bcrypt');
 
-// Létrehozzuk az Express alkalmazást
 const app = express();
+const port = 5000;
 
-// CORS engedélyezése, hogy a frontend kommunikálhasson a backenddel
+// Middleware
 app.use(cors());
+app.use(bodyParser.json());
 
-// Middleware a JSON adatok feldolgozásához
-app.use(express.json()); // Ez biztosítja, hogy a backend olvassa a JSON adatokat
-
-// Kapcsolódás az adatbázishoz
+// MySQL adatbázis kapcsolat
 const db = mysql.createConnection({
-  host: 'localhost',     // Az adatbázis szerver címének megadása
-  user: 'root',          // Az adatbázis felhasználója
-  password: '',          // Az adatbázis jelszava (ha van)
-  database: 'votedatabase', // Az adatbázis neve
+    host: 'localhost',
+    user: 'root', // Az adatbázis felhasználóneved
+    password: '', // Az adatbázis jelszavad
+    database: 'user_database' // Az adatbázis neve
 });
 
-// Kapcsolódás ellenőrzése
-db.connect((err) => {
-  if (err) {
-    console.log('Hiba az adatbázishoz való kapcsolódás során:', err);
-  } else {
-    console.log('Sikeres kapcsolódás az adatbázishoz!');
-  }
-});
-
-// Regisztrációs végpont
-app.post('/register', (req, res) => {
-  console.log('Received data:', req.body); // Kiírjuk a beérkező adatokat a konzolra
-
-  // Az érkező adatok kinyerése
-  const { name, email, pass, personal_id } = req.body;
-
-  // Ellenőrizzük, hogy minden mező ki van-e töltve
-  if (!name || !email || !pass || !personal_id) {
-    return res.status(400).json({ message: 'Minden mező kitöltése szükséges!' });
-  }
-
-  // SQL lekérdezés, hogy új felhasználót szúrjunk be az adatbázisba
-  const sqlQuery = 'INSERT INTO users_db (name, email, pass, personal_id) VALUES (?, ?, ?, ?)';
-  
-  // Lekérdezés futtatása az adatbázisban
-  db.query(sqlQuery, [name, email, pass, personal_id], (err, result) => {
+// Adatbázis kapcsolat ellenőrzése
+db.connect(err => {
     if (err) {
-      console.log(err); // Hibák naplózása
-      return res.status(500).json({ message: 'Hiba történt a regisztráció során.' });
+        console.error('Hiba az adatbázishoz való csatlakozáskor:', err);
+        return;
     }
-    res.status(201).json({ message: 'Sikeres regisztráció!' }); // Válasz visszaküldése a frontendnek
-  });
+    console.log('Csatlakozás a MySQL adatbázishoz sikeres!');
 });
 
-// Szerver indítása a 5000-es porton
-app.listen(5000, () => {
-  console.log('A szerver fut a 5000-es porton');
+// Regisztráció végpont
+app.post('/register', async (req, res) => {
+    const { name, email, password, personal_id } = req.body;
+
+    try {
+        // Ellenőrzés: van-e már ilyen email vagy személyi azonosító
+        const [existingUsers] = await db.promise().query(
+            `SELECT * FROM users WHERE email = ? OR personal_id = ?`,
+            [email, personal_id]
+        );
+
+        if (existingUsers.length > 0) {
+            return res.status(400).send({ message: 'Ez az email vagy személyi azonosító már létezik.' });
+        }
+
+        // Jelszó titkosítása
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Új felhasználó mentése
+        await db.promise().query(
+            `INSERT INTO users (name, email, password, personal_id) VALUES (?, ?, ?, ?)`,
+            [name, email, hashedPassword, personal_id]
+        );
+
+        res.status(201).send({ message: 'Sikeres regisztráció!' });
+    } catch (error) {
+        console.error('Hiba történt:', error);
+        res.status(500).send({ message: 'Szerverhiba. Próbáld újra később!' });
+    }
+});
+
+// Szerver indítása
+app.listen(port, () => {
+    console.log(`Szerver fut a ${port} porton`);
 });

@@ -53,9 +53,9 @@ const Contacts = () => {
               </div>
               <div className="responsive-cell-block wk-tab-12 wk-mobile-12 wk-desk-12 wk-ipadp-12" id="i634i-6">
                 <p className="text-blk input-title">
-                  MEGJEGYZÉS (opcionális)
+                  MEGJEGYZÉS
                 </p>
-                <textarea className="textinput" id="i5vyy-6" placeholder="Kérem, írja meg észrevételeit..."></textarea>
+                <textarea className="textinput" id="i5vyy-6" placeholder=""></textarea>
               </div>
             </div>
             <div className="btn-wrapper">
