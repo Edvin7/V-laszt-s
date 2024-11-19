@@ -40,7 +40,7 @@ function NewsFeed() {
           {articles[0] && (
             <li className="featured-article">
               <a href={articles[0].link} target="_blank" rel="noopener noreferrer">
-                <img src={articles[0].image || 'https://via.placeholder.com/150'} alt={articles[0].title} />
+                <img src={articles[0].image || 'https://kecsup.hu/wp-content/uploads/2020/10/telex-logo.jpg'} alt={articles[0].title} />
                 <h3>{articles[0].title}</h3>
                 <p>{articles[0].description}</p>
               </a>

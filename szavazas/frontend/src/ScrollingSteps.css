@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: white;
+  margin: 0;
+  padding: 0;
+}
+
+/* Szekció */
+.scrolling-steps-section {
+  padding: 50px 0;
+}
+
+.header h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.header span {
+  color: #033473;
+}
+
+/* Lépések konténer */
+.steps-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
+/* Egyes lépések */
+.scrolling-step {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease-out, transform 1s ease-out; /* Lassabb animáció */
+  margin-bottom: 50px;
+  width: 100%;
+  max-width: 600px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  position: relative;
+  text-align: center;
+}
+
+.scrolling-step.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Lépés körök - középen a kocka tetején */
+.step-header {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.circle {
+  width: 70px;
+  height: 70px;
+  background-color: #033473;
+  color: white;
+  border-radius: 50%;
+  font-size: 30px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -67px;  /* A kör a kocka tetejéről kilóg */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Kocka pozicionálás és kiemelés */
+.scrolling-step {
+  padding-top: 30px; /* További hely a kocka tetején */
+  padding-bottom: 30px; /* További hely a kocka alján */
+  margin-top: 60px; /* Kocka eltolás (felső rész logjon ki) */
+}
+
+/* Lépés szöveg */
+.step-body h4 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.step-body p {
+  font-size: 1rem;
+  color: #666;
+  margin: 20px 0;
+}
+
+/* Szavazás gomb */
+.vote-button {
+  background-color: #033473;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.vote-button:hover {
+  background-color: transparent;
+  color: #033473;
+}
+
+/* Extra animáció a lépések között */
+.scrolling-step + .scrolling-step {
+  margin-top: 100px; /* Több hely a lépések között */
+}
