@@ -1,23 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import './ScrollingSteps.css';
+import { Link } from 'react-router-dom';
 
 const steps = [
   {
     id: 1,
     title: '1. lépés: Regisztráció',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor nisl non ligula interdum, in pharetra magna convallis.',
+    description: 'A szavazáshoz először regisztrálnia kell a platformon. Ehhez adja meg az alapvető adatait, például nevét, e-mail-címét és hozzon létre egy biztonságos jelszót. A regisztráció után egy megerősítő e-mailt küldünk, amelyben található linkre kattintva aktiválhatja fiókját.',
+    buttonText: 'Regisztráljon most',
+    link: '/register',
   },
   {
     id: 2,
-    title: '2. lépés: Confirm Your Choice',
-    description: 'Donec id ante eu nisi volutpat feugiat. Integer hendrerit augue id leo fringilla, nec laoreet enim lobortis.',
+    title: '2. lépés: Bejelentkezés',
+    description: 'A regisztráció befejezése után jelentkezzen be a fiókjába az e-mail-címével és jelszavával. A bejelentkezés után hozzáférhet a szavazási lehetőségekhez és ellenőrizheti a rendelkezésre álló információkat.',
+    buttonText: 'Jelentkezzen be',
+    link: '/login',
   },
   {
     id: 3,
-    title: '3. lépés: Submit Your Vote',
-    description: 'Phasellus pretium orci sit amet tortor auctor, et dictum arcu bibendum. Donec auctor tincidunt libero, vel tristique ante blandit.',
+    title: '3. lépés: Szavazás leadása',
+    description: 'Miután bejelentkezett, kiválaszthatja a szavazási opciókat a rendelkezésre álló listából. Jelölje ki a választását, majd kattintson a "Szavazás" gombra. A rendszer megkérheti, hogy erősítse meg a döntését. A sikeres szavazást követően egy megerősítő üzenetet kap.',
+    buttonText: 'Szavazzon most',
+    link: '/vote',
   },
 ];
+
+
+
 
 const ScrollingSteps = () => {
   const [visibleStep, setVisibleStep] = useState(0);  // Aktuális lépés, amely látható
@@ -78,7 +88,7 @@ const ScrollingSteps = () => {
   }, [sectionInView]);
 
   return (
-    <div className="container my-5">
+    <div className="my-5 full-width-container">
       <section className="scrolling-steps-section">
         <div className="header text-center mb-5">
           <h2 className="font-weight-bold display-4">
@@ -86,19 +96,19 @@ const ScrollingSteps = () => {
           </h2>
         </div>
         <div className="steps-container">
-          {steps.map((step) => (
-            <div key={step.id} 
-              className={`scrolling-step ${visibleStep >= step.id ? 'show' : ''}`} 
-              data-step={step.id}>
-              <div className="step-header">
-                <div className="circle">{step.id}</div>
-              </div>
-              <div className="step-body">
-                <h4>{step.title}</h4>
-                <p>{step.description}</p>
-                <button className="vote-button">Vote Now</button>
-              </div>
-            </div>
+  {steps.map((step) => (
+    <div key={step.id} 
+      className={`scrolling-step ${visibleStep >= step.id ? 'show' : ''}`} 
+      data-step={step.id}>
+      <div className="step-header">
+        <div className="circle">{step.id}</div>
+      </div>
+      <div className="step-body">
+        <h4>{step.title}</h4>
+        <p>{step.description}</p>
+        <Link to={step.link} className="vote-button">{step.buttonText}</Link>
+      </div>
+    </div>
           ))}
         </div>
       </section>

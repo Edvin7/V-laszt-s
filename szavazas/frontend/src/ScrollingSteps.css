@@ -10,6 +10,17 @@ body {
 /* Szekció */
 .scrolling-steps-section {
   padding: 50px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* Elemek egymás alá kerüljenek */
+  min-height: 100vh; /* A szekció teljes magasságú legyen */
+  box-sizing: border-box; /* Győződjünk meg róla, hogy a padding is számít */
+}
+.full-width-container {
+  width: 100%; /* Teljes szélesség */
+  margin: 0; /* Marginok kikapcsolása */
+  padding: 0; /* Paddingok kikapcsolása */
 }
 
 .header h2 {
@@ -99,7 +110,7 @@ body {
   color: white;
   padding: 12px 25px;
   border: none;
-  border-radius: 30px;
+  border-radius: 10px;
   font-size: 1.2rem;
   cursor: pointer;
   transition: background-color 0.3s ease;

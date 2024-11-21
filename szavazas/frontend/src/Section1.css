@@ -798,7 +798,7 @@ er-events-auto {
 }
 
 .mt-8 {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .line-clamp-10 {
@@ -4578,7 +4578,7 @@ input:disabled ~ .label-disabled\:opacity-50 {
   }
 
   .sm\:mt-8 {
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
 
   .sm\:block {
@@ -5630,7 +5630,7 @@ input:disabled ~ .label-disabled\:opacity-50 {
   }
 
   .lg\:mt-8 {
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
 
   .lg\:line-clamp-10 {
