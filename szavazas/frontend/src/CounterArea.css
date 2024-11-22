@@ -22,6 +22,7 @@ body, html {
 .counter-area {
   background-image: url(https://sazzadshakhbd.github.io/psd-html/img/bg/bg-counter.jpg); /* Háttérkép, ha szükséges */
   background-size: cover;
+  background-color: 9ca3af;
   background-position: center;
   padding: 0 20px;
   height: 100%; /* Lefoglalja az egész nézetablakot */

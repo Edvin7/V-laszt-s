@@ -30,7 +30,7 @@ const HeaderBanner = () => {
       }
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(interval); // Cleanup interval on component unmount
   }, [countdownDate]);
 
   return (
@@ -55,12 +55,19 @@ const HeaderBanner = () => {
               <p className="description">
                 Te is számítasz! Válassz, és formáld az országunk jövőjét. Ne hagyd ki a lehetőséget, hogy részt vegyél a döntéshozatalban!
               </p>
-              
-              <div className="countdown-timer">
-                <span>{timeLeft.days}d : </span>
-                <span>{timeLeft.hours}h : </span>
-                <span>{timeLeft.minutes}m : </span>
-                <span>{timeLeft.seconds}s</span>
+              <div className="countdown-cards">
+                <div className="countdown-timer">
+                  <span>{timeLeft.days} <span className="card-label">NAP</span></span>
+                </div>
+                <div className="countdown-timer">
+                  <span>{timeLeft.hours} <span className="card-label">ÓRA</span></span>
+                </div>
+                <div className="countdown-timer">
+                  <span>{timeLeft.minutes} <span className="card-label">PERC</span></span>
+                </div>
+                <div className="countdown-timer">
+                  <span>{timeLeft.seconds} <span className="card-label">MÁSODPERC</span></span>
+                </div>
               </div>
             </div>
           </div>
