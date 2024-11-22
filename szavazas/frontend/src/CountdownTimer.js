@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './CountdownTimer.css'; // Importáljuk a CSS fájlt
 
 const CountdownTimer = () => {
-  const countdownDate = new Date("2024-12-31T00:00:00").getTime();
+  const countdownDate = new Date("2025-01-01T00:00:00").getTime();
 
   const [timeLeft, setTimeLeft] = useState({
     days: 0,

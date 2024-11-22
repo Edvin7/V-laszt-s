@@ -10,9 +10,9 @@
     font-weight: bold;
     color: white;
     padding: 15px;
-    border-radius: 5px;
-    display: inline-block;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+    
+
   }
   
   .countdown-timer span {
