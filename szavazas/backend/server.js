@@ -16,7 +16,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root', // Az adatbázis felhasználóneved
     password: '', // Az adatbázis jelszavad
-    database: 'user_database' // Az adatbázis neve
+    database: 'votes' // Az adatbázis neve
 });
 
 // Adatbázis kapcsolat ellenőrzése

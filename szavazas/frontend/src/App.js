@@ -11,6 +11,7 @@ import Register from './Register';
 import Contacts from './Contacts';
 import NewsFeed from './NewsFeed';
 import ScrollingSteps from './ScrollingSteps';
+import HeaderBanner from './HeaderBanner';
 
 import './App.css';
 import './Transitions.css'; // Az animációhoz tartozó CSS fájl
@@ -33,7 +34,7 @@ const Main = () => {
         <CSSTransition key={location.key} classNames="fade" timeout={300}>
           <Routes location={location}>
             {/* Főoldal */}
-            <Route path="/" element={<><Section1 /><ScrollingSteps /><Section2 /><Footer /></>} /> {/* Section4 hozzáadva */}
+            <Route path="/" element={<><HeaderBanner/><ScrollingSteps /><Section2 /><Footer /></>} /> {/* Section4 hozzáadva */}
             
             {/* Kontakt oldal */}
             <Route path="/contact" element={<Contacts />} />

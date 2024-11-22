@@ -1,0 +1,45 @@
+.header-banner {
+    position: relative;
+    width: 100%;
+    height: 80vh; /* Magasság a képernyő felénél, vagy 50% */
+    overflow: hidden; /* Levágja a túlcsorduló képrészleteket */
+  }
+  
+  .banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* A kép kitölti a rendelkezésre álló teret, torzítás nélkül */
+    object-position: center; /* A kép közepére pozicionálja, így nem a szélek vágódnak le */
+  }
+  
+  .banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Átlátszó fekete réteg */
+    color: white;
+    text-align: center;
+    padding: 0 20px;
+  }
+  
+  /* Reszponzív stílus mobilhoz */
+  @media (max-width: 768px) {
+    .header-banner {
+      height: 300px; /* Csökkentett magasság mobil nézetben */
+    }
+  
+    .banner-overlay h1 {
+      font-size: 1.5rem; /* Kisebb cím szöveg */
+    }
+  
+    .banner-overlay p {
+      font-size: 1rem; /* Kisebb leíró szöveg */
+    }
+  }
+  
