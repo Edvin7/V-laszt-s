@@ -1,17 +1,34 @@
 import React from 'react';
-import parlament from './images/parlament.jpg'; // Kép
-import './HeaderBanner.css'
+import parlamentVideo from './images/parlamentvideo.mp4'; // Video file
+import './HeaderBanner.css';
+
 const HeaderBanner = () => {
   return (
     <header className="header-banner">
-      <img
-        src={parlament}
-        alt="Parliament Building"
-        className="banner-image"
-      />
+      <video
+        className="banner-video"
+        autoPlay
+        loop
+        muted
+        playsInline
+        type="video/mp4"
+      >
+        <source src={parlamentVideo} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
       <div className="banner-overlay">
-        <h1>Welcome to the Header Banner</h1>
-        <p>This is a sample header with a responsive background image.</p>
+        <div className="hero-sec">
+          <div className="overlay">
+            <div className="caption">
+              <h3>Készen áll dönteni a jövőről?</h3>
+              <p className="description">
+              Te is számítasz! Válassz, és formáld az országunk jövőjét. Ne hagyd ki a lehetőséget, hogy részt vegyél a döntéshozatalban!
+              </p>
+              
+            </div>
+          </div>
+        </div>
       </div>
     </header>
   );
