@@ -1,0 +1,103 @@
+/* Alap beállítások */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: "Poppins", sans-serif;
+}
+
+.pt-75 {
+  padding-top: 75px;
+}
+
+.pb-45 {
+  padding-bottom: 45px;
+}
+
+/* Középre helyezett counter area */
+.counter-area {
+  background-image: url(https://sazzadshakhbd.github.io/psd-html/img/bg/bg-counter.jpg); /* Háttérkép, ha szükséges */
+  background-size: cover;
+  background-position: center;
+  padding: 0 20px;
+  height: 100%; /* Lefoglalja az egész nézetablakot */
+  display: flex;
+  justify-content: center; /* Középre helyezés vízszintesen */
+  align-items: center; /* Középre helyezés függőlegesen */
+}
+
+/* Container beállítása */
+.container {
+  display: flex;
+  justify-content: center; /* Középre helyezi vízszintesen */
+  align-items: center; /* Középre helyezi függőlegesen */
+  flex-direction: column;
+  max-width: 1200px; /* Korlátozott szélesség */
+  width: 100%;
+}
+
+/* Counter lista (a számolók) */
+.counter-list {
+  display: flex;
+  justify-content: space-between; /* Az elemek egyenletesen oszlanak el */
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap; /* Ha nem férnek el egy sorban, áttérnek a következőre */
+  width: 100%;
+}
+
+/* Egyes counter (számláló) boxok */
+.single-counter {
+  text-align: center;
+  flex: 1;
+  min-width: 200px; /* Minimális szélesség */
+  max-width: 300px; /* Maximális szélesség */
+  margin-bottom: 20px; /* Térköz az elemek között */
+}
+
+/* Számok stílusa */
+.single-counter > span {
+  font-size: 28px;
+  font-weight: 600;
+  color: #033473; /* Szín módosítva */
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Szövegek (címkék) stílusa */
+.single-counter > p {
+  font-size: 15px;
+  text-transform: uppercase;
+  color: #333;
+  margin: 0;
+}
+
+/* Iconok stílusa */
+.counter-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 30%;
+  background-color: #f2f2f2;
+  padding: 15px;
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #033473; /* Ikon színének beállítása */
+  font-size: 32px;
+}
+
+/* Média lekérdezések - reszponzív elrendezés */
+@media (max-width: 768px) {
+  .counter-list {
+    flex-direction: column; /* Mobilon függőlegesen rendezzük az elemeket */
+    align-items: center;
+  }
+  
+  .single-counter {
+    min-width: 100%; /* 100% szélességet adunk neki, hogy kitöltse a képernyőt */
+  }
+}
