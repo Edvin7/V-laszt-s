@@ -115,6 +115,15 @@ body {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+/* A vonal elhelyezése a cím fölé */
+.line-above {
+  width: 50%;  /* A vonal szélessége */
+  height: 4px;  /* A vonal vastagsága */
+  background-color: #033473;  /* A vonal színe */
+  margin: 0 auto 20px;  /* Középre igazítás, 20px távolság a szöveg alatt */
+  border-radius: 60px;
+}
+
 
 .vote-button:hover {
   background-color: transparent;

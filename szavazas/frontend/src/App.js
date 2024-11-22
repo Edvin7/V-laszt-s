@@ -14,6 +14,7 @@ import ScrollingSteps from './ScrollingSteps';
 import HeaderBanner from './HeaderBanner';
 import CounterArea from './CounterArea';
 
+
 import './App.css';
 import './Transitions.css'; // Az animációhoz tartozó CSS fájl
 

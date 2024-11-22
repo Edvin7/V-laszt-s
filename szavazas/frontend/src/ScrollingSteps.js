@@ -6,44 +6,41 @@ const steps = [
   {
     id: 1,
     title: '1. lépés: Regisztráció',
-    description: 'A szavazáshoz először regisztrálnia kell a platformon. Ehhez adja meg az alapvető adatait, például nevét, e-mail-címét és hozzon létre egy biztonságos jelszót. A regisztráció után egy megerősítő e-mailt küldünk, amelyben található linkre kattintva aktiválhatja fiókját.',
+    description: 'A szavazáshoz először regisztrálnia kell a platformon...',
     buttonText: 'Regisztráljon most',
     link: '/register',
   },
   {
     id: 2,
     title: '2. lépés: Bejelentkezés',
-    description: 'A regisztráció befejezése után jelentkezzen be a fiókjába az e-mail-címével és jelszavával. A bejelentkezés után hozzáférhet a szavazási lehetőségekhez és ellenőrizheti a rendelkezésre álló információkat.',
+    description: 'A regisztráció befejezése után jelentkezzen be...',
     buttonText: 'Jelentkezzen be',
     link: '/login',
   },
   {
     id: 3,
     title: '3. lépés: Szavazás leadása',
-    description: 'Miután bejelentkezett, kiválaszthatja a szavazási opciókat a rendelkezésre álló listából. Jelölje ki a választását, majd kattintson a "Szavazás" gombra. A rendszer megkérheti, hogy erősítse meg a döntését. A sikeres szavazást követően egy megerősítő üzenetet kap.',
+    description: 'Miután bejelentkezett, kiválaszthatja a szavazási opciókat...',
     buttonText: 'Szavazzon most',
     link: '/vote',
   },
 ];
 
-
-
-
 const ScrollingSteps = () => {
-  const [visibleStep, setVisibleStep] = useState(0);  // Aktuális lépés, amely látható
-  const [sectionInView, setSectionInView] = useState(false);  // A szekció láthatósága
+  const [visibleStep, setVisibleStep] = useState(0);
+  const [sectionInView, setSectionInView] = useState(false);
 
   useEffect(() => {
     const sectionObserverOptions = {
-      root: null, // A viewportot használjuk
+      root: null,
       rootMargin: '0px',
-      threshold: 0.3,  // 30%-os láthatóság kell a szekcióhoz
+      threshold: 0.3,
     };
 
     const sectionObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          setSectionInView(true);  // Ha látható, kezdjük el a lépéseket figyelni
+          setSectionInView(true);
         } else {
           setSectionInView(false);
         }
@@ -91,24 +88,25 @@ const ScrollingSteps = () => {
     <div className="my-5 full-width-container">
       <section className="scrolling-steps-section">
         <div className="header text-center mb-5">
+          <div className="line-above"></div> {/* A dizájn vonal a cím fölött */}
           <h2 className="font-weight-bold display-4">
             Hogyan tud <span style={{ color: '#033473' }}>szavazni?</span>
           </h2>
         </div>
         <div className="steps-container">
-  {steps.map((step) => (
-    <div key={step.id} 
-      className={`scrolling-step ${visibleStep >= step.id ? 'show' : ''}`} 
-      data-step={step.id}>
-      <div className="step-header">
-        <div className="circle">{step.id}</div>
-      </div>
-      <div className="step-body">
-        <h4>{step.title}</h4>
-        <p>{step.description}</p>
-        <Link to={step.link} className="vote-button">{step.buttonText}</Link>
-      </div>
-    </div>
+          {steps.map((step) => (
+            <div key={step.id} 
+              className={`scrolling-step ${visibleStep >= step.id ? 'show' : ''}`} 
+              data-step={step.id}>
+              <div className="step-header">
+                <div className="circle">{step.id}</div>
+              </div>
+              <div className="step-body">
+                <h4>{step.title}</h4>
+                <p>{step.description}</p>
+                <Link to={step.link} className="vote-button">{step.buttonText}</Link>
+              </div>
+            </div>
           ))}
         </div>
       </section>
