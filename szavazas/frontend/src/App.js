@@ -2,9 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Navbar from './Navbar';
-import Section1 from './Section1';
-import Section2 from './Section2';
-import Section4 from './Section4'; 
+import VotingPage from './VotingPage';
 import Footer from './Footer';
 import Login from './Login';
 import Register from './Register';
@@ -43,7 +41,7 @@ const Main = () => {
 
             {/* Hírek oldal */}
             <Route path="/news" element={<NewsFeed />} /> {/*<Section4 /> Hírek oldal hozzáadása */}
-            
+            <Route path="/voting" element={<VotingPage />} />
             {/* Bejelentkezés és regisztráció oldalak */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

@@ -28,7 +28,7 @@ const Navbar = () => {
       {/* Menüpontok, mobil nézetben a "active" osztállyal jelenik meg */}
       <div className={`nav-links ${menuOpen ? 'active' : ''}`}>
         <ul>
-          <li><Link to="/">Szavazz</Link></li>
+          <li><Link to="/voting">Szavazz</Link></li>
           <li><Link to="#">Statisztikák</Link></li>
           <li><a href="/news" target="_blank" rel="noopener noreferrer">Hírek</a></li> {/* Hírek link új fülben */}
           <li><Link to="/contact">Kapcsolat</Link></li>

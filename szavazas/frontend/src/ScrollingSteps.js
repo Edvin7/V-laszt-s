@@ -22,7 +22,7 @@ const steps = [
     title: '3. lépés: Szavazás leadása',
     description: 'Miután bejelentkezett, kiválaszthatja a szavazási opciókat...',
     buttonText: 'Szavazzon most',
-    link: '/vote',
+    link: '/voting',
   },
 ];
 
