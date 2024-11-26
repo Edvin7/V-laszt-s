@@ -1,65 +1,76 @@
 const express = require('express');
 const mysql = require('mysql2');
-const bodyParser = require('body-parser');
 const cors = require('cors');
-const bcrypt = require('bcrypt');
-
+const bodyParser = require('body-parser');
 const app = express();
 const port = 5000;
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json()); // JSON kérések kezelése
 
-// MySQL adatbázis kapcsolat
+// MySQL kapcsolat beállítása
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root', // Az adatbázis felhasználóneved
-    password: '', // Az adatbázis jelszavad
-    database: 'votes' // Az adatbázis neve
+  host: 'localhost',
+  user: 'root', // a MySQL felhasználó neve
+  password: '', // a MySQL jelszó
+  database: 'vote', // az adatbázis neve
 });
 
-// Adatbázis kapcsolat ellenőrzése
-db.connect(err => {
+db.connect((err) => {
+  if (err) {
+    console.error('Hiba a MySQL kapcsolódás során:', err);
+    return;
+  }
+  console.log('Sikeresen csatlakoztunk a MySQL adatbázishoz');
+});
+
+// Regisztrációs endpoint
+app.post('/register', (req, res) => {
+  const { name, email, pass, personal_id, agreeTerm } = req.body;
+
+  // Ellenőrizzük, hogy minden mező megvan-e
+  if (!name || !email || !pass || !personal_id || agreeTerm === undefined) {
+    return res.status(400).json({ message: 'Minden mezőt ki kell tölteni!' });
+  }
+
+  // Ellenőrizzük, hogy a felhasználó létezik-e már
+  const checkQuery = 'SELECT * FROM users WHERE email = ?';
+  db.query(checkQuery, [email], (err, result) => {
     if (err) {
-        console.error('Hiba az adatbázishoz való csatlakozáskor:', err);
-        return;
+      console.error('Hiba a felhasználó ellenőrzésekor:', err);
+      return res.status(500).json({ message: 'Belső hiba történt' });
     }
-    console.log('Csatlakozás a MySQL adatbázishoz sikeres!');
-});
 
-// Regisztráció végpont
-app.post('/register', async (req, res) => {
-    const { name, email, password, personal_id } = req.body;
+    if (result.length > 0) {
+      return res.status(400).json({ message: 'Ez az email már regisztrálva van' });
+    }
 
-    try {
-        // Ellenőrzés: van-e már ilyen email vagy személyi azonosító
-        const [existingUsers] = await db.promise().query(
-            `SELECT * FROM users WHERE email = ? OR personal_id = ?`,
-            [email, personal_id]
-        );
+    // Ha nem létezik, hozzáadjuk az új felhasználót az adatbázisba
+    const insertQuery = `INSERT INTO users (name, email, password_hash, personal_id, agree_terms, status) 
+                         VALUES (?, ?, ?, ?, ?, 'active')`;
 
-        if (existingUsers.length > 0) {
-            return res.status(400).send({ message: 'Ez az email vagy személyi azonosító már létezik.' });
+    // A jelszót biztonságosan kell hash-elnünk (pl. bcrypt használatával)
+    const bcrypt = require('bcryptjs');
+    bcrypt.hash(pass, 10, (err, hashedPassword) => {
+      if (err) {
+        console.error('Hiba a jelszó hash-elésekor:', err);
+        return res.status(500).json({ message: 'Belső hiba történt' });
+      }
+
+      db.query(insertQuery, [name, email, hashedPassword, personal_id, agreeTerm ? 1 : 0], (err, result) => {
+        if (err) {
+          console.error('Hiba a felhasználó hozzáadása közben:', err);
+          return res.status(500).json({ message: 'Belső hiba történt' });
         }
 
-        // Jelszó titkosítása
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Új felhasználó mentése
-        await db.promise().query(
-            `INSERT INTO users (name, email, password, personal_id) VALUES (?, ?, ?, ?)`,
-            [name, email, hashedPassword, personal_id]
-        );
-
-        res.status(201).send({ message: 'Sikeres regisztráció!' });
-    } catch (error) {
-        console.error('Hiba történt:', error);
-        res.status(500).send({ message: 'Szerverhiba. Próbáld újra később!' });
-    }
+        res.status(200).json({ message: 'Sikeres regisztráció!' });
+      });
+    });
+  });
 });
 
 // Szerver indítása
 app.listen(port, () => {
-    console.log(`Szerver fut a ${port} porton`);
+  console.log(`Szerver fut a ${port} porton`);
 });
