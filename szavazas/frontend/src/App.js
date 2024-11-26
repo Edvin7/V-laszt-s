@@ -11,6 +11,8 @@ import NewsFeed from './NewsFeed';
 import ScrollingSteps from './ScrollingSteps';
 import HeaderBanner from './HeaderBanner';
 import CounterArea from './CounterArea';
+import TermsOfService from './Terms'; 
+import PrivacyPolicy from './PrivacyPolicy';
 
 
 import './App.css';
@@ -33,16 +35,13 @@ const Main = () => {
       <TransitionGroup>
         <CSSTransition key={location.key} classNames="fade" timeout={300}>
           <Routes location={location}>
-            {/* Főoldal */}
-            <Route path="/" element={<><HeaderBanner/><ScrollingSteps /><CounterArea/><Footer /></>} /> {/* Section4 hozzáadva */}
+            <Route path="/" element={<><HeaderBanner/><ScrollingSteps /><CounterArea/><Footer /></>}/>
             
-            {/* Kontakt oldal */}
             <Route path="/contact" element={<Contacts />} />
-
-            {/* Hírek oldal */}
-            <Route path="/news" element={<NewsFeed />} /> {/*<Section4 /> Hírek oldal hozzáadása */}
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/news" element={<NewsFeed />} />
             <Route path="/voting" element={<VotingPage />} />
-            {/* Bejelentkezés és regisztráció oldalak */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Routes>

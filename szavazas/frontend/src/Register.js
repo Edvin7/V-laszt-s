@@ -26,15 +26,28 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Ellenőrizzük, hogy a két jelszó megegyezik-e
     if (formData.pass !== formData.re_pass) {
       alert('A jelszavak nem egyeznek!');
       return;
     }
     
     try {
-      // POST kérés küldése a backend felé
-      const response = await axios.post('http://localhost:5000/register', formData);
+      // POST kérés küldése a backend felé a regisztrációs adatokkal
+      const response = await axios.post('http://localhost:5000/register', {
+        name: formData.name,
+        email: formData.email,
+        pass: formData.pass,
+        personal_id: formData.personal_id,
+        agreeTerm: formData.agreeTerm,
+      });
+
       console.log('Regisztráció sikeres:', response.data);
+      setFormData({ ...formData, message: response.data.message });
+
+      // Ha sikeres a regisztráció, redirect a login oldalra
+      // Optional: redirect to login page after successful registration
+      // window.location.href = '/login';
     } catch (error) {
       // Hibák kezelése
       if (error.response) {
@@ -52,7 +65,6 @@ const Register = () => {
       }
     }
   };
-  
   
 
   return (
