@@ -2,6 +2,7 @@ import React from 'react';
 import './Terms.css';
 
 
+
 function TermsOfService() {
   return (
     <div className="terms-container">
@@ -47,13 +48,8 @@ function TermsOfService() {
           <p>Az ÁSZF-t a magyar jog szabályozza. A felek minden vitás ügyet a magyar bíróságok elé terjesztenek.</p>
         </div>
       </section>
-
-      <footer>
-        <div className="container">
-          <p>&copy; 2024 SzavazóPlatform. Minden jog fenntartva.</p>
-        </div>
-      </footer>
     </div>
+ 
   );
 }
 

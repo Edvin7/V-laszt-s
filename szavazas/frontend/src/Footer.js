@@ -8,9 +8,9 @@ const Footer = () => {
       <div className="footer">
         <div className="row">
           <ul>
-            <li><a href="#">Kapcsolat</a></li>
-            <li><a href="#">Szavazok</a></li>
-            <li><a href="#">Adatvédelmi szabályzat</a></li>
+          <li><Link to="/contact">Kapcsolat</Link></li>
+            <li><a href="/voting">Szavazok</a></li>
+            <li><Link to="/privacy">Adatvédelmi szabályzat</Link></li>
             <li><Link to="/terms">Általános Szerződési Feltételek</Link></li>
             <li><Link to="/login">Bejelentkezés</Link></li>
           </ul>
