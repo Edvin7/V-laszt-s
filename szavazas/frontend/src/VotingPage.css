@@ -1,56 +1,31 @@
-/* A szavazólap oldalának középre igazítása */
+/* Alap beállítások */
 body, html {
     margin: 0;
     padding: 0;
-    height: 100%; /* Az oldal teljes magasságát kitöltjük */
+    height: 100%;
+    font-family: Arial, sans-serif;
 }
+
 .ballot-wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Függőlegesen középre igazítás */
-    align-items: center; /* Vízszintesen középre igazítás */
-    min-height: 100vh;  /* Teljes képernyőt kitölt */
-    padding: 0 20px; /* Padding a szélén */
-    box-sizing: border-box; /* A paddingot is figyelembe vesszük */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0 20px;
+    box-sizing: border-box;
+    background-color: #f0f4f8;
 }
 
-/* Szavazás gomb animációval */
-.submit-btn {
-    margin-top: 30px;
-    padding: 15px 30px;
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
-    background-color: #033473;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Alap árnyék a gombon */
-}
-
-/* Hover effektus a gombon */
-.submit-btn:hover {
-    background-color: #0056b3;
-    transform: scale(1.1); /* A gomb növekszik hover alatt */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Erősebb árnyék hover alatt */
-}
-
-/* Ha a gombot megnyomják (aktiválják) */
-.submit-btn:active {
-    transform: scale(1.05); /* Kisebb összehúzódás, amikor a gombot lenyomják */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Csökkentett árnyék, amikor megnyomják */
-}
-
+/* Szavazólap stílusai */
 .ballot-container {
-    max-width: 900px;  /* Maximális szélesség */
+    max-width: 900px;
     width: 100%;
-    background: white;
+    background: #ffffff;
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    position: relative;
     border: 6px solid transparent;
     border-image: linear-gradient(
       to bottom right,
@@ -73,42 +48,48 @@ body, html {
 
 .parties {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 20px;
     margin-bottom: 20px;
 }
 
-.voting-page-disabled-scroll {
-    overflow: hidden;
-    height: 100vh; 
-}
-
+/* Párt elemek */
 .party {
     text-align: center;
-    width: 100%;
     padding: 10px;
     background-color: #f8faff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .party:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    
+    
 }
 
 .party img {
     width: 80px;
     height: 80px;
-    display: block;
     margin: 0 auto 10px;
 }
 
 .party p {
     font-size: 16px;
-    margin: 0;
-    color: #333;
+    color: #333333;
+    margin: 5px 0;
+}
+
+/* Szavazókörök (vote-circle) */
+.vote-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
 }
 
 .vote-circle {
@@ -116,15 +97,13 @@ body, html {
     height: 40px;
     border: 3px solid #033473;
     border-radius: 50%;
-    margin: 10px auto;
     cursor: pointer;
     position: relative;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: background-color 0.3s;
 }
 
 .vote-circle.selected {
     background-color: #033473;
-    transform: scale(1.2);
 }
 
 .vote-circle.selected::after {
@@ -133,11 +112,12 @@ body, html {
     color: white;
     font-weight: bold;
     position: absolute;
-    top: 50%;   /* Középre igazítjuk függőlegesen */
-    left: 50%;  /* Középre igazítjuk vízszintesen */
-    transform: translate(-50%, -50%); /* Az X középre helyezése */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
+/* Szavazás gomb */
 .submit-btn {
     margin-top: 20px;
     padding: 12px 25px;
@@ -148,39 +128,27 @@ body, html {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: background-color 0.3s;
 }
 
 .submit-btn:hover {
     background-color: #0056b3;
-    transform: scale(1.05);
 }
 
-/* Mobil optimalizálás */
+/* Reszponzív stílus */
 @media (max-width: 768px) {
     .ballot-container h1 {
-      font-size: 20px;
+        font-size: 20px;
     }
-
     .party img {
-      width: 60px;
-      height: 60px;
+        width: 60px;
+        height: 60px;
     }
-
     .vote-circle {
-      width: 30px;
-      height: 30px;
+        width: 30px;
+        height: 30px;
     }
-
     .vote-circle.selected::after {
-      font-size: 16px;
-    }
-
-    .party {
-      width: 130px;  /* Kisebb szélesség mobilra */
-    }
-
-    .parties {
-      grid-template-columns: repeat(2, 1fr);  /* 2 párt egy sorban mobilra */
+        font-size: 16px;
     }
 }
