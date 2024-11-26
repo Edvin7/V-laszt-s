@@ -2,6 +2,8 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs'); // bcrypt importálása
+
 const app = express();
 const port = 5000;
 
@@ -50,8 +52,7 @@ app.post('/register', (req, res) => {
     const insertQuery = `INSERT INTO users (name, email, password_hash, personal_id, agree_terms, status) 
                          VALUES (?, ?, ?, ?, ?, 'active')`;
 
-    // A jelszót biztonságosan kell hash-elnünk (pl. bcrypt használatával)
-    const bcrypt = require('bcryptjs');
+    // A jelszót biztonságosan kell hash-elnünk (bcrypt használatával)
     bcrypt.hash(pass, 10, (err, hashedPassword) => {
       if (err) {
         console.error('Hiba a jelszó hash-elésekor:', err);
@@ -65,6 +66,47 @@ app.post('/register', (req, res) => {
         }
 
         res.status(200).json({ message: 'Sikeres regisztráció!' });
+      });
+    });
+  });
+});
+
+// Bejelentkezés végpont
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+
+  // Ellenőrizzük, hogy létezik-e a felhasználó a megadott email címmel
+  db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+    if (err) {
+      console.error('Hiba történt a lekérdezés során:', err);
+      return res.status(500).json({ message: 'Belső hiba történt!' });
+    }
+
+    if (results.length === 0) {
+      return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
+    }
+
+    const user = results[0];
+
+    // bcrypt jelszó ellenőrzés
+    bcrypt.compare(password, user.password_hash, (err, isMatch) => {
+      if (err) {
+        console.error('Hiba a jelszó ellenőrzésekor:', err);
+        return res.status(500).json({ message: 'Belső hiba történt' });
+      }
+
+      if (!isMatch) {
+        return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
+      }
+
+      // Sikeres bejelentkezés
+      res.status(200).json({
+        message: 'Sikeres bejelentkezés',
+        user: {
+          id: user.id_number,
+          name: user.name,
+          email: user.email,
+        },
       });
     });
   });

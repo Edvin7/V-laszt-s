@@ -1,18 +1,30 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // useNavigate importálása
 import './Login.css';
 import loginImage from './images/loginregister.png';
+import axios from 'axios'; // Axios importálása
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState(''); // Hibaüzenet tárolása
+  const navigate = useNavigate(); // useNavigate hook használata
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('Remember Me:', rememberMe);
+    
+    try {
+      // Küldjük el a bejelentkezési adatokat a szervernek
+      const response = await axios.post('http://localhost:5000/login', { email, password });
+      console.log('Bejelentkezés sikeres:', response.data);
+      
+      // Ha sikeres a bejelentkezés, átirányítjuk az App.js oldalra
+      navigate('/'); // Az '/' az alapértelmezett kezdőlapra irányítja a felhasználót
+    } catch (error) {
+      console.error('Hiba a bejelentkezés során:', error.response?.data || error.message);
+      setError(error.response?.data?.message || 'Ismeretlen hiba történt');
+    }
   };
 
   return (
@@ -30,6 +42,8 @@ function Login() {
 
           <div className="signin-form flex">
             <h2 className="form-title">Bejelentkezés</h2>
+            {/* Hibaüzenet megjelenítése, ha van */}
+            {error && <p className="error-message">{error}</p>}
             <form onSubmit={handleLogin} className="register-form" id="login-form">
               <div className="form-group">
                 <label htmlFor="your_name">
