@@ -29,6 +29,7 @@ const Navbar = () => {
       <div className={`nav-links ${menuOpen ? 'active' : ''}`}>
         <ul>
           <li><Link to="/voting">Szavazz</Link></li>
+          <li><Link to="/parties">Pártok</Link></li>
           <li><Link to="stats">Statisztikák</Link></li>
           <li><a href="/news" target="_blank" rel="noopener noreferrer">Hírek</a></li> {/* Hírek link új fülben */}
           <li><Link to="/contact">Kapcsolat</Link></li>
