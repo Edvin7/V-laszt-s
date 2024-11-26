@@ -11,7 +11,7 @@ const Footer = () => {
             <li><a href="#">Kapcsolat</a></li>
             <li><a href="#">Szavazok</a></li>
             <li><a href="#">Adatvédelmi szabályzat</a></li>
-            <li><a href="#">Általános Szerződési Feltételek</a></li>
+            <li><Link to="/terms">Általános Szerződési Feltételek</Link></li>
             <li><Link to="/login">Bejelentkezés</Link></li>
           </ul>
         </div>

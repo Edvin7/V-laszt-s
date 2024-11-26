@@ -4,15 +4,18 @@ import './VotingPage.css'; // CSS import
 const partiesList = [
   'Fidesz', 'Momentum', 'MSZP', 'Jobbik', 'DK',
   'LMP', 'Párbeszéd', 'Mi Hazánk', 'Együtt', 'SZDSZ',
-  'Zöldek', 'Liberálisok' // Új pártok hozzáadva
+  'Zöldek', 'Liberálisok' // Új pártok
 ];
 
 const VotingPage = () => {
   const [selectedParty, setSelectedParty] = useState(null);
 
   useEffect(() => {
+    // Görgetés tiltása az oldal betöltésekor
     document.body.classList.add('voting-page-disabled-scroll');
+
     return () => {
+      // Görgetés engedélyezése, amikor a komponens elhagyása történik
       document.body.classList.remove('voting-page-disabled-scroll');
     };
   }, []);

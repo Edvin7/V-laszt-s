@@ -60,7 +60,7 @@ const Contacts = () => {
             </div>
             <div className="btn-wrapper">
               <button className="submit-btn">
-                Szavazás leadása
+                Elküldés
               </button>
             </div>
           </div>

@@ -11,6 +11,7 @@ import NewsFeed from './NewsFeed';
 import ScrollingSteps from './ScrollingSteps';
 import HeaderBanner from './HeaderBanner';
 import CounterArea from './CounterArea';
+import TermsOfService from './Terms'; // Az ÁSZF komponens
 
 
 import './App.css';
@@ -38,7 +39,7 @@ const Main = () => {
             
             {/* Kontakt oldal */}
             <Route path="/contact" element={<Contacts />} />
-
+            <Route path="/terms" element={<TermsOfService />} />
             {/* Hírek oldal */}
             <Route path="/news" element={<NewsFeed />} /> {/*<Section4 /> Hírek oldal hozzáadása */}
             <Route path="/voting" element={<VotingPage />} />
