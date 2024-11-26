@@ -15,8 +15,14 @@ import TermsOfService from './Terms';
 import PrivacyPolicy from './PrivacyPolicy';
 import Stats from './Stats'; // Importáltuk a Stats komponenst
 
+import axios from 'axios'; // Importáljuk az axios-t
+
 import './App.css';
 import './Transitions.css'; // Az animációhoz tartozó CSS fájl
+
+// Az axios konfigurálása az alkalmazás kezdetén
+axios.defaults.baseURL = 'http://localhost:5000'; // Backend URL
+axios.defaults.withCredentials = true;  // Engedélyezi, hogy a cookie-kat automatikusan küldjük minden kéréshez
 
 const App = () => {
   return (
@@ -36,7 +42,6 @@ const Main = () => {
         <CSSTransition key={location.key} classNames="fade" timeout={300}>
           <Routes location={location}>
             <Route path="/" element={<><HeaderBanner/><ScrollingSteps /><CounterArea/><Footer /></>} />
-            
             <Route path="/contact" element={<Contacts />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />

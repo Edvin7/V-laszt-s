@@ -4,6 +4,12 @@ import './Login.css';
 import loginImage from './images/loginregister.png';
 import axios from 'axios'; // Axios importálása
 
+
+
+// Beállítjuk, hogy az Axios minden kéréshez küldje a cookie-t
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = 'http://localhost:5000';
+
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,6 +28,7 @@ function Login() {
       // Ha sikeres a bejelentkezés, átirányítjuk az App.js oldalra
       navigate('/'); // Az '/' az alapértelmezett kezdőlapra irányítja a felhasználót
     } catch (error) {
+      // Hibakezelés és a hibaüzenet beállítása
       console.error('Hiba a bejelentkezés során:', error.response?.data || error.message);
       setError(error.response?.data?.message || 'Ismeretlen hiba történt');
     }
