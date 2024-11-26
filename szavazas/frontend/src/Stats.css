@@ -1,4 +1,4 @@
-/* Stats.css */
+/* Alapértelmezett stílusok (nem változtattunk rajtuk) */
 .stats-container {
     padding: 40px;
     background-color: #f9f9f9;
@@ -93,6 +93,86 @@
   
   .view-more-button:hover {
     background-color: #00408b;
+  }
+  
+  /* Modális ablak stílusai */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);  /* Átlátszó fekete háttér */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Biztosítjuk, hogy felül legyen */
+    opacity: 0;
+    pointer-events: none;
+    animation: fadeIn 0.3s forwards; /* Animáció */
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+    transform: scale(0.8);
+    animation: modalIn 0.3s forwards; /* Modális animáció */
+  }
+  
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+  
+  @keyframes modalIn {
+    to {
+      transform: scale(1);
+    }
+  }
+  
+  .close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;  /* Nincs háttér */
+    border: none;
+    font-size: 24px;  /* A gomb sima X legyen */
+    color: #333;  /* Szürke szín a X-hez */
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .close-modal:hover {
+    color: #0056b3;  /* A hover effektus színe kék lesz */
+    transform: scale(1.1);  /* Kicsit megnöveli az X-t a hover effektusra */
+  }
+  
+  .close-modal:focus {
+    outline: none;
+  }
+  
+  button {
+    cursor: pointer;
+  }
+  
+  /* Animáció a bezárásra */
+  .modal-overlay.hide {
+    opacity: 0;
+    pointer-events: none;
+    animation: fadeOut 0.3s forwards;
+  }
+  
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+      pointer-events: none;
+    }
   }
   
   @media (max-width: 768px) {

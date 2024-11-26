@@ -3,6 +3,7 @@ import './Stats.css'; // Az új CSS fájl
 
 const Stats = () => {
   const [parties, setParties] = useState([]);
+  const [selectedParty, setSelectedParty] = useState(null); // A modálhoz választott párt
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -20,6 +21,11 @@ const Stats = () => {
       });
   }, []);
 
+  // A modális ablak bezárása
+  const closeModal = () => {
+    setSelectedParty(null);
+  };
+
   return (
     <div className="stats-container">
       <h2 className="stats-title">Politikai Pártok</h2>
@@ -28,14 +34,31 @@ const Stats = () => {
         {parties.map((party) => (
           <div key={party.party_id} className="party-card">
             <div className="party-image-container">
-              <img src={party.image_url || 'https://cdn.szegedma.hu/2024/01/m89CuFvWKe-QHDgP6hK2JUTw4rW2SkqaQw4MoHrP9vc/fill/1347/758/no/1/aHR0cHM6Ly9jbXNjZG4uYXBwLmNvbnRlbnQucHJpdmF0ZS9jb250ZW50L2M5OTJkNGQ3OGY3YTRmMGY5ZDAyZGNiN2VkZWNhOTBm.jpg'} alt={party.name} className="party-image" />
+              <img
+                src={party.image_url || 'https://cdn.szegedma.hu/2024/01/m89CuFvWKe-QHDgP6hK2JUTw4rW2SkqaQw4MoHrP9vc/fill/1347/758/no/1/aHR0cHM6Ly9jbXNjZG4uYXBwLmNvbnRlbnQucHJpdmF0ZS9jb250ZW50L2M5OTJkNGQ3OGY3YTRmMGY5ZDAyZGNiN2VkZWNhOTBm.jpg'}
+                alt={party.name}
+                className="party-image"
+              />
             </div>
             <h3 className="party-name">{party.name}</h3>
             <p className="party-description">{party.description}</p>
-            <button className="view-more-button">Több információ</button>
+            <button className="view-more-button" onClick={() => setSelectedParty(party)}>
+              Több információ
+            </button>
           </div>
         ))}
       </div>
+
+      {selectedParty && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-modal" onClick={closeModal}>X</button>
+            <h3>{selectedParty.name}</h3>
+            <p>{selectedParty.description}</p>
+            {/* Itt bármit hozzáadhatsz, amit szeretnél megjeleníteni a modálban */}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
