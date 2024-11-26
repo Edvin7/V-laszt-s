@@ -13,7 +13,7 @@ import HeaderBanner from './HeaderBanner';
 import CounterArea from './CounterArea';
 import TermsOfService from './Terms'; 
 import PrivacyPolicy from './PrivacyPolicy';
-
+import Stats from './Stats'; // Importáltuk a Stats komponenst
 
 import './App.css';
 import './Transitions.css'; // Az animációhoz tartozó CSS fájl
@@ -35,7 +35,7 @@ const Main = () => {
       <TransitionGroup>
         <CSSTransition key={location.key} classNames="fade" timeout={300}>
           <Routes location={location}>
-            <Route path="/" element={<><HeaderBanner/><ScrollingSteps /><CounterArea/><Footer /></>}/>
+            <Route path="/" element={<><HeaderBanner/><ScrollingSteps /><CounterArea/><Footer /></>} />
             
             <Route path="/contact" element={<Contacts />} />
             <Route path="/terms" element={<TermsOfService />} />
@@ -44,6 +44,7 @@ const Main = () => {
             <Route path="/voting" element={<VotingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/stats" element={<Stats />} /> {/* Új route a Stats komponenshez */}
           </Routes>
         </CSSTransition>
       </TransitionGroup>

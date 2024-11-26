@@ -112,6 +112,20 @@ app.post('/login', (req, res) => {
   });
 });
 
+// Új endpoint a pártok adatainak lekérésére
+app.get('/parties', (req, res) => {
+    const query = 'SELECT * FROM parties'; // A parties tábla adatainak lekérése
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Hiba történt a pártok lekérésekor:', err);
+        return res.status(500).json({ message: 'Belső hiba történt' });
+      }
+  
+      res.status(200).json(results); // Visszaadjuk a pártok adatait
+    });
+  });
+
+
 // Szerver indítása
 app.listen(port, () => {
   console.log(`Szerver fut a ${port} porton`);
