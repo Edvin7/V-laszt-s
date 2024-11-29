@@ -1,30 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
-import logo from './images/most.png'; // Az útvonal a logóhoz
+import logo from './images/most.png';
 
-const Navbar = () => {
-  const [menuOpen, setMenuOpen] = useState(false); // Állapot a menü nyitásához/zárásához
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Bejelentkezési állapot
-
-  // useEffect használata a localStorage ellenőrzésére
-  useEffect(() => {
-    // Ellenőrizzük, hogy van-e bejelentkezett felhasználó a localStorage-ban
-    const user = localStorage.getItem('user');
-    if (user && user !== '0') {
-      setIsLoggedIn(true); // Ha van bejelentkezett felhasználó, akkor true
-    } else {
-      setIsLoggedIn(false); // Ha nincs bejelentkezett felhasználó, akkor false
-    }
-  }, []); // Az üres tömb azt jelenti, hogy a komponens első renderelésekor fut le
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen); // Menü nyitás/zárás
-  };
-
+const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const handleLogout = () => {
-    // Kijelentkezés, töröljük a localStorage-ból a felhasználót
-    localStorage.removeItem('user');
+    localStorage.removeItem('user'); // Töröljük a localStorage-ból a felhasználót
     setIsLoggedIn(false); // Bejelentkezési állapot frissítése
   };
 
@@ -36,15 +17,7 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Hamburger ikon mobil nézetben */}
-      <div className="hamburger-icon" onClick={toggleMenu}>
-        <div className={menuOpen ? 'bar open' : 'bar'}></div>
-        <div className={menuOpen ? 'bar open' : 'bar'}></div>
-        <div className={menuOpen ? 'bar open' : 'bar'}></div>
-      </div>
-
-      {/* Menüpontok, mobil nézetben a "active" osztállyal jelenik meg */}
-      <div className={`nav-links ${menuOpen ? 'active' : ''}`}>
+      <div className="nav-links">
         <ul>
           <li><Link to="/voting">Szavazz</Link></li>
           <li><Link to="/parties">Pártok</Link></li>
