@@ -1,0 +1,202 @@
+/* Alap container */
+.account-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 40px 30px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    font-family: 'Poppins', sans-serif;
+    color: #033473;
+    border: 6px solid transparent;
+    border-image: linear-gradient(
+        to bottom right,
+        #033473 0%,
+        #033473 15%,
+        transparent 15%,
+        transparent 85%,
+        #033473 85%,
+        #033473 100%
+    ) 6;
+}
+
+/* H1 és fő címsor */
+h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #033473;
+    font-weight: 600;
+}
+
+/* Profilkép szekció */
+.profile-pic-section {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.profile-pic-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    border: 4px solid #033473;
+}
+
+.profile-pic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.default-profile-pic {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #bbb;
+    font-size: 16px;
+}
+
+.file-input {
+    display: none;
+}
+
+.profile-pic-section input[type="file"] {
+    margin-top: 10px;
+    font-size: 16px;
+    background-color: #033473;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.profile-pic-section input[type="file"]:hover {
+    background-color: #033473;
+}
+
+/* Felhasználói információk */
+.user-info {
+    font-size: 16px;
+    margin-bottom: 25px;
+}
+
+strong {
+    font-weight: bold;
+    color: #555;
+}
+
+/* Jelszóváltoztatás szekció */
+.password-change-section {
+    background-color: #f9f9f9;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 4px solid #033473;
+}
+
+.password-change-section h2 {
+    font-size: 22px;
+    color: #033473;
+    margin-bottom: 25px;
+}
+
+/* Input mezők */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f4f4f4;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #033473;
+    outline: none;
+}
+
+.password-input-container {
+    position: relative;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Hibaüzenet */
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Jelszó módosító gomb */
+.change-password-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #033473;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.change-password-btn:hover {
+    background-color: #033473;
+}
+
+/* Reszponzív dizájn */
+@media (max-width: 768px) {
+    .account-container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .profile-pic-container {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-pic-section input[type="file"] {
+        padding: 8px;
+    }
+
+    .input-group input {
+        font-size: 14px;
+    }
+
+    .change-password-btn {
+        font-size: 16px;
+    }
+}

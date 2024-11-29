@@ -13,10 +13,12 @@ import HeaderBanner from './HeaderBanner';
 import CounterArea from './CounterArea';
 import TermsOfService from './Terms'; 
 import PrivacyPolicy from './PrivacyPolicy';
-import Stats from './Stats'; // Importáltuk a Stats komponenst
+import Stats from './Stats';
+import Account from './Account';
 
 import './App.css';
-import './Transitions.css'; // Az animációhoz tartozó CSS fájl
+import './Transitions.css';
+
 
 const App = () => {
   return (
@@ -44,7 +46,8 @@ const Main = () => {
             <Route path="/voting" element={<VotingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/stats" element={<Stats />} /> {/* Új route a Stats komponenshez */}
+            <Route path="/stats" element={<Stats />} />
+            <Route path="/account" element={<Account />} />
           </Routes>
         </CSSTransition>
       </TransitionGroup>

@@ -33,6 +33,7 @@ const Navbar = () => {
           <li><Link to="stats">Statisztikák</Link></li>
           <li><a href="/news" target="_blank" rel="noopener noreferrer">Hírek</a></li> {/* Hírek link új fülben */}
           <li><Link to="/contact">Kapcsolat</Link></li>
+          <li><Link to="/account">Profil</Link></li>
           <li><Link to="/login" className="loginbutton">Bejelentkezés</Link></li>
         </ul>
       </div>
