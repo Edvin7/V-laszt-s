@@ -19,7 +19,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
       <div className="nav-links">
         <ul>
-          <li><Link to="/voting">Szavazz</Link></li>
+          
           <li><Link to="/parties">Pártok</Link></li>
           <li><Link to="/stats">Statisztikák</Link></li>
           <li><a href="/news" target="_blank" rel="noopener noreferrer">Hírek</a></li>
@@ -29,6 +29,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
           {isLoggedIn ? (
             <>
               <li><Link to="/account">Profil</Link></li>
+              <li><Link to="/voting">Szavazz</Link></li>
               <li><button onClick={handleLogout} className="logoutbutton">Kijelentkezés</button></li>
             </>
           ) : (
