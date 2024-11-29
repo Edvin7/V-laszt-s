@@ -11,6 +11,13 @@ nav .logo {
   display: flex;
   align-items: center;
 }
+.logoutbutton {
+  color: #033473;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: bold;
+}
+
+
 
 nav .logo img {
   height: 70px;

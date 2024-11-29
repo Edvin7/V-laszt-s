@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
-import logo from './images/most.png'; // Az útvonal a logóhoz
+import logo from './images/most.png';
 
-const Navbar = () => {
-  const [menuOpen, setMenuOpen] = useState(false); // Állapot a menü nyitásához/zárásához
+const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
+  const navigate = useNavigate();  // A hook a navigáláshoz
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen); // Menü nyitás/zárás
+  const handleLogout = () => {
+    localStorage.removeItem('user'); // Töröljük a localStorage-ból a felhasználót
+    setIsLoggedIn(false); // Bejelentkezési állapot frissítése
+    navigate('/'); // Átirányítás a főoldalra
   };
 
   return (
@@ -18,22 +20,23 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Hamburger ikon mobil nézetben */}
-      <div className="hamburger-icon" onClick={toggleMenu}>
-        <div className={menuOpen ? 'bar open' : 'bar'}></div>
-        <div className={menuOpen ? 'bar open' : 'bar'}></div>
-        <div className={menuOpen ? 'bar open' : 'bar'}></div>
-      </div>
-
-      {/* Menüpontok, mobil nézetben a "active" osztállyal jelenik meg */}
-      <div className={`nav-links ${menuOpen ? 'active' : ''}`}>
+      <div className="nav-links">
         <ul>
-          <li><Link to="/voting">Szavazz</Link></li>
           <li><Link to="/parties">Pártok</Link></li>
-          <li><Link to="stats">Statisztikák</Link></li>
-          <li><a href="/news" target="_blank" rel="noopener noreferrer">Hírek</a></li> {/* Hírek link új fülben */}
+          <li><Link to="/stats">Statisztikák</Link></li>
+          <li><a href="/news" target="_blank" rel="noopener noreferrer">Hírek</a></li>
           <li><Link to="/contact">Kapcsolat</Link></li>
-          <li><Link to="/login" className="loginbutton">Bejelentkezés</Link></li>
+
+          {/* Dinamikusan jelenik meg a bejelentkezett állapottól függően */}
+          {isLoggedIn ? (
+            <>
+              <li><Link to="/account">Profil</Link></li>
+              <li><Link to="/voting">Szavazz</Link></li>
+              <li><button onClick={handleLogout} className="logoutbutton">Kijelentkezés</button></li>
+            </>
+          ) : (
+            <li><Link to="/login" className="loginbutton">Bejelentkezés</Link></li>
+          )}
         </ul>
       </div>
     </nav>
