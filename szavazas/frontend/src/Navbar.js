@@ -1,12 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import logo from './images/most.png';
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
+  const navigate = useNavigate();  // A hook a navigáláshoz
+
   const handleLogout = () => {
     localStorage.removeItem('user'); // Töröljük a localStorage-ból a felhasználót
     setIsLoggedIn(false); // Bejelentkezési állapot frissítése
+    navigate('/'); // Átirányítás a főoldalra
   };
 
   return (
@@ -19,7 +22,6 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
       <div className="nav-links">
         <ul>
-          
           <li><Link to="/parties">Pártok</Link></li>
           <li><Link to="/stats">Statisztikák</Link></li>
           <li><a href="/news" target="_blank" rel="noopener noreferrer">Hírek</a></li>
