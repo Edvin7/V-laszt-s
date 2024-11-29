@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Link hozzáadása
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css';
 import loginImage from './images/loginregister.png';
@@ -15,12 +15,12 @@ function Login({ setIsLoggedIn }) {
 
     try {
       const response = await axios.post('http://localhost:5000/login', { email, password });
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      localStorage.setItem('user', JSON.stringify(response.data.user)); // Mentés localStorage-ba
 
       const user = localStorage.getItem('user');
       if (user && user !== '0') {
-        setIsLoggedIn(true);
-        navigate('/'); 
+        setIsLoggedIn(true); // Bejelentkezett állapot frissítése
+        navigate('/'); // Átirányítás a főoldalra
       } else {
         setError('Bejelentkezés nem sikerült. Kérlek, próbáld újra!');
       }
