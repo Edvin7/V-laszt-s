@@ -12,17 +12,12 @@ nav .logo {
   align-items: center;
 }
 .logoutbutton {
-  background-color: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 16px;
+  color: #033473;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: bold;
 }
 
-.logoutbutton:hover {
-  background-color: #ff3333;
-}
+
 
 nav .logo img {
   height: 70px;

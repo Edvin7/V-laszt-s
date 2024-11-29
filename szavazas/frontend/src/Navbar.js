@@ -7,13 +7,16 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false); // Állapot a menü nyitásához/zárásához
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Bejelentkezési állapot
 
+  // useEffect használata a localStorage ellenőrzésére
   useEffect(() => {
     // Ellenőrizzük, hogy van-e bejelentkezett felhasználó a localStorage-ban
     const user = localStorage.getItem('user');
-    if (user) {
+    if (user && user !== '0') {
       setIsLoggedIn(true); // Ha van bejelentkezett felhasználó, akkor true
+    } else {
+      setIsLoggedIn(false); // Ha nincs bejelentkezett felhasználó, akkor false
     }
-  }, []); // Ez csak egyszer fut le, amikor az oldal betöltődik
+  }, []); // Az üres tömb azt jelenti, hogy a komponens első renderelésekor fut le
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen); // Menü nyitás/zárás
@@ -48,7 +51,7 @@ const Navbar = () => {
           <li><Link to="/stats">Statisztikák</Link></li>
           <li><a href="/news" target="_blank" rel="noopener noreferrer">Hírek</a></li>
           <li><Link to="/contact">Kapcsolat</Link></li>
-          
+
           {/* Dinamikusan jelenik meg a bejelentkezett állapottól függően */}
           {isLoggedIn ? (
             <>

@@ -1,30 +1,40 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // useNavigate importálása
 import './Login.css';
-import loginImage from './images/loginregister.png';
+import loginImage from './images/loginregister.png'; // A login kép
 import axios from 'axios'; // Axios importálása
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
-  const [error, setError] = useState(''); // Hibaüzenet tárolása
-  const navigate = useNavigate(); // useNavigate hook használata
+  const [email, setEmail] = useState(''); // Email állapot
+  const [password, setPassword] = useState(''); // Jelszó állapot
+  const [rememberMe, setRememberMe] = useState(false); // Emlékezés checkbox állapot
+  const [error, setError] = useState(''); // Hibaüzenet állapot
+  const navigate = useNavigate(); // useNavigate hook
 
+  // Bejelentkezési folyamat
   const handleLogin = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Alapértelmezett űrlap elküldési viselkedés megakadályozása
 
     try {
+      // Backend API hívás bejelentkezéshez
       const response = await axios.post('http://localhost:5000/login', { email, password });
+
       console.log('Bejelentkezés sikeres:', response.data);
 
       // A bejelentkezés után elmentjük a felhasználói adatokat localStorage-ba
       localStorage.setItem('user', JSON.stringify(response.data.user));
 
-      // Ha sikeres a bejelentkezés, átirányítjuk az alapértelmezett oldalra
-      navigate('/'); // Az '/' az alapértelmezett kezdőlapra irányítja a felhasználót
+      // Ellenőrizzük, hogy a user adat nem 0, vagy üres
+      const user = localStorage.getItem('user');
+      if (user && user !== '0') {
+        // Ha a user nem 0 vagy üres, átirányítjuk a kezdőlapra
+        navigate('/');
+      } else {
+        setError('Bejelentkezés nem sikerült. Kérlek, próbáld újra!');
+      }
     } catch (error) {
       console.error('Hiba a bejelentkezés során:', error.response?.data || error.message);
+      // Hibaüzenet megjelenítése
       setError(error.response?.data?.message || 'Ismeretlen hiba történt');
     }
   };
@@ -57,8 +67,7 @@ function Login() {
                   id="your_name"
                   placeholder="Email cím"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
+                  onChange={(e) => setEmail(e.target.value)} // Az email állapot frissítése
                 />
               </div>
               <div className="form-group">
@@ -71,8 +80,7 @@ function Login() {
                   id="your_pass"
                   placeholder="Jelszó"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
+                  onChange={(e) => setPassword(e.target.value)} // A jelszó állapot frissítése
                 />
               </div>
 
@@ -84,7 +92,7 @@ function Login() {
                     name="remember-me"
                     id="remember-me"
                     checked={rememberMe}
-                    onChange={() => setRememberMe(!rememberMe)}
+                    onChange={() => setRememberMe(!rememberMe)} // Az emlékezés checkbox kezelése
                   />
                   Emlékezz rám
                 </label>
