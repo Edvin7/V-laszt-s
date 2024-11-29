@@ -13,13 +13,15 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     try {
-      // Küldjük el a bejelentkezési adatokat a szervernek
       const response = await axios.post('http://localhost:5000/login', { email, password });
       console.log('Bejelentkezés sikeres:', response.data);
-      
-      // Ha sikeres a bejelentkezés, átirányítjuk az App.js oldalra
+
+      // A bejelentkezés után elmentjük a felhasználói adatokat localStorage-ba
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+
+      // Ha sikeres a bejelentkezés, átirányítjuk az alapértelmezett oldalra
       navigate('/'); // Az '/' az alapértelmezett kezdőlapra irányítja a felhasználót
     } catch (error) {
       console.error('Hiba a bejelentkezés során:', error.response?.data || error.message);
@@ -56,6 +58,7 @@ function Login() {
                   placeholder="Email cím"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -69,8 +72,24 @@ function Login() {
                   placeholder="Jelszó"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
               </div>
+
+              {/* Emlékezz rám checkbox */}
+              <div className="form-group">
+                <label htmlFor="remember-me" className="remember-me">
+                  <input
+                    type="checkbox"
+                    name="remember-me"
+                    id="remember-me"
+                    checked={rememberMe}
+                    onChange={() => setRememberMe(!rememberMe)}
+                  />
+                  Emlékezz rám
+                </label>
+              </div>
+
               <div className="form-group form-button">
                 <input type="submit" name="signin" id="signin" className="form-submit" value="Bejelentkezés" />
               </div>

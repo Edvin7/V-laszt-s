@@ -11,6 +11,18 @@ nav .logo {
   display: flex;
   align-items: center;
 }
+.logoutbutton {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.logoutbutton:hover {
+  background-color: #ff3333;
+}
 
 nav .logo img {
   height: 70px;
