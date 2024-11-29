@@ -1,32 +1,48 @@
-import React, { useEffect, useState } from 'react';
-import './VotingPage.css'; // CSS import
-
-const partiesList = [
-  'Fidesz', 'Momentum', 'MSZP', 'Jobbik', 'DK',
-  'LMP', 'Párbeszéd', 'Mi Hazánk', 'Együtt', 'SZDSZ',
-  'Zöldek', 'Liberálisok' // Új pártok
-];
+import React, { useState, useEffect } from 'react';
+import './VotingPage.css';
 
 const VotingPage = () => {
-  const [selectedParty, setSelectedParty] = useState(null);
+  const [selectedParty, setSelectedParty] = useState(null); // Az aktuálisan kiválasztott párt
+  const [parties, setParties] = useState([]); // A pártok betöltésére szolgáló állapot
 
   useEffect(() => {
-    // Görgetés tiltása az oldal betöltésekor
-    document.body.classList.add('voting-page-disabled-scroll');
-
-    return () => {
-      // Görgetés engedélyezése, amikor a komponens elhagyása történik
-      document.body.classList.remove('voting-page-disabled-scroll');
-    };
+    // API hívás a pártok adatainak lekérésére
+    fetch('http://localhost:5000/voting')
+      .then(response => response.json())
+      .then(data => setParties(data)) // Az adatok beállítása a pártokhoz
+      .catch((error) => {
+        console.error('Hiba történt a pártok betöltésekor:', error);
+      });
   }, []);
 
+  // A szavazat kezeléséért felelős függvény
   const handleVote = (party) => {
-    setSelectedParty(party);
+    setSelectedParty(party); // Beállítjuk a kiválasztott pártot
   };
 
   const handleSubmit = () => {
     if (selectedParty) {
-      alert(`Szavazat leadva: ${selectedParty}`);
+      const voteData = {
+        election_id: 1, // A választás azonosítója
+        candidate_id: selectedParty.party_id, // A párt ID-ja
+        vote_hash: 'unique_hash_value', // A szavazó által generált egyedi hash
+      };
+
+      fetch('http://localhost:5000/voting', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(voteData), // A szavazat adatainak JSON formátumban való elküldése
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          alert(data.message); // Sikeres válasz megjelenítése
+        })
+        .catch((error) => {
+          console.error('Hiba történt a szavazat leadásakor:', error);
+          alert('Hiba történt a szavazat leadásakor!');
+        });
     } else {
       alert('Kérjük, válasszon egy pártot!');
     }
@@ -37,17 +53,20 @@ const VotingPage = () => {
       <div className="ballot-container">
         <h1>Szavazólap</h1>
         <div className="parties">
-          {partiesList.map((party, index) => (
-            <div className="party" key={index}>
+          {parties.map((party) => (
+            <div
+              key={party.party_id} // Párt egyedi azonosítója
+              className="party"
+              onClick={() => handleVote(party)} // Párt kiválasztása
+            >
               <img
-                src={`images/${party.toLowerCase()}_logo.png`}
-                alt={`${party} logo`}
+                src={`images/${party.name.toLowerCase()}_logo.png`}
+                alt={`${party.name} logo`}
               />
-              <p>{party}</p>
+              <p>{party.name}</p>
               <div className="vote-wrapper">
                 <div
                   className={`vote-circle ${selectedParty === party ? 'selected' : ''}`}
-                  onClick={() => handleVote(party)}
                 ></div>
               </div>
             </div>

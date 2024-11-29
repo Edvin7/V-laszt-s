@@ -125,6 +125,35 @@ app.get('/parties', (req, res) => {
     });
   });
 
+  app.get('/api/parties', (req, res) => {
+    const query = 'SELECT * FROM parties';
+    db.query(query, (err, results) => {
+      if (err) {
+        res.status(500).json({ error: 'Database query failed' });
+        return;
+      }
+      res.json(results);  // Visszaadja a pártok adatait JSON-ban
+    });
+  });
+ 
+  
+
+  app.get('/voting', (req, res) => {
+    const query = 'SELECT * FROM parties';
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Hiba történt a pártok lekérésekor:', err);
+        return res.status(500).json({ message: 'Belső hiba történt' });
+      }
+      res.json(results); // JSON válasz küldése
+    });
+  });
+  
+  
+  
+  
+
+
 
 // Szerver indítása
 app.listen(port, () => {
