@@ -2,8 +2,6 @@ import React from "react";
 import { useInView } from "react-intersection-observer";
 import "./CounterArea.css";
 import CounterUp from "react-countup";
-
-// Importáljuk a képeket
 import mapIcon from "./images/map.png";
 import speechIcon from "./images/speech.png";
 import userIcon from "./images/user.png";
@@ -18,8 +16,8 @@ const CounterArea = () => {
   ];
 
   const { ref, inView } = useInView({
-    triggerOnce: true, // Csak egyszer indul el
-    threshold: 0.5, // Az elemnek legalább 50%-nak látszódnia kell
+    triggerOnce: true,
+    threshold: 0.5,
   });
 
   return (
@@ -34,7 +32,7 @@ const CounterArea = () => {
           {counters.map((counter) => (
             <div key={counter.id} className="single-counter text-center">
               <img
-                src={counter.icon} // Használjuk az importált képeket
+                src={counter.icon} 
                 alt={counter.label}
                 className="counter-icon"
               />

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from 'axios'; 
 import './Register.css';
-import { Link } from 'react-router-dom';
-import loginImage from './images/loginregister.png';
+import { Link } from 'react-router-dom'; 
+import loginImage from './images/loginregister.png'; 
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +12,6 @@ const Register = () => {
     re_pass: '',
     personal_id: '',
     agreeTerm: false,
-    message: '',
   });
 
   const handleChange = (e) => {
@@ -26,7 +25,6 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-
     if (formData.pass !== formData.re_pass) {
       alert('A jelszavak nem egyeznek!');
       return;
@@ -45,18 +43,14 @@ const Register = () => {
       setFormData({ ...formData, message: response.data.message });
 
 
-
     } catch (error) {
       if (error.response) {
-
         console.error('Hiba történt a regisztráció során:', error.response.data);
         alert(`Hiba: ${error.response.data.message || 'Ismeretlen hiba történt.'}`);
       } else if (error.request) {
-        // Ha nincs válasz, de a kérés elindult
         console.error('A kérés nem érkezett vissza:', error.request);
         alert('A kérés nem érkezett vissza. Ellenőrizd a szerver elérhetőségét!');
       } else {
-        // Ha a kérés sem lett elküldve
         console.error('Hiba történt a kérés küldése közben:', error.message);
         alert(`Hiba: ${error.message}`);
       }

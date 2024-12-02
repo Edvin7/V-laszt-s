@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import parlamentVideo from './images/parlamentvideo.mp4'; // Video file
+import parlamentVideo from './images/parlamentvideo.mp4';
 import './HeaderBanner.css';
 import './CountdownTimer.css'; // Importáljuk a Countdown Timer CSS fájlt
 

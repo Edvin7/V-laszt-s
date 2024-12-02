@@ -16,14 +16,13 @@ import PrivacyPolicy from './PrivacyPolicy';
 import Stats from './Stats';
 import Account from './Account';
 
-import axios from 'axios'; // Importáljuk az axios-t
+import axios from 'axios'; 
 
 import './App.css';
 import './Transitions.css';
 
-// Az axios konfigurálása az alkalmazás kezdetén
-axios.defaults.baseURL = 'http://localhost:5000'; // Backend URL
-axios.defaults.withCredentials = true;  // Engedélyezi, hogy a cookie-kat automatikusan küldjük minden kéréshez
+axios.defaults.baseURL = 'http://localhost:5000'; 
+axios.defaults.withCredentials = true; 
 
 const App = () => {
   return (
@@ -34,13 +33,12 @@ const App = () => {
 };
 
 const Main = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Állapot a bejelentkezéshez
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Ellenőrizzük, hogy a felhasználó be van-e jelentkezve a localStorage-ban
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user && user !== '0') {
-      setIsLoggedIn(true); // Ha van bejelentkezett felhasználó, állítsuk be
+      setIsLoggedIn(true); 
     }
   }, []);
 
@@ -48,7 +46,7 @@ const Main = () => {
 
   return (
     <div className="app-container">
-      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} /> {/* Átadjuk az állapotot a Navbar-nak */}
+      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} /> 
       <TransitionGroup>
         <CSSTransition key={location.key} classNames="fade" timeout={300}>
           <Routes location={location}>
@@ -58,7 +56,7 @@ const Main = () => {
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/news" element={<NewsFeed />} />
             <Route path="/voting" element={<VotingPage />} />
-            <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} /> {/* Átadjuk a setIsLoggedIn-t */}
+            <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/stats" element={<Stats />} />
             <Route path="/account" element={<Account />} />
