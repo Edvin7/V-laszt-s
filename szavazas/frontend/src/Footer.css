@@ -1,13 +1,13 @@
-/* Navbar stílus */
+
 nav {
-    background-color: white; /* Háttérszín a navigációs sávhoz */
-    padding: 10px; /* Padding a sáv körül */
-    position: sticky; /* Sticky pozíció */
-    top: 0; /* A képernyő tetejére ragad */
-    z-index: 1000; /* Magasabb rétegződés */
+    background-color: white; 
+    padding: 10px;
+    position: sticky; 
+    top: 0; 
+    z-index: 1000; 
 }
 
-/* Login button */
+
 .loginbutton {
     background: #033473;
     color: white;
@@ -19,8 +19,6 @@ nav {
     background: white;
     color: #033473;
 }
-
-/* Main section stílus */
 
 
 
@@ -44,32 +42,24 @@ nav {
     font-weight: bolder;
   }
   
-  /*
-  1. Use the user's configured `mono` font family by default.
-  2. Correct the odd `em` font sizing in all browsers.
-  */
+
   
   code,
   kbd,
   samp,
   pre {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    /* 1 */
     font-size: 1em;
-    /* 2 */
+
   }
   
-  /*
-  Add the correct font size in all browsers.
-  */
+
   
   small {
     font-size: 80%;
   }
   
-  /*
-  Prevent `sub` and `sup` elements from affecting the line height in all browsers.
-  */
+
   
   sub,
   sup {
@@ -86,18 +76,7 @@ nav {
   sup {
     top: -0.5em;
   }
-  
-  /*
-  1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
-  2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
-  3. Remove gaps between table borders by default.
-  */
-  /*
-  1. Change the font styles in all browsers.
-  2. Remove the margin in Firefox and Safari.
-  3. Remove default padding in all browsers.
-  */
-  
+
 
   blockquote,
   dl,
@@ -132,54 +111,38 @@ nav {
     padding: 0;
   }
   
-  /*
-  Reset default styling for dialogs.
-  */
-  
+
   dialog {
     padding: 0;
   }
-  
-  /*
-  Prevent resizing textareas horizontally by default.
-  */
+
   
   textarea {
     resize: vertical;
   }
   
-  /*
-  1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
-  2. Set the default placeholder color to the user's configured gray 400 color.
-  */
+
   
   input::-moz-placeholder, textarea::-moz-placeholder {
     opacity: 1;
-    /* 1 */
     color: #9ca3af;
-    /* 2 */
+
   }
   
   input::placeholder,
   textarea::placeholder {
     opacity: 1;
-    /* 1 */
     color: #9ca3af;
-    /* 2 */
   }
   
-  /*
-  Set the default cursor for buttons.
-  */
+
   
   button,
   [role="button"] {
     cursor: pointer;
   }
   
-  /*
-  Make sure disabled buttons don't get the pointer cursor.
-  */
+
   
   :disabled {
     cursor: default;

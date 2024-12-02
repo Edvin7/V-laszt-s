@@ -1,7 +1,7 @@
 import React from 'react';
-import './Contacts.css';  // Importáljuk a CSS fájlt
+import './Contacts.css';  
 import './ContactsResponsive.css'
-import Footer from './Footer';  // Importáljuk a Footer komponenst
+import Footer from './Footer';  
 import { Link } from 'react-router-dom';
 
 

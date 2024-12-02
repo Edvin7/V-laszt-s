@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './CountdownTimer.css'; // Importáljuk a CSS fájlt
+import './CountdownTimer.css'; 
 
 const CountdownTimer = () => {
   const countdownDate = new Date("2025-01-01T00:00:00").getTime();
@@ -28,7 +28,7 @@ const CountdownTimer = () => {
       }
     }, 1000);
 
-    return () => clearInterval(interval); // Cleanup interval
+    return () => clearInterval(interval); 
   }, []);
 
   return (
@@ -40,19 +40,19 @@ const CountdownTimer = () => {
       <div className="countdown-timer">
         <div className="timer-item">
           <p>{timeLeft.days}</p>
-          <span>Days</span>
+          <span>Nap</span>
         </div>
         <div className="timer-item">
           <p>{timeLeft.hours}</p>
-          <span>Hours</span>
+          <span>Órá</span>
         </div>
         <div className="timer-item">
           <p>{timeLeft.minutes}</p>
-          <span>Minutes</span>
+          <span>Perc</span>
         </div>
         <div className="timer-item">
           <p>{timeLeft.seconds}</p>
-          <span>Seconds</span>
+          <span>Másodperc</span>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import NewsItem from './NewsItem';
-import './NewsFeed.css';  // CSS a hírek oldalhoz
+import './NewsFeed.css'; 
 
 function NewsFeed() {
   const [articles, setArticles] = useState([]);
@@ -16,20 +16,20 @@ function NewsFeed() {
         const articlesArray = Array.from(items).map(item => ({
           title: item.getElementsByTagName('title')[0].textContent,
           link: item.getElementsByTagName('link')[0].textContent,
-          image: item.getElementsByTagName('enclosure')[0]?.getAttribute('url'), // Kép URL
+          image: item.getElementsByTagName('enclosure')[0]?.getAttribute('url'), 
           description: item.getElementsByTagName('description')[0].textContent,
         }));
 
-        setArticles(articlesArray);  // Beállítjuk a híreket az állapotba
+        setArticles(articlesArray);  
       })
-      .catch(error => console.error('Hiba az RSS feed betöltésekor:', error));  // Hibakezelés
+      .catch(error => console.error('Hiba az RSS feed betöltésekor:', error));  
   };
 
   useEffect(() => {
-    fetchArticles();  // Első betöltéskor lekérjük az RSS feedet
-    const intervalId = setInterval(fetchArticles, 10 * 60 * 1000);  // 10 percenként frissítjük az adatokat
+    fetchArticles(); 
+    const intervalId = setInterval(fetchArticles, 10 * 60 * 1000);  
 
-    return () => clearInterval(intervalId);  // Tisztítjuk az interval-t, ha a komponens eltűnik
+    return () => clearInterval(intervalId);  
   }, []);
 
   return (

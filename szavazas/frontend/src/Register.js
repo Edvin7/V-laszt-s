@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Axios importálása
+import axios from 'axios'; 
 import './Register.css';
-import { Link } from 'react-router-dom'; // Link a bejelentkezéshez
-import loginImage from './images/loginregister.png'; // Kép a regisztrációs oldalhoz
+import { Link } from 'react-router-dom'; 
+import loginImage from './images/loginregister.png'; 
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +12,6 @@ const Register = () => {
     re_pass: '',
     personal_id: '',
     agreeTerm: false,
-    message: '', // Hibaüzenet vagy sikerüzenet megjelenítése
   });
 
   const handleChange = (e) => {
@@ -26,14 +25,12 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Ellenőrizzük, hogy a két jelszó megegyezik-e
     if (formData.pass !== formData.re_pass) {
       alert('A jelszavak nem egyeznek!');
       return;
     }
     
     try {
-      // POST kérés küldése a backend felé a regisztrációs adatokkal
       const response = await axios.post('http://localhost:5000/register', {
         name: formData.name,
         email: formData.email,
@@ -45,21 +42,15 @@ const Register = () => {
       console.log('Regisztráció sikeres:', response.data);
       setFormData({ ...formData, message: response.data.message });
 
-      // Ha sikeres a regisztráció, redirect a login oldalra
-      // Optional: redirect to login page after successful registration
-      // window.location.href = '/login';
+
     } catch (error) {
-      // Hibák kezelése
       if (error.response) {
-        // Ha van válasz a szervertől
         console.error('Hiba történt a regisztráció során:', error.response.data);
         alert(`Hiba: ${error.response.data.message || 'Ismeretlen hiba történt.'}`);
       } else if (error.request) {
-        // Ha nincs válasz, de a kérés elindult
         console.error('A kérés nem érkezett vissza:', error.request);
         alert('A kérés nem érkezett vissza. Ellenőrizd a szerver elérhetőségét!');
       } else {
-        // Ha a kérés sem lett elküldve
         console.error('Hiba történt a kérés küldése közben:', error.message);
         alert(`Hiba: ${error.message}`);
       }

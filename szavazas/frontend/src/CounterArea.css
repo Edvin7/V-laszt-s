@@ -1,4 +1,4 @@
-/* Alap beállítások */
+
 * {
   margin: 0;
   padding: 0;
@@ -18,59 +18,56 @@ body, html {
   padding-bottom: 45px;
 }
 
-/* Középre helyezett counter area */
+
 .counter-area {
-  background-image: url(https://sazzadshakhbd.github.io/psd-html/img/bg/bg-counter.jpg); /* Háttérkép, ha szükséges */
+  background-image: url(https://sazzadshakhbd.github.io/psd-html/img/bg/bg-counter.jpg); 
   background-size: cover;
   background-color: 9ca3af;
   background-position: center;
   padding: 0 20px;
-  height: 100%; /* Lefoglalja az egész nézetablakot */
+  height: 100%; 
   display: flex;
-  justify-content: center; /* Középre helyezés vízszintesen */
-  align-items: center; /* Középre helyezés függőlegesen */
+  justify-content: center;
+  align-items: center;
 }
 
-/* Container beállítása */
+
 .container {
   display: flex;
-  justify-content: center; /* Középre helyezi vízszintesen */
-  align-items: center; /* Középre helyezi függőlegesen */
+  justify-content: center; 
+  align-items: center; 
   flex-direction: column;
-  max-width: 1200px; /* Korlátozott szélesség */
+  max-width: 1200px; 
   width: 100%;
 }
 
-/* Counter lista (a számolók) */
 .counter-list {
   display: flex;
-  justify-content: space-between; /* Az elemek egyenletesen oszlanak el */
+  justify-content: space-between; 
   align-items: center;
   gap: 20px;
-  flex-wrap: wrap; /* Ha nem férnek el egy sorban, áttérnek a következőre */
+  flex-wrap: wrap;
   width: 100%;
 }
 
-/* Egyes counter (számláló) boxok */
 .single-counter {
   text-align: center;
   flex: 1;
-  min-width: 200px; /* Minimális szélesség */
-  max-width: 300px; /* Maximális szélesség */
-  margin-bottom: 20px; /* Térköz az elemek között */
+  min-width: 200px;
+  max-width: 300px; 
+  margin-bottom: 20px; 
 }
 
-/* Számok stílusa */
 .single-counter > span {
   font-size: 28px;
   font-weight: 600;
-  color: #033473; /* Szín módosítva */
+  color: #033473; 
   display: block;
   margin-top: 20px;
   margin-bottom: 10px;
 }
 
-/* Szövegek (címkék) stílusa */
+
 .single-counter > p {
   font-size: 15px;
   text-transform: uppercase;
@@ -78,7 +75,7 @@ body, html {
   margin: 0;
 }
 
-/* Iconok stílusa */
+
 .counter-icon {
   width: 70px;
   height: 70px;
@@ -87,18 +84,17 @@ body, html {
   padding: 15px;
   display: inline-block;
   margin-bottom: 10px;
-  color: #033473; /* Ikon színének beállítása */
+  color: #033473;
   font-size: 32px;
 }
 
-/* Média lekérdezések - reszponzív elrendezés */
 @media (max-width: 768px) {
   .counter-list {
-    flex-direction: column; /* Mobilon függőlegesen rendezzük az elemeket */
+    flex-direction: column; 
     align-items: center;
   }
   
   .single-counter {
-    min-width: 100%; /* 100% szélességet adunk neki, hogy kitöltse a képernyőt */
+    min-width: 100%;
   }
 }
