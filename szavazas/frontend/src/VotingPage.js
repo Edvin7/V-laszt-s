@@ -2,30 +2,28 @@ import React, { useState, useEffect } from 'react';
 import './VotingPage.css';
 
 const VotingPage = () => {
-  const [selectedParty, setSelectedParty] = useState(null); // Az aktuálisan kiválasztott párt
-  const [parties, setParties] = useState([]); // A pártok betöltésére szolgáló állapot
+  const [selectedParty, setSelectedParty] = useState(null); 
+  const [parties, setParties] = useState([]); 
 
   useEffect(() => {
-    // API hívás a pártok adatainak lekérésére
     fetch('http://localhost:5000/voting')
       .then(response => response.json())
-      .then(data => setParties(data)) // Az adatok beállítása a pártokhoz
+      .then(data => setParties(data)) 
       .catch((error) => {
         console.error('Hiba történt a pártok betöltésekor:', error);
       });
   }, []);
 
-  // A szavazat kezeléséért felelős függvény
   const handleVote = (party) => {
-    setSelectedParty(party); // Beállítjuk a kiválasztott pártot
+    setSelectedParty(party); 
   };
 
   const handleSubmit = () => {
     if (selectedParty) {
       const voteData = {
-        election_id: 1, // A választás azonosítója
-        candidate_id: selectedParty.party_id, // A párt ID-ja
-        vote_hash: 'unique_hash_value', // A szavazó által generált egyedi hash
+        election_id: 1, 
+        candidate_id: selectedParty.party_id, 
+        vote_hash: 'unique_hash_value', 
       };
 
       fetch('http://localhost:5000/voting', {
@@ -33,11 +31,11 @@ const VotingPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(voteData), // A szavazat adatainak JSON formátumban való elküldése
+        body: JSON.stringify(voteData), 
       })
         .then((response) => response.json())
         .then((data) => {
-          alert(data.message); // Sikeres válasz megjelenítése
+          alert(data.message); 
         })
         .catch((error) => {
           console.error('Hiba történt a szavazat leadásakor:', error);

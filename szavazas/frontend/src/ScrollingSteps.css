@@ -7,20 +7,19 @@ body {
   padding: 0;
 }
 
-/* Szekció */
 .scrolling-steps-section {
   padding: 50px 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column; /* Elemek egymás alá kerüljenek */
-  min-height: 100vh; /* A szekció teljes magasságú legyen */
-  box-sizing: border-box; /* Győződjünk meg róla, hogy a padding is számít */
+  flex-direction: column; 
+  min-height: 100vh;
+  box-sizing: border-box; 
 }
 .full-width-container {
-  width: 100%; /* Teljes szélesség */
-  margin: 0; /* Marginok kikapcsolása */
-  padding: 0; /* Paddingok kikapcsolása */
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .header h2 {
@@ -32,7 +31,6 @@ body {
   color: #033473;
 }
 
-/* Lépések konténer */
 .steps-container {
   display: flex;
   flex-direction: column;
@@ -40,11 +38,10 @@ body {
   margin-top: 50px;
 }
 
-/* Egyes lépések */
 .scrolling-step {
   opacity: 0;
   transform: translateY(50px);
-  transition: opacity 1s ease-out, transform 1s ease-out; /* Lassabb animáció */
+  transition: opacity 1s ease-out, transform 1s ease-out;
   margin-bottom: 50px;
   width: 100%;
   max-width: 600px;
@@ -61,7 +58,6 @@ body {
   transform: translateY(0);
 }
 
-/* Lépés körök - középen a kocka tetején */
 .step-header {
   position: relative;
   margin-bottom: 20px;
@@ -79,19 +75,18 @@ body {
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: -67px;  /* A kör a kocka tetejéről kilóg */
+  top: -67px;
   left: 50%;
   transform: translateX(-50%);
 }
 
-/* Kocka pozicionálás és kiemelés */
 .scrolling-step {
-  padding-top: 30px; /* További hely a kocka tetején */
-  padding-bottom: 30px; /* További hely a kocka alján */
-  margin-top: 60px; /* Kocka eltolás (felső rész logjon ki) */
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin-top: 60px;
 }
 
-/* Lépés szöveg */
+
 .step-body h4 {
   font-size: 1.8rem;
   font-weight: bold;
@@ -104,7 +99,6 @@ body {
   margin: 20px 0;
 }
 
-/* Szavazás gomb */
 .vote-button {
   background-color: #033473;
   color: white;
@@ -115,12 +109,12 @@ body {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-/* A vonal elhelyezése a cím fölé */
+
 .line-above {
-  width: 50%;  /* A vonal szélessége */
-  height: 4px;  /* A vonal vastagsága */
-  background-color: #033473;  /* A vonal színe */
-  margin: 0 auto 20px;  /* Középre igazítás, 20px távolság a szöveg alatt */
+  width: 50%;
+  height: 4px;
+  background-color: #033473;
+  margin: 0 auto 20px;
   border-radius: 60px;
 }
 
@@ -130,7 +124,6 @@ body {
   color: #033473;
 }
 
-/* Extra animáció a lépések között */
 .scrolling-step + .scrolling-step {
-  margin-top: 100px; /* Több hely a lépések között */
+  margin-top: 100px;
 }

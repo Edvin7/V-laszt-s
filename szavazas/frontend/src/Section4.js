@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import './Section4.css'; // Stílus a hírek szekcióhoz
+import './Section4.css'; 
 
 function Section4() {
   const [articles, setArticles] = useState([]);
 
   const fetchArticles = () => {
-    fetch('https://telex.hu/rss/politika') // Politikai RSS feed URL
+    fetch('https://telex.hu/rss/politika') 
       .then(response => response.text())
       .then(data => {
         const parser = new DOMParser();
@@ -15,7 +15,7 @@ function Section4() {
         const articlesArray = Array.from(items).map(item => ({
           title: item.getElementsByTagName('title')[0].textContent,
           link: item.getElementsByTagName('link')[0].textContent,
-          image: item.getElementsByTagName('enclosure')[0]?.getAttribute('url'), // Kép URL
+          image: item.getElementsByTagName('enclosure')[0]?.getAttribute('url'), 
           description: item.getElementsByTagName('description')[0].textContent,
         }));
 
@@ -26,11 +26,10 @@ function Section4() {
 
   useEffect(() => {
     fetchArticles();
-    const intervalId = setInterval(fetchArticles, 10 * 60 * 1000); // 10 percenként frissít
+    const intervalId = setInterval(fetchArticles, 10 * 60 * 1000);
     return () => clearInterval(intervalId);
   }, []);
 
-  // Nagy hír kiválasztása (első kép nélküli kizárása)
   const getFeaturedArticle = () => {
     return articles.find(article => article.image) || articles[0];
   };

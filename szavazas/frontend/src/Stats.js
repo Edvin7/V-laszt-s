@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './Stats.css'; // Az új CSS fájl
+import './Stats.css'; 
 
 const Stats = () => {
   const [parties, setParties] = useState([]);
-  const [selectedParty, setSelectedParty] = useState(null); // A modálhoz választott párt
+  const [selectedParty, setSelectedParty] = useState(null); 
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const Stats = () => {
       });
   }, []);
 
-  // A modális ablak bezárása
+
   const closeModal = () => {
     setSelectedParty(null);
   };

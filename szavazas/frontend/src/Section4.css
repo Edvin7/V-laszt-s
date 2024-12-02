@@ -15,7 +15,7 @@
     align-items: center;
     background-color: #f9f9f9;
     padding: 40px 20px;
-    animation: fadeIn 0.8s ease-in-out; /* Fade-in animáció */
+    animation: fadeIn 0.8s ease-in-out; 
   }
   
   .featured-article {
@@ -27,7 +27,7 @@
     overflow: hidden;
     margin-bottom: 30px;
     text-align: center;
-    animation: fadeIn 0.8s ease-in-out; /* Fade-in animáció */
+    animation: fadeIn 0.8s ease-in-out;
     animation-delay: 0.2s;
     animation-fill-mode: both;
   }
@@ -65,8 +65,8 @@
     max-width: 300px;
     width: 100%;
     text-align: center;
-    animation: fadeIn 0.8s ease-in-out; /* Fade-in animáció */
-    animation-delay: 0.4s; /* Késleltetés a kisebb hírekhez */
+    animation: fadeIn 0.8s ease-in-out;
+    animation-delay: 0.4s; 
     animation-fill-mode: both;
   }
   

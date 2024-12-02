@@ -1,5 +1,5 @@
 import React from 'react';
-import './Section2.css'; // Ha van saját CSS fájlod a Section2-hez
+import './Section2.css'; 
 import { Link } from 'react-router-dom';
 
 const Section2 = () => {
@@ -23,4 +23,4 @@ const Section2 = () => {
   );
 };
 
-export default Section2; // Ez szükséges
+export default Section2; 

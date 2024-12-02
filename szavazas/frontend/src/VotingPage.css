@@ -2,7 +2,7 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    overflow: hidden; /* Görgetés tiltása */
+    overflow: hidden; 
   }
   
   .ballot-wrapper {
@@ -16,7 +16,7 @@ html, body {
     background-color: #f0f4f8;
   }
   
-  /* Szavazólap stílusai */
+
   .ballot-container {
     max-width: 900px;
     width: 100%;
@@ -53,7 +53,7 @@ html, body {
     margin-bottom: 20px;
   }
   
-  /* Párt elemek */
+
   .party {
     text-align: center;
     padding: 10px;
@@ -79,7 +79,6 @@ html, body {
     margin: 5px 0;
   }
   
-  /* Szavazókörök (vote-circle) */
   .vote-wrapper {
     display: flex;
     justify-content: center;
@@ -113,7 +112,6 @@ html, body {
     transform: translate(-50%, -50%);
   }
   
-  /* Szavazás gomb */
   .submit-btn {
     margin-top: 20px;
     padding: 12px 25px;
@@ -131,7 +129,6 @@ html, body {
     background-color: #0056b3;
   }
   
-  /* Reszponzív stílus */
   @media (max-width: 768px) {
     .ballot-container h1 {
       font-size: 20px;
