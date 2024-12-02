@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Választási Statisztikák</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Alap stílusok */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, #e0eafc, #cfdef3);
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      margin: 40px auto;
+      max-width: 900px;
+      padding: 30px;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 25px;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 450px;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+
+    /* Táblázat stílusok */
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #f8f9fa;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .table thead {
+      /*background: linear-gradient(to right, #6a11cb, #2575fc);*/
+      color: #000000;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    .table th, .table td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    .table td {
+      font-size: 16px;
+      color: #2c3e50;
+      background: #fff;
+      transition: background 0.3s ease;
+    }
+
+    .table tr:hover td {
+      background: #f1f5fc;
+    }
+
+    .table td:first-child {
+      font-weight: 600;
+    }
+
+    .percentage {
+      font-weight: bold;
+      color: #1d8348;
+    }
+
+    /* Mobilbarát stílus */
+    @media screen and (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .table td {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Választási Eredmények</h1>
+    <div class="chart-container">
+      <canvas id="votesChart"></canvas>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Párt</th>
+          <th>Listára leadott érvényes szavazatok száma</th>
+          <th>Listára leadott érvényes szavazatok aránya (%)</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Dinamikusan generált táblázat -->
+      </tbody>
+    </table>
+  </div>
+  <script>
+    // Pártok és szavazatok
+    let parties = [
+      "Fidesz-KDMP",
+      "DK-MSZP-Párbeszéd-Zöldek",
+      "Jobbik",
+      "MEMO",
+      "LMP-Zöldek",
+      "Mi Hazánk",
+      "2RK Párt",
+      "Momentum",
+      "Tisza Párt",
+      "MKKP",
+      "MMN",
+      "Nép Pártján"
+    ];
+
+    let votes = [2500000, 1800000, 600000, 200000, 400000, 500000, 100000, 750000, 3000000, 150000, 120000, 300000];
+
+    // Tisza Párt első helyre kerül (legnagyobb szavazatszám)
+    const sortedData = parties.map((party, i) => ({ party, vote: votes[i] }))
+                              .sort((a, b) => b.vote - a.vote);
+
+    parties = sortedData.map(data => data.party);
+    votes = sortedData.map(data => data.vote);
+
+    // Százalékok számítása
+    const totalVotes = votes.reduce((a, b) => a + b, 0);
+    const percentages = votes.map(v => ((v / totalVotes) * 100).toFixed(2));
+
+    // Színek a diagramhoz
+    const colors = [
+      "#4e79a7", "#f28e2c", "#e15759", "#76b7b2", "#59a14f",
+      "#edc948", "#b07aa1", "#ff9da7", "#9c755f", "#bab0ab",
+      "#8c564b", "#d62728"
+    ];
+
+    // Oszlopdiagram
+    const ctx = document.getElementById('votesChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: parties,
+        datasets: [{
+          label: 'Szavazatok száma',
+          data: votes,
+          backgroundColor: colors,
+          hoverBackgroundColor: colors.map(c => c + "cc"), // Átlátszóbb hover
+          borderWidth: 0,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false,
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return `Szavazatok: ${context.raw.toLocaleString()}`;
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: "Szavazatok száma",
+              color: "#666",
+            },
+          },
+          x: {
+            title: {
+              display: true,
+              text: "Párt",
+              color: "#666",
+            },
+          },
+        },
+      },
+    });
+
+    // Táblázat
+    const tableBody = document.getElementById('tableBody');
+    parties.forEach((party, index) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${party}</td>
+        <td>${votes[index].toLocaleString()}</td>
+        <td><span class="percentage">${percentages[index]}%</span></td>
+      `;
+      tableBody.appendChild(row);
+    });
+  </script>
+</body>
+</html>
