@@ -15,6 +15,7 @@ import TermsOfService from './Terms';
 import PrivacyPolicy from './PrivacyPolicy';
 import Stats from './Stats';
 import Account from './Account';
+import Party from './Party';
 
 import './App.css';
 import './Transitions.css';
@@ -54,7 +55,7 @@ const Main = () => {
             <Route path="/voting" element={<VotingPage />} />
             <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} /> {/* Átadjuk a setIsLoggedIn-t */}
             <Route path="/register" element={<Register />} />
-            <Route path="/stats" element={<Stats />} />
+            <Route path="/parties" element={<Party />} />
             <Route path="/account" element={<Account />} />
           </Routes>
         </CSSTransition>
