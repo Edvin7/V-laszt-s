@@ -24,12 +24,12 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     if (formData.pass !== formData.re_pass) {
       alert('A jelszavak nem egyeznek!');
       return;
     }
-    
+  
     try {
       const response = await axios.post('http://localhost:5000/register', {
         name: formData.name,
@@ -38,24 +38,27 @@ const Register = () => {
         personal_id: formData.personal_id,
         agreeTerm: formData.agreeTerm,
       });
-
+  
       console.log('Regisztráció sikeres:', response.data);
       setFormData({ ...formData, message: response.data.message });
-
-
+  
     } catch (error) {
       if (error.response) {
+        // Ha van válasz a backendtől
         console.error('Hiba történt a regisztráció során:', error.response.data);
         alert(`Hiba: ${error.response.data.message || 'Ismeretlen hiba történt.'}`);
       } else if (error.request) {
+        // Ha a kérés elküldésre került, de nem kaptunk választ
         console.error('A kérés nem érkezett vissza:', error.request);
         alert('A kérés nem érkezett vissza. Ellenőrizd a szerver elérhetőségét!');
       } else {
+        // Ha más típusú hiba történt
         console.error('Hiba történt a kérés küldése közben:', error.message);
         alert(`Hiba: ${error.message}`);
       }
     }
   };
+  
   
 
   return (

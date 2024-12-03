@@ -8,7 +8,10 @@ const app = express();
 const port = 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', // A frontend URL-je
+  credentials: true, // A hitelesítéshez szükséges cookie-k engedélyezése
+}));
 app.use(bodyParser.json()); // JSON kérések kezelése
 
 // MySQL kapcsolat beállítása
@@ -36,7 +39,7 @@ app.post('/register', (req, res) => {
     return res.status(400).json({ message: 'Minden mezőt ki kell tölteni!' });
   }
 
-  //a felhasználó létezik-e már
+  // Ellenőrizzük, hogy a felhasználó létezik-e már
   const checkQuery = 'SELECT * FROM users WHERE email = ?';
   db.query(checkQuery, [email], (err, result) => {
     if (err) {
@@ -48,11 +51,11 @@ app.post('/register', (req, res) => {
       return res.status(400).json({ message: 'Ez az email már regisztrálva van' });
     }
 
-    //hozzáadjuk az új felhasználót az adatbázisba
+    // Ha nem létezik, hozzáadjuk az új felhasználót az adatbázisba
     const insertQuery = `INSERT INTO users (name, email, password_hash, personal_id, agree_terms, status) 
                          VALUES (?, ?, ?, ?, ?, 'active')`;
 
-    //jelszót biztonságosan kell hash-elnünk
+    // A jelszót biztonságosan kell hash-elnünk (bcrypt használatával)
     bcrypt.hash(pass, 10, (err, hashedPassword) => {
       if (err) {
         console.error('Hiba a jelszó hash-elésekor:', err);
@@ -114,7 +117,7 @@ app.post('/login', (req, res) => {
 
 // Új endpoint a pártok adatainak lekérésére
 app.get('/parties', (req, res) => {
-    const query = 'SELECT * FROM parties'; 
+    const query = 'SELECT * FROM parties'; // A parties tábla adatainak lekérése
     db.query(query, (err, results) => {
       if (err) {
         console.error('Hiba történt a pártok lekérésekor:', err);
