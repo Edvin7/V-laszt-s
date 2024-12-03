@@ -36,7 +36,7 @@ function NewsFeed() {
     <div className="news-feed">
       {articles.length > 0 ? (
         <ul>
-          {/* Kiemelt blokk a legfrissebb hírheza */}
+          {/* Kiemelt blokk a legfrissebb hírhez */}
           {articles[0] && (
             <li className="featured-article">
               <a href={articles[0].link} target="_blank" rel="noopener noreferrer">

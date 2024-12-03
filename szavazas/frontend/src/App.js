@@ -15,7 +15,6 @@ import TermsOfService from './Terms';
 import PrivacyPolicy from './PrivacyPolicy';
 import Stats from './Stats';
 import Account from './Account';
-import Party from './Party';
 
 import axios from 'axios'; 
 
@@ -60,7 +59,7 @@ const Main = () => {
             <Route path="/voting" element={<VotingPage />} />
             <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/parties" element={<Party />} />
+            <Route path="/stats" element={<Stats />} />
             <Route path="/account" element={<Account />} />
           </Routes>
         </CSSTransition>
