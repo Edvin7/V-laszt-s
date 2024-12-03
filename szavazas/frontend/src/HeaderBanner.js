@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import parlamentVideo from './images/parlamentvideo.mp4';
 import './HeaderBanner.css';
-import './CountdownTimer.css'; // Importáljuk a Countdown Timer CSS fájlt
+import './CountdownTimer.css'; 
 
 const HeaderBanner = () => {
   const countdownDate = new Date("2024-12-31T00:00:00").getTime();
@@ -30,7 +30,7 @@ const HeaderBanner = () => {
       }
     }, 1000);
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
+    return () => clearInterval(interval);
   }, [countdownDate]);
 
   return (

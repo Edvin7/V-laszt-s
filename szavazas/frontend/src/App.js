@@ -15,9 +15,7 @@ import TermsOfService from './Terms';
 import PrivacyPolicy from './PrivacyPolicy';
 import Stats from './Stats';
 import Account from './Account';
-
 import axios from 'axios'; 
-
 import './App.css';
 import './Transitions.css';
 

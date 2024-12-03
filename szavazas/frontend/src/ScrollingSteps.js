@@ -88,7 +88,7 @@ const ScrollingSteps = () => {
     <div className="my-5 full-width-container">
       <section className="scrolling-steps-section">
         <div className="header text-center mb-5">
-          <div className="line-above"></div> {/* A dizájn vonal a cím fölött */}
+          <div className="line-above"></div> 
           <h2 className="font-weight-bold display-4">
             Hogyan tud <span style={{ color: '#033473' }}>szavazni?</span>
           </h2>

@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f2f2f2;
-  overflow: hidden; /* Ne lehessen görgetni */
+  overflow: hidden; 
 }
 
 .sign-in {
@@ -15,7 +15,7 @@ body {
   align-items: center;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* A teljes viewport magassága */
+  height: 100vh; 
   background: #f8f8f8;
 }
 

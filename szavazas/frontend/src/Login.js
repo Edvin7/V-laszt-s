@@ -22,17 +22,16 @@ function Login({ setIsLoggedIn }) {
 
     try {
       const response = await axios.post('http://localhost:5000/login', { email, password });
-      localStorage.setItem('user', JSON.stringify(response.data.user)); // Mentés localStorage-ba
+      localStorage.setItem('user', JSON.stringify(response.data.user));
 
       const user = localStorage.getItem('user');
       if (user && user !== '0') {
-        setIsLoggedIn(true); // Bejelentkezett állapot frissítése
-        navigate('/'); // Átirányítás a főoldalra
+        setIsLoggedIn(true); 
+        navigate('/'); 
       } else {
         setError('Bejelentkezés nem sikerült. Kérlek, próbáld újra!');
       }
     } catch (error) {
-      // Hibakezelés és a hibaüzenet beállítása
       console.error('Hiba a bejelentkezés során:', error.response?.data || error.message);
       setError(error.response?.data?.message || 'Ismeretlen hiba történt');
     }

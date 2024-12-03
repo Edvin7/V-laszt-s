@@ -1,4 +1,3 @@
-/* Alap stílusok a body-hoz */
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
@@ -6,7 +5,6 @@ body {
     background-color: #f2f2f2;
 }
 
-/* A szekció stílusa */
 .signup {
     display: flex;
     justify-content: center;
@@ -86,25 +84,25 @@ input[type="password"] {
     width: 100%;
     display: block;
     border: none;
-    border-bottom: 2px solid #ccc; /* Alapértelmezett alul vonal */
+    border-bottom: 2px solid #ccc;
     padding: 6px 30px;
     outline: none;
     font-family: Poppins;
-    padding-left: 40px; /* Az ikonokhoz helyet biztosít */
-    transition: border-bottom 0.3s ease; /* Lassan változik a vonal */
+    padding-left: 40px;
+    transition: border-bottom 0.3s ease; 
 }
 
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus {
-    border-bottom: 2px solid #033473; /* Kék vonal fókuszáláskor */
+    border-bottom: 2px solid #033473;
 }
 
 label {
     position: absolute;
     left: 10px;
     top: 50%;
-    transform: translateY(-50%); /* Vertikálisan középre igazítja a label-t */
+    transform: translateY(-50%);
     font-size: 1rem;
     color: black;
     pointer-events: none;
@@ -119,11 +117,10 @@ input[type="password"]:focus + label {
     color: #6e7dff;
 }
 
-/* Checkbox */
 .form-group.checkbox-group {
     display: flex;
     align-items: center;
-    margin-bottom: 30px; /* Több távolság a checkbox és a gomb között */
+    margin-bottom: 30px; 
 }
 
 input[type="checkbox"] {
@@ -133,14 +130,13 @@ input[type="checkbox"] {
 .label-agree-term {
     font-size: 0.9rem;
     color: #555;
-    margin-left: 5px; /* Kis távolság a checkbox-tól */
+    margin-left: 5px;
 }
 
-/* Gomb */
 .form-button {
     display: flex;
     justify-content: center;
-    margin-top: 20px; /* Növeld ezt a távolságot, hogy több hely legyen */
+    margin-top: 20px; 
 }
 
 .form-submit {
@@ -164,7 +160,6 @@ input[type="checkbox"] {
     border: 1px solid #033473;
 }
 
-/* Linkek */
 .signup-image-link {
     text-decoration: none;
     font-size: 1rem;
@@ -177,7 +172,6 @@ input[type="checkbox"] {
     text-decoration: underline;
 }
 
-/* Reszponzív módosítások */
 @media (max-width: 768px) {
     .signup-content {
         flex-direction: column;

@@ -1,4 +1,3 @@
-/* Alap container */
 .account-container {
     width: 100%;
     max-width: 900px;
@@ -21,7 +20,6 @@
     ) 6;
 }
 
-/* H1 és fő címsor */
 h1 {
     text-align: center;
     font-size: 28px;
@@ -30,7 +28,6 @@ h1 {
     font-weight: 600;
 }
 
-/* Profilkép szekció */
 .profile-pic-section {
     text-align: center;
     margin-bottom: 25px;
@@ -83,7 +80,6 @@ h1 {
     background-color: #033473;
 }
 
-/* Felhasználói információk */
 .user-info {
     font-size: 16px;
     margin-bottom: 25px;
@@ -94,7 +90,6 @@ strong {
     color: #555;
 }
 
-/* Jelszóváltoztatás szekció */
 .password-change-section {
     background-color: #f9f9f9;
     padding: 25px;
@@ -109,7 +104,6 @@ strong {
     margin-bottom: 25px;
 }
 
-/* Input mezők */
 .input-group {
     margin-bottom: 20px;
 }
@@ -149,14 +143,12 @@ strong {
     cursor: pointer;
 }
 
-/* Hibaüzenet */
 .error {
     color: red;
     font-size: 14px;
     margin-top: 5px;
 }
 
-/* Jelszó módosító gomb */
 .change-password-btn {
     width: 100%;
     padding: 14px;
@@ -173,7 +165,6 @@ strong {
     background-color: #033473;
 }
 
-/* Reszponzív dizájn */
 @media (max-width: 768px) {
     .account-container {
         padding: 20px;

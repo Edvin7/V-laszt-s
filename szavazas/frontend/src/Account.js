@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './Account.css';
 
 const Account = () => {
-  // Felhasználói adatok
   const [userInfo, setUserInfo] = useState({
     name: "Kovács János",
     email: "janos.kovacs@email.com",

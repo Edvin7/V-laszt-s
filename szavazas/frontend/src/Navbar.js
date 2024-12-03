@@ -4,12 +4,12 @@ import './Navbar.css';
 import logo from './images/most.png';
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
-  const navigate = useNavigate();  // A hook a navigáláshoz
+  const navigate = useNavigate();  
 
   const handleLogout = () => {
-    localStorage.removeItem('user'); // Töröljük a localStorage-ból a felhasználót
-    setIsLoggedIn(false); // Bejelentkezési állapot frissítése
-    navigate('/'); // Átirányítás a főoldalra
+    localStorage.removeItem('user');
+    setIsLoggedIn(false); 
+    navigate('/'); 
   };
 
   return (
@@ -26,8 +26,6 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
           <li><Link to="/stats">Statisztikák</Link></li>
           <li><a href="/news" target="_blank" rel="noopener noreferrer">Hírek</a></li>
           <li><Link to="/contact">Kapcsolat</Link></li>
-
-          {/* Dinamikusan jelenik meg a bejelentkezett állapottól függően */}
           {isLoggedIn ? (
             <>
               <li><Link to="/account">Profil</Link></li>
