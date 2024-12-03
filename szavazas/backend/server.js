@@ -8,7 +8,10 @@ const app = express();
 const port = 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', // A frontend URL-je
+  credentials: true, // A hitelesítéshez szükséges cookie-k engedélyezése
+}));
 app.use(bodyParser.json()); // JSON kérések kezelése
 
 // MySQL kapcsolat beállítása
