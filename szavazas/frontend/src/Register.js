@@ -44,7 +44,7 @@ const Register = () => {
   
     } catch (error) {
       if (error.response) {
-        // Ha van válasz a backendtől
+        // Ha van válasz a backendtőlAA
         console.error('Hiba történt a regisztráció során:', error.response.data);
         alert(`Hiba: ${error.response.data.message || 'Ismeretlen hiba történt.'}`);
       } else if (error.request) {
