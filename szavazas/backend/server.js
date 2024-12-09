@@ -125,6 +125,27 @@ app.get('/api/user', (req, res) => {
   res.status(200).json({ loggedIn: false });
 });
 
+// Szavazat leadása
+app.post('/voting', (req, res) => {
+  const { election_id, candidate_id, vote_hash } = req.body;
+
+  // Ellenőrizzük, hogy minden szükséges adatot megadtak-e
+  if (!election_id || !candidate_id || !vote_hash) {
+    return res.status(400).json({ message: 'Minden mezőt ki kell tölteni!' });
+  }
+
+  // A szavazat mentése az adatbázisba
+  const query = 'INSERT INTO votes (election_id, candidate_id, vote_hash) VALUES (?, ?, ?)';
+  db.query(query, [election_id, candidate_id, vote_hash], (err, result) => {
+    if (err) {
+      console.error('Hiba történt a szavazat mentésekor:', err);
+      return res.status(500).json({ message: 'Hiba történt a szavazat leadásakor!' });
+    }
+
+    // Visszaadjuk a sikeres válasz üzenetet
+    res.status(200).json({ message: 'Sikeresen leadta a szavazatot!' });
+  });
+});
 
 // Új endpoint a pártok adatainak lekérésére
 app.get('/parties', (req, res) => {

@@ -5,37 +5,55 @@ const VotingPage = () => {
   const [selectedParty, setSelectedParty] = useState(null); 
   const [parties, setParties] = useState([]); 
 
+  // Betöltjük a pártokat az API-ból
   useEffect(() => {
     fetch('http://localhost:5000/voting')
-      .then(response => response.json())
-      .then(data => setParties(data)) 
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Hiba történt a pártok betöltésekor');
+        }
+        return response.json();
+      })
+      .then(data => setParties(data))
       .catch((error) => {
         console.error('Hiba történt a pártok betöltésekor:', error);
       });
   }, []);
 
+  // Párt kiválasztása
   const handleVote = (party) => {
     setSelectedParty(party); 
   };
 
+  // Véletlenszerű hash generálása a szavazathoz
+  const generateVoteHash = () => {
+    return Math.random().toString(36).substring(2); // Egyszerű véletlenszerű hash generálása
+  };
+  
+  // Szavazat leadása
   const handleSubmit = () => {
     if (selectedParty) {
       const voteData = {
-        election_id: 1, 
-        candidate_id: selectedParty.party_id, 
-        vote_hash: 'unique_hash_value', 
+        election_id: 1, // Ha több választás van, ennek változnia kell
+        candidate_id: selectedParty.party_id,
+        vote_hash: generateVoteHash(), // Dinamikusan generált hash
       };
-
+  
       fetch('http://localhost:5000/voting', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(voteData), 
+        body: JSON.stringify(voteData),
       })
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Hiba történt a szavazat leadásakor');
+          }
+          return response.json();
+        })
         .then((data) => {
-          alert(data.message); 
+          alert(data.message); // Visszajelzés a felhasználónak
         })
         .catch((error) => {
           console.error('Hiba történt a szavazat leadásakor:', error);
@@ -64,7 +82,7 @@ const VotingPage = () => {
               <p>{party.name}</p>
               <div className="vote-wrapper">
                 <div
-                  className={`vote-circle ${selectedParty === party ? 'selected' : ''}`}
+                  className={`vote-circle ${selectedParty?.party_id === party.party_id ? 'selected' : ''}`}
                 ></div>
               </div>
             </div>
