@@ -18,6 +18,7 @@ import Account from './Account';
 import axios from 'axios'; 
 import './App.css';
 import './Transitions.css';
+import Party from './Party';
 
 axios.defaults.baseURL = 'http://localhost:5000'; 
 axios.defaults.withCredentials = true; 
@@ -58,6 +59,7 @@ const Main = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/stats" element={<Stats />} />
             <Route path="/account" element={<Account />} />
+            <Route path="/parties" element={<Party />} />
           </Routes>
         </CSSTransition>
       </TransitionGroup>
