@@ -40,7 +40,7 @@ CREATE TABLE `candidates` (
 --
 
 INSERT INTO `candidates` (`candidate_id`, `name`, `party`, `bio`, `photo`) VALUES
-(1, 'Deutsch Tamás', 'Fidesz-KDMP', 'Jelenlegi EP képviselő, a Fidesz európai parlamenti delegációjának vezetője.', 'photos/deutsch_tamas.jpg'),
+(1, 'Klass Dániel', 'Fidesz-KDMP', 'Jelenlegi EP képviselő, a Fidesz európai parlamenti delegációjának vezetője.', 'photos/deutsch_tamas.jpg'),
 (2, 'Rónai Sándor', 'Fidesz-KDMP', 'EP képviselő, aki a közlekedési és biztonságpolitikai kérdésekben aktív.', 'photos/ronai_sandor.jpg'),
 (3, 'Kovács József', 'Fidesz-KDMP', 'Képviselő, aki a mezőgazdasági és vidékfejlesztési kérdésekkel foglalkozik az EP-ben.', 'photos/kovacs_jozsef.jpg'),
 (4, 'Tóth Edina', 'Fidesz-KDMP', 'Jelenlegi EP képviselő, jogi és belügyi szakértő.', 'photos/toth_edina.jpg'),
