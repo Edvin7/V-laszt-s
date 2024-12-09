@@ -115,6 +115,17 @@ app.post('/login', (req, res) => {
   });
 });
 
+// Bejelentkezett felhasználó ellenőrzése
+app.get('/api/user', (req, res) => {
+  if (req.session.user) {
+    // Ha a session tartalmazza a felhasználó adatokat, akkor be van jelentkezve
+    return res.status(200).json({ loggedIn: true, user: req.session.user });
+  }
+  // Ha nincs bejelentkezett felhasználó
+  res.status(200).json({ loggedIn: false });
+});
+
+
 // Új endpoint a pártok adatainak lekérésére
 app.get('/parties', (req, res) => {
     const query = 'SELECT * FROM parties'; // A parties tábla adatainak lekérése

@@ -46,13 +46,6 @@ const Account = () => {
 
       {/* Profilkép szekció */}
       <div className="profile-pic-section">
-        <div className="profile-pic-container">
-          {profilePic ? (
-            <img src={profilePic} alt="Profilkép" className="profile-pic" />
-          ) : (
-            <div className="default-profile-pic">Nincs kép</div>
-          )}
-        </div>
         <input
           type="file"
           accept="image/*"
@@ -66,7 +59,7 @@ const Account = () => {
         <p><strong>Neved:</strong> {userInfo.name}</p>
         <p><strong>Email cím:</strong> {userInfo.email}</p>
         <p><strong>Telefonszám:</strong> {userInfo.phone}</p>
-        <p><strong>Cím:</strong> {userInfo.address}</p>
+        <p><strong>Személyigazolvány szám:</strong> {userInfo.address}</p>
       </div>
 
       {/* Jelszó változtatás */}

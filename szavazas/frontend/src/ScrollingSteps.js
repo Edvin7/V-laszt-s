@@ -29,6 +29,18 @@ const steps = [
 const ScrollingSteps = () => {
   const [visibleStep, setVisibleStep] = useState(0);
   const [sectionInView, setSectionInView] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Az állapotot most itt tároljuk
+
+  useEffect(() => {
+    // Bejelentkezett felhasználó ellenőrzése
+    const checkLoginStatus = () => {
+      // Ha localStorage-ban tároljuk, nézd meg a státuszt
+      const loggedIn = localStorage.getItem('userLoggedIn') === 'true';
+      setIsLoggedIn(loggedIn); // Frissítjük az állapotot
+    };
+
+    checkLoginStatus(); // Ellenőrizzük, hogy a felhasználó be van-e jelentkezve
+  }, []);
 
   useEffect(() => {
     const sectionObserverOptions = {
@@ -104,7 +116,11 @@ const ScrollingSteps = () => {
               <div className="step-body">
                 <h4>{step.title}</h4>
                 <p>{step.description}</p>
-                <Link to={step.link} className="vote-button">{step.buttonText}</Link>
+                {isLoggedIn ? (
+                  <span style={{ color: 'purple', fontSize: '24px' }}>✔️</span> // Pipa megjelenése ha be van jelentkezve
+                ) : (
+                  <Link to={step.link} className="vote-button">{step.buttonText}</Link>  // Gombok megjelenítése ha nincs bejelentkezve
+                )}
               </div>
             </div>
           ))}
