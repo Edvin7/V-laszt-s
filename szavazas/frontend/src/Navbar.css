@@ -10,12 +10,27 @@ nav .logo {
   display: flex;
   align-items: center;
 }
-.logoutbutton {
-  color: #033473;
+.loginbutton, .logoutbutton {
+  background: #033473;
+  color: white;
   transition: background-color 0.3s ease, color 0.3s ease;
   font-weight: bold;
+  padding: 8px 12px; /* Adj meg paddinget */
+  border: none; /* Eltávolítja a button alapértelmezett keretét */
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none; /* Eltávolítja a Link alapértelmezett aláhúzását */
+  display: inline-block; /* Hasonló viselkedés, mint a button */
 }
 
+.loginbutton:hover, .logoutbutton:hover {
+  background: white;
+  color: #033473;
+}
+.loginbutton, .logoutbutton {
+  box-sizing: border-box;
+}
 nav .logo img {
   height: 70px;
   width: auto;
@@ -23,27 +38,28 @@ nav .logo img {
 }
 
 nav ul {
-  list-style: none;
   display: flex;
+  align-items: center; /* Függőlegesen középre igazít minden elemet */
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 nav ul li {
-  margin-left: 1.5rem;
+  margin-left: 1.5rem; /* Távolság az elemek között */
 }
 
-nav ul li a {
+nav ul li a,
+nav ul li button {
+  display: inline-flex; /* Az elemek ugyanazt a megjelenési típust kapják */
+  align-items: center; /* Szöveg és ikon függőlegesen középen lesz */
+  justify-content: center; /* Középre igazítás */
+  padding: 8px 12px; /* Egységes padding */
+  border-radius: 5px;
   text-decoration: none;
-  color: #000;
   font-size: 95%;
   font-weight: 400;
-  padding: 4px 8px;
-  border-radius: 5px;
 }
-
-nav ul li a:hover {
-  background-color: #f5f5f5;
-}
-
 .loginbutton {
   background: #033473;
   color: white;

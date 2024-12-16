@@ -1,148 +1,161 @@
 html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden; 
-  }
-  
-  .ballot-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 0 20px;
-    box-sizing: border-box;
-    background-color: #f0f4f8;
-  }
-  
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; 
+}
 
-  .ballot-container {
-    max-width: 900px;
-    width: 100%;
-    background: white;
-    padding: 30px 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    border: 6px solid transparent;
-    border-image: linear-gradient(
-      to bottom right,
-      #033473 0%,
-      #033473 15%,
-      transparent 15%,
-      transparent 85%,
-      #033473 85%,
-      #033473 100%
-    ) 6;
-    margin: auto;
-  }
-  
+.ballot-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 0 20px;
+  box-sizing: border-box;
+  background-color: #f0f4f8;
+}
+
+.ballot-container {
+  max-width: 900px;
+  width: 100%;
+  background: white;
+  padding: 30px 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border: 6px solid transparent;
+  border-image: linear-gradient(
+    to bottom right,
+    #033473 0%,
+    #033473 15%,
+    transparent 15%,
+    transparent 85%,
+    #033473 85%,
+    #033473 100%
+  ) 6;
+  margin: auto;
+}
+
+.ballot-container h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #003399;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.parties {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.party {
+  text-align: center;
+  padding: 10px;
+  background-color: #f8faff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 150px; /* Egységes szélesség */
+  height: 200px; /* Egységes magasság */
+}
+
+.party img {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 10px;
+  object-fit: contain; /* Biztosítsd, hogy a képek ne nyúljanak el */
+}
+
+.party p {
+  font-size: 16px;
+  color: #333333;
+  margin: 5px 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Hosszú szövegeknél pontozás */
+}
+
+.vote-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: auto;
+  width: 100%;
+}
+
+.vote-circle {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #033473;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.3s;
+  flex-shrink: 0; /* Ne zsugorodjon kisebbre */
+}
+
+.vote-circle.selected {
+  background-color: #033473;
+}
+
+.vote-circle.selected::after {
+  content: 'X';
+  font-size: 20px;
+  color: white;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.submit-btn {
+  margin-top: 20px;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #033473;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
   .ballot-container h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #003399;
-    text-transform: uppercase;
-    font-weight: bold;
-  }
-  
-  .parties {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 20px;
-    margin-bottom: 20px;
-  }
-  
-
-  .party {
-    text-align: center;
-    padding: 10px;
-    background-color: #f8faff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  
-  .party img {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 10px;
-  }
-  
-  .party p {
-    font-size: 16px;
-    color: #333333;
-    margin: 5px 0;
-  }
-  
-  .vote-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-top: 10px;
-  }
-  
-  .vote-circle {
-    width: 40px;
-    height: 40px;
-    border: 3px solid #033473;
-    border-radius: 50%;
-    cursor: pointer;
-    position: relative;
-    transition: background-color 0.3s;
-  }
-  
-  .vote-circle.selected {
-    background-color: #033473;
-  }
-  
-  .vote-circle.selected::after {
-    content: 'X';
     font-size: 20px;
-    color: white;
-    font-weight: bold;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
-  
-  .submit-btn {
-    margin-top: 20px;
-    padding: 12px 25px;
+  .party {
+    width: 120px; /* Kisebb szélesség */
+    height: 160px; /* Kisebb magasság */
+  }
+  .party p {
+    font-size: 14px;
+  }
+  .party img {
+    width: 60px;
+    height: 60px;
+  }
+  .vote-circle {
+    width: 30px;
+    height: 30px;
+  }
+  .vote-circle.selected::after {
     font-size: 16px;
-    font-weight: bold;
-    color: white;
-    background-color: #033473;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
   }
-  
-  .submit-btn:hover {
-    background-color: #0056b3;
-  }
-  
-  @media (max-width: 768px) {
-    .ballot-container h1 {
-      font-size: 20px;
-    }
-    .party img {
-      width: 60px;
-      height: 60px;
-    }
-    .vote-circle {
-      width: 30px;
-      height: 30px;
-    }
-    .vote-circle.selected::after {
-      font-size: 16px;
-    }
-  }
-  
+}
