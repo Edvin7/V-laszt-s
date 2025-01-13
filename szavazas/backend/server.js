@@ -127,25 +127,41 @@ app.get('/api/user', (req, res) => {
 
 // Szavazat leadása
 app.post('/voting', (req, res) => {
-  const { election_id, candidate_id, vote_hash } = req.body;
+  const { election_id, candidate_id, vote_hash, user_id } = req.body;
 
   // Ellenőrizzük, hogy minden szükséges adatot megadtak-e
-  if (!election_id || !candidate_id || !vote_hash) {
+  if (!election_id || !candidate_id || !vote_hash || !user_id) {
     return res.status(400).json({ message: 'Minden mezőt ki kell tölteni!' });
   }
 
-  // A szavazat mentése az adatbázisba
-  const query = 'INSERT INTO votes (election_id, candidate_id, vote_hash) VALUES (?, ?, ?)';
-  db.query(query, [election_id, candidate_id, vote_hash], (err, result) => {
+  // Először ellenőrizzük, hogy a felhasználó már leadott-e szavazatot a választáson
+  const checkVoteQuery = 'SELECT * FROM votes WHERE election_id = ? AND user_id = ?';
+  db.query(checkVoteQuery, [election_id, user_id], (err, result) => {
     if (err) {
-      console.error('Hiba történt a szavazat mentésekor:', err);
-      return res.status(500).json({ message: 'Hiba történt a szavazat leadásakor!' });
+      console.error('Hiba történt a szavazat ellenőrzésekor:', err);
+      return res.status(500).json({ message: 'Hiba történt a szavazat ellenőrzésekor!' });
     }
 
-    // Visszaadjuk a sikeres válasz üzenetet
-    res.status(200).json({ message: 'Sikeresen leadta a szavazatot!' });
+    // Ha találunk már egy szavazatot a felhasználó számára, akkor nem engedjük meg újra a szavazást
+    if (result.length > 0) {
+      return res.status(400).json({ message: 'Már leadtad a szavazatot!' });
+    }
+
+    // Ha még nincs szavazat, akkor rögzítjük a szavazatot
+    const query = 'INSERT INTO votes (election_id, candidate_id, vote_hash, user_id) VALUES (?, ?, ?, ?)';
+    db.query(query, [election_id, candidate_id, vote_hash, user_id], (err, result) => {
+      if (err) {
+        console.error('Hiba történt a szavazat mentésekor:', err);
+        return res.status(500).json({ message: 'Hiba történt a szavazat leadásakor!' });
+      }
+
+      // Visszaadjuk a sikeres válasz üzenetet
+      res.status(200).json({ message: 'Sikeresen leadta a szavazatot!' });
+    });
   });
 });
+
+
 
 // Új endpoint a pártok adatainak lekérésére
 app.get('/parties', (req, res) => {
@@ -184,7 +200,49 @@ app.get('/parties', (req, res) => {
     });
   });
   
-  
+  // API végpont a számok lekéréséhez
+app.get('/counters', (req, res) => {
+  // Adatok lekérdezése az adatbázisból
+  const queries = {
+    parties: 'SELECT COUNT(*) AS partyCount FROM parties', // Pártok száma
+    users: 'SELECT COUNT(*) AS userCount FROM users',   // Felhasználók száma
+    votes: 'SELECT COUNT(*) AS voteCount FROM votes', // Leadott szavazatok
+  };
+
+  // Lekérdezzük mindhárom értéket egyszerre
+  const results = {};
+
+  db.query(queries.parties, (err, partyResults) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Hiba történt a pártok számának lekérésekor.' });
+    }
+    results.parties = partyResults[0].partyCount;
+
+    db.query(queries.users, (err, userResults) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Hiba történt a felhasználók számának lekérésekor.' });
+      }
+      results.users = userResults[0].userCount;
+
+      db.query(queries.votes, (err, voteResults) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ error: 'Hiba történt a leadott szavazatok számának lekérésekor.' });
+        }
+        results.votes = voteResults[0].voteCount;
+
+        // Válasz küldése a frontend felé
+        return res.json([
+          { id: 1, icon: 'https://example.com/map-icon.png', value: results.parties, label: 'Pártok' },
+          { id: 2, icon: 'https://example.com/speech-icon.png', value: results.users, label: 'Felhasználók' },
+          { id: 3, icon: 'https://example.com/user-icon.png', value: results.votes, label: 'Leadtott Szavazatok' },
+        ]);
+      });
+    });
+  });
+});
   
   
 

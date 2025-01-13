@@ -33,10 +33,22 @@ const VotingPage = () => {
   // Szavazat leadása
   const handleSubmit = () => {
     if (selectedParty) {
+      // Lekérjük a user objektumot a localStorage-ból
+      const user = JSON.parse(localStorage.getItem('user')); // A 'user' kulcs alatt
+      const userId = user ? user.id : null; // Az ID mező hozzáférése
+  
+      // Ellenőrizzük, hogy van-e userId
+      if (!userId) {
+        alert('A felhasználói ID nem található!');
+        return;
+      }
+  
+      // Szavazat adatainak előkészítése
       const voteData = {
         election_id: 1, // Ha több választás van, ennek változnia kell
         candidate_id: selectedParty.party_id,
         vote_hash: generateVoteHash(), // Dinamikusan generált hash
+        user_id: userId, // Hozzáadjuk az user_id-t
       };
   
       fetch('http://localhost:5000/voting', {
@@ -63,6 +75,8 @@ const VotingPage = () => {
       alert('Kérjük, válasszon egy pártot!');
     }
   };
+  
+  
 
   return (
     <div className="ballot-wrapper">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import "./CounterArea.css";
 import CounterUp from "react-countup";
@@ -8,17 +8,29 @@ import userIcon from "./images/user.png";
 import democracyIcon from "./images/democracy.png";
 
 const CounterArea = () => {
-  const counters = [
-    { id: 1, icon: mapIcon, value: 5120, label: "Választókerületek" },
-    { id: 2, icon: speechIcon, value: 4351, label: "Politikusok" },
-    { id: 3, icon: userIcon, value: 1200, label: "Felhasználók" },
-    { id: 4, icon: democracyIcon, value: 98, label: "Leadtott Szavazatok" },
-  ];
-
+  const [counters, setCounters] = useState([]);
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.5,
   });
+
+  useEffect(() => {
+    // Adatok lekérése a backendből
+    const fetchCounters = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/counters"); // Backend URL
+        if (!response.ok) {
+          throw new Error("Hiba történt az adatok lekérésekor.");
+        }
+        const data = await response.json();
+        setCounters(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCounters();
+  }, []);
 
   return (
     <div

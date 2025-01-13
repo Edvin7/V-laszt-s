@@ -135,7 +135,7 @@ INSERT INTO `parties` (`party_id`, `name`, `description`) VALUES
 
 --
 -- Tábla szerkezet ehhez a táblához `users`
---
+--  
 
 CREATE TABLE `users` (
   `id_number` int(11) NOT NULL,
