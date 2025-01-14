@@ -1,185 +1,184 @@
+/* Alap stílusok */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+body {
+  color: black;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Stats konténer */
 .stats-container {
-    padding: 40px;
-    background-color: #f9f9f9;
-    min-height: 100vh;
-  }
-  
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Cím stílusok */
+.stats-title {
+  font-size: 2.2rem;
+  color: black;
+  margin-bottom: 40px;
+  font-weight: 600;
+}
+
+/* Hibajelzés */
+.error-message {
+  color: #e74c3c;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Pártok listája */
+.party-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+  padding: 0;
+}
+
+/* Pártkártya */
+.party-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensure the button stays at the bottom */
+  height: 350px; /* Increased height to avoid overlap with text */
+}
+
+.party-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Logó */
+.party-logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.party-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Pártkártya neve */
+.party-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Gomb stílusok */
+.view-more-button {
+  background: #033473;
+  color: white;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: bold;
+  font-size: 0.4cm;
+  padding: 13px 12px; /* Adj meg paddinget */
+  border: none; /* Eltávolítja a button alapértelmezett keretét */
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none; /* Eltávolítja a Link alapértelmezett aláhúzását */
+  display: inline-block;  /* Center the button horizontally */
+}
+
+.view-more-button:hover {
+  background: white;
+  color: #033473;
+}
+/* Modális ablak */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 8px;
+  padding: 40px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.close-modal {
+  background-color: #e74c3c;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 20px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.close-modal:hover {
+  background-color: #c0392b;
+}
+
+.modal-content h3 {
+  font-size: 2rem;
+  color: black;
+  margin-bottom: 20px;
+}
+
+.modal-content p {
+  font-size: 1.1rem;
+  color: black;
+  line-height: 1.5;
+}
+
+/* Reszponzív dizájn: kisebb képernyőkön */
+@media (max-width: 768px) {
   .stats-title {
-    font-size: 36px;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-    margin-bottom: 40px;
-    font-family: 'Arial', sans-serif;
+    font-size: 2rem;
   }
-  
-  .error-message {
-    color: red;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .party-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 30px;
-    justify-items: center;
-  }
-  
-  .party-card {
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    max-width: 320px;
-    overflow: hidden;
-    position: relative;
-    cursor: pointer;
-  }
-  
-  .party-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
-  }
-  
-  .party-image-container {
-    position: relative;
-    width: 100%;
-    height: 180px;
-    overflow: hidden;
-    border-radius: 12px;
-  }
-  
-  .party-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-  
-  .party-card:hover .party-image {
-    transform: scale(1.1);
-  }
-  
-  .party-name {
-    font-size: 24px;
-    font-weight: bold;
-    color: #0056b3;
-    margin-top: 20px;
-  }
-  
-  .party-description {
-    font-size: 16px;
-    color: #555;
-    line-height: 1.5;
-    margin-top: 10px;
-  }
-  
-  .view-more-button {
-    background-color: #0056b3;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    margin-top: 20px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .view-more-button:hover {
-    background-color: #00408b;
-  }
-  
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    opacity: 0;
-    pointer-events: none;
-    animation: fadeIn 0.3s forwards; 
-  }
-  
+
   .modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 600px;
-    position: relative;
-    transform: scale(0.8);
-    animation: modalIn 0.3s forwards; 
+    width: 90%;
   }
-  
-  @keyframes fadeIn {
-    to {
-      opacity: 1;
-      pointer-events: auto;
-    }
+
+  .party-logo {
+    width: 100px;
+    height: 100px;
   }
-  
-  @keyframes modalIn {
-    to {
-      transform: scale(1);
-    }
+
+  .party-name {
+    font-size: 1.3rem;
   }
-  
-  .close-modal {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: none; 
-    border: none;
-    font-size: 24px;
-    color: #333;
-    cursor: pointer;
-    transition: color 0.3s ease, transform 0.2s ease;
+
+  .view-more-button {
+    padding: 10px 20px;
   }
-  
-  .close-modal:hover {
-    color: #0056b3;
-    transform: scale(1.1);
-  }
-  .close-modal:focus {
-    outline: none;
-  }
-  
-  button {
-    cursor: pointer;
-  }
-  
-  .modal-overlay.hide {
-    opacity: 0;
-    pointer-events: none;
-    animation: fadeOut 0.3s forwards;
-  }
-  
-  @keyframes fadeOut {
-    to {
-      opacity: 0;
-      pointer-events: none;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .stats-container {
-      padding: 20px;
-    }
-  
-    .party-card {
-      max-width: 100%;
-    }
-  }
-  
-  
+}
