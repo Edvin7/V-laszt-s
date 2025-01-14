@@ -161,20 +161,6 @@ input[type="password"]:focus + label {
   border: 1px solid #033473;
 }
 
-.signup-image-link,
-.kezdolap {
-  text-decoration: none;
-  font-size: 1rem;
-  color: #6e7dff;
-  margin-top: 20px;
-  display: inline-block;
-}
-
-.signup-image-link:hover,
-.kezdolap:hover {
-  text-decoration: underline;
-}
-
 @media (max-width: 768px) {
   .signin-content {
     flex-direction: column;

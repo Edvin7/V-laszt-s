@@ -22,6 +22,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
       <div className="nav-links">
         <ul>
+          <li><Link to="/admin">Admin</Link></li>
           <li><Link to="/parties">Pártok</Link></li>
           <li><Link to="/stats">Statisztikák</Link></li>
           <li><a href="/news" target="_blank" rel="noopener noreferrer">Hírek</a></li>
