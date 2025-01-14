@@ -66,40 +66,6 @@ const Contacts = () => {
           </div>
         </form>
       </div>
-      <div className="responsive-cell-block wk-tab-12 wk-mobile-12 wk-desk-5 wk-ipadp-10" id="ifgi">
-        <div className="container-box">
-          <div className="text-content">
-            <p className="text-blk contactus-head">
-              Kapcsolat
-            </p>
-            <p className="text-blk contactus-subhead">
-              Ha bármilyen kérdése van az online szavazással kapcsolatban, vegye fel velünk a kapcsolatot az alábbi elérhetőségek egyikén.
-            </p>
-          </div>
-          <div className="workik-contact-bigbox">
-            <div className="workik-contact-box">
-              <div className="phone text-box">
-                <img className="contact-svg" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET21.jpg" alt="phone" />
-                <p className="contact-text">
-                +36 76 462 332
-                </p>
-              </div>
-              <div className="address text-box">
-                <img className="contact-svg" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET22.jpg" alt="address" />
-                <p className="contact-text">
-                  info@online-szavazas.hu
-                </p>
-              </div>
-              <div className="mail text-box">
-                <img className="contact-svg" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET23.jpg" alt="mail" />
-                <p className="contact-text">
-                6100 Kiskunfélegyháza, Kossuth u. 24.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
       <Footer />

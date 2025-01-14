@@ -137,13 +137,14 @@ input[type="password"]:focus + label {
 .form-button {
   display: flex;
   justify-content: center;
+  margin-top: 20px; 
 }
 
 .form-submit {
   display: inline-block;
   background: #033473;
   color: #fff;
-  border-bottom: none;
+  border: none;
   width: auto;
   padding: 15px 39px;
   border-radius: 5px;
@@ -156,10 +157,8 @@ input[type="password"]:focus + label {
   background: white;
   color: #033473;
   text-decoration: none;
-  -webkit-transition: 0.3s all ease;
   transition: 0.3s ease all;
-  border: 1px solid;
-  border-color: #033473;
+  border: 1px solid #033473;
 }
 
 .signup-image-link,
