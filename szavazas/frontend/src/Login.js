@@ -70,10 +70,11 @@ function Login({ setIsLoggedIn }) {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              
+              <div className='form-group form-button'>
+                <input className='form-submit' type="submit" value="Bejelentkezés" />
+                </div>
                 
-                <input className='form-button form-submit' type="submit" value="Bejelentkezés" />
-              
+                
              
             </form>
           </div>
