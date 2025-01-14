@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2024. Nov 26. 10:55
+-- Létrehozás ideje: 2025. Jan 14. 13:09
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -40,7 +40,7 @@ CREATE TABLE `candidates` (
 --
 
 INSERT INTO `candidates` (`candidate_id`, `name`, `party`, `bio`, `photo`) VALUES
-(1, 'Klass Dániel', 'Fidesz-KDMP', 'Jelenlegi EP képviselő, a Fidesz európai parlamenti delegációjának vezetője.', 'photos/deutsch_tamas.jpg'),
+(1, 'Deutsch Tamás', 'Fidesz-KDMP', 'Jelenlegi EP képviselő, a Fidesz európai parlamenti delegációjának vezetője.', 'photos/deutsch_tamas.jpg'),
 (2, 'Rónai Sándor', 'Fidesz-KDMP', 'EP képviselő, aki a közlekedési és biztonságpolitikai kérdésekben aktív.', 'photos/ronai_sandor.jpg'),
 (3, 'Kovács József', 'Fidesz-KDMP', 'Képviselő, aki a mezőgazdasági és vidékfejlesztési kérdésekkel foglalkozik az EP-ben.', 'photos/kovacs_jozsef.jpg'),
 (4, 'Tóth Edina', 'Fidesz-KDMP', 'Jelenlegi EP képviselő, jogi és belügyi szakértő.', 'photos/toth_edina.jpg'),
@@ -135,7 +135,7 @@ INSERT INTO `parties` (`party_id`, `name`, `description`) VALUES
 
 --
 -- Tábla szerkezet ehhez a táblához `users`
---  
+--
 
 CREATE TABLE `users` (
   `id_number` int(11) NOT NULL,
@@ -148,6 +148,15 @@ CREATE TABLE `users` (
   `status` varchar(50) NOT NULL CHECK (`status` in ('active','inactive'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
+--
+-- A tábla adatainak kiíratása `users`
+--
+
+INSERT INTO `users` (`id_number`, `name`, `email`, `password_hash`, `personal_id`, `agree_terms`, `registered_at`, `status`) VALUES
+(1, 'asdasd', 'asdf@g.c', '$2a$10$xbmELMYirbUdsscb9spbhOQvokv2SMNcDGGhPf93MdwnnygT.NViC', '1234', 1, '2024-12-03 13:18:51', 'active'),
+(2, 'a', 'a@g.c', '$2a$10$/1ejtoPs3WY1ZyDv4IZMGunG11KEIVMVOj4BNZRx5yP2xmYXZjrBG', '123', 1, '2025-01-07 13:11:12', 'active'),
+(3, 'aa', 'aa@g.c', '$2a$10$i0QUtF9EdHJ/6JzcQaIOvuQmKHvwtVqA8zcsE31gMo/aGxTvuGspa', '123', 1, '2025-01-13 10:34:49', 'active');
+
 -- --------------------------------------------------------
 
 --
@@ -159,8 +168,18 @@ CREATE TABLE `votes` (
   `election_id` int(11) DEFAULT NULL,
   `candidate_id` int(11) DEFAULT NULL,
   `vote_time` datetime DEFAULT current_timestamp(),
-  `vote_hash` varchar(255) NOT NULL
+  `vote_hash` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `votes`
+--
+
+INSERT INTO `votes` (`vote_id`, `election_id`, `candidate_id`, `vote_time`, `vote_hash`, `user_id`) VALUES
+(10, 1, 9, '2025-01-13 09:15:46', 'c685pyuvgdu', 2),
+(11, 1, 9, '2025-01-13 09:16:30', 'gpyomafdjq', 1),
+(12, 1, 10, '2025-01-13 10:34:58', 'qlyestlpvur', 3);
 
 --
 -- Indexek a kiírt táblákhoz
@@ -190,7 +209,8 @@ ALTER TABLE `users`
 --
 ALTER TABLE `votes`
   ADD PRIMARY KEY (`vote_id`),
-  ADD KEY `candidate_id` (`candidate_id`);
+  ADD KEY `candidate_id` (`candidate_id`),
+  ADD KEY `votes_ibfk_2` (`user_id`);
 
 --
 -- A kiírt táblák AUTO_INCREMENT értéke
@@ -212,13 +232,13 @@ ALTER TABLE `parties`
 -- AUTO_INCREMENT a táblához `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_number` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_number` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT a táblához `votes`
 --
 ALTER TABLE `votes`
-  MODIFY `vote_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `vote_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Megkötések a kiírt táblákhoz
@@ -228,7 +248,8 @@ ALTER TABLE `votes`
 -- Megkötések a táblához `votes`
 --
 ALTER TABLE `votes`
-  ADD CONSTRAINT `votes_ibfk_1` FOREIGN KEY (`candidate_id`) REFERENCES `candidates` (`candidate_id`);
+  ADD CONSTRAINT `votes_ibfk_1` FOREIGN KEY (`candidate_id`) REFERENCES `candidates` (`candidate_id`),
+  ADD CONSTRAINT `votes_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_number`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
