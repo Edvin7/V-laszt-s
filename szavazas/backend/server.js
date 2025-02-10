@@ -248,117 +248,34 @@ app.get('/counters', (req, res) => {
 
 
   
-app.get('/counters', (req, res) => {
-  // SQL lekérdezések
-  const queries = {
-    parties: 'SELECT COUNT(*) AS partyCount FROM parties', // Pártok száma
-    users: 'SELECT COUNT(*) AS userCount FROM users',   // Felhasználók száma
-    votes: 'SELECT COUNT(*) AS voteCount FROM votes', // Leadott szavazatok
-    totalVotesPerParty: `
-      SELECT p.party_name, COUNT(v.vote_id) AS totalVotes
-      FROM votes v
-      JOIN candidates c ON v.candidate_id = c.candidate_id
-      JOIN parties p ON c.party_id = p.party_id
-      GROUP BY p.party_id, p.party_name
-      ORDER BY totalVotes DESC;
-    `,
-    totalVotesPerCandidate: `
-      SELECT c.candidate_name, p.party_name, COUNT(v.vote_id) AS totalVotes
-      FROM votes v
-      JOIN candidates c ON v.candidate_id = c.candidate_id
-      JOIN parties p ON c.party_id = p.party_id
-      GROUP BY c.candidate_id, c.candidate_name, p.party_name
-      ORDER BY totalVotes DESC;
-    `,
-    totalVoters: 'SELECT COUNT(DISTINCT user_id) AS uniqueVoters FROM votes',
+// API végpont a választási eredmények lekéréséhez
+app.get('/election-results', (req, res) => {
+  // SQL lekérdezés a pártokra leadott szavazatok összegzésére
+  const query = `
+    SELECT p.party_id, p.name AS party_name, COUNT(v.vote_id) AS totalVotes
+    FROM parties p
+    LEFT JOIN candidates c ON p.name = c.party
+    LEFT JOIN votes v ON c.candidate_id = v.candidate_id
+    GROUP BY p.party_id, p.name
+    ORDER BY totalVotes DESC;
+  `;
 
-    // **ÚJ LEKÉRDEZÉS: Egyedi szavazók száma pártonként**
-    uniqueVotersPerParty: `
-      SELECT p.party_name, COUNT(DISTINCT v.user_id) AS uniqueVoters
-      FROM votes v
-      JOIN candidates c ON v.candidate_id = c.candidate_id
-      JOIN parties p ON c.party_id = p.party_id
-      GROUP BY p.party_id, p.party_name
-      ORDER BY uniqueVoters DESC;
-    `
-  };
-
-  const results = {};
-
-  // Pártok száma
-  db.query(queries.parties, (err, partyResults) => {
+  db.query(query, (err, results) => {
     if (err) {
       console.error(err);
-      return res.status(500).json({ error: 'Hiba történt a pártok számának lekérésekor.' });
+      return res.status(500).json({ error: 'Hiba történt a pártokra leadott szavazatok lekérésekor.' });
     }
-    results.parties = partyResults[0].partyCount;
 
-    // Felhasználók száma
-    db.query(queries.users, (err, userResults) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'Hiba történt a felhasználók számának lekérésekor.' });
-      }
-      results.users = userResults[0].userCount;
-
-      // Szavazatok száma
-      db.query(queries.votes, (err, voteResults) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).json({ error: 'Hiba történt a leadott szavazatok számának lekérésekor.' });
-        }
-        results.votes = voteResults[0].voteCount;
-
-        // Szavazatok pártok szerint
-        db.query(queries.totalVotesPerParty, (err, partyVoteResults) => {
-          if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Hiba történt a pártokra leadott szavazatok lekérésekor.' });
-          }
-          results.totalVotesPerParty = partyVoteResults;
-
-          // Szavazatok jelöltek szerint
-          db.query(queries.totalVotesPerCandidate, (err, candidateVoteResults) => {
-            if (err) {
-              console.error(err);
-              return res.status(500).json({ error: 'Hiba történt a jelöltekre leadott szavazatok lekérésekor.' });
-            }
-            results.totalVotesPerCandidate = candidateVoteResults;
-
-            // Egyedi szavazók száma
-            db.query(queries.totalVoters, (err, voterResults) => {
-              if (err) {
-                console.error(err);
-                return res.status(500).json({ error: 'Hiba történt az egyedi szavazók számának lekérésekor.' });
-              }
-              results.totalVoters = voterResults[0].uniqueVoters;
-
-              // **ÚJ LEKÉRDEZÉS: Egyedi szavazók pártok szerint**
-              db.query(queries.uniqueVotersPerParty, (err, uniqueVotersResults) => {
-                if (err) {
-                  console.error(err);
-                  return res.status(500).json({ error: 'Hiba történt az egyedi szavazók pártonkénti lekérésekor.' });
-                }
-                results.uniqueVotersPerParty = uniqueVotersResults;
-
-                // **Válasz a frontendnek**
-                return res.json([
-                  { id: 1, icon: 'https://example.com/map-icon.png', value: results.parties, label: 'Pártok' },
-                  { id: 2, icon: 'https://example.com/speech-icon.png', value: results.users, label: 'Felhasználók' },
-                  { id: 3, icon: 'https://example.com/user-icon.png', value: results.votes, label: 'Leadott Szavazatok' },
-                  { id: 4, icon: 'https://example.com/party-vote-icon.png', value: results.totalVotesPerParty, label: 'Pártok szavazatai' },
-                  { id: 5, icon: 'https://example.com/candidate-vote-icon.png', value: results.totalVotesPerCandidate, label: 'Jelöltek szavazatai' },
-                  { id: 6, icon: 'https://example.com/voters-icon.png', value: results.totalVoters, label: 'Egyedi szavazók' },
-                  { id: 7, icon: 'https://example.com/unique-voters-icon.png', value: results.uniqueVotersPerParty, label: 'Egyedi szavazók pártonként' }
-                ]);
-              });
-            });
-          });
-        });
-      });
-    });
+    // Adatok formázása és válaszként küldése
+    return res.json(results.map((row) => ({
+      party_id: row.party_id,
+      party: row.party_name,
+      votes: row.totalVotes
+    })));
   });
 });
+
+
 
 
 

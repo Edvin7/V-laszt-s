@@ -1,47 +1,40 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Chart from 'chart.js/auto';
-import './Stats.css';
+import React, { useEffect, useRef, useState } from "react";
+import Chart from "chart.js/auto";
+import "./Stats.css";
 
 const Stats = () => {
   const chartRef = useRef(null);
-  const [parties, setParties] = useState([]);
-  const [votes, setVotes] = useState([]);
+  const [electionData, setElectionData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Lekérdezzük az adatokat a backendből
-    fetch('http://localhost:3000/counters')
-      .then(response => {
+    fetch("http://localhost:3000/election-results") // Backend végpont meghívása
+      .then((response) => {
         if (!response.ok) {
-          throw new Error('Hálózati hiba történt');
+          throw new Error("Hálózati hiba történt");
         }
         return response.json();
       })
-      .then(data => {
-        const partyNames = data.map(item => item.label);  // Pártok nevei
-        const voteCounts = data.map(item => item.value);  // Szavazatok száma
-
-        setParties(partyNames);
-        setVotes(voteCounts);
+      .then((data) => {
+        setElectionData(data);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         setError(err.message);
         setLoading(false);
       });
   }, []);
 
   useEffect(() => {
-    if (parties.length === 0 || votes.length === 0) return;
+    if (electionData.length === 0) return;
 
-    const totalVotes = votes.reduce((a, b) => a + b, 0);
-    const percentages = votes.map(v => ((v / totalVotes) * 100).toFixed(2));
+    const partyNames = electionData.map((item) => item.party);
+    const voteCounts = electionData.map((item) => item.votes);
 
     const colors = [
       "#4e79a7", "#f28e2c", "#e15759", "#76b7b2", "#59a14f",
-      "#edc948", "#b07aa1", "#ff9da7", "#9c755f", "#bab0ab",
-      "#8c564b", "#d62728"
+      "#edc948", "#b07aa1", "#ff9da7", "#9c755f", "#bab0ab"
     ];
 
     if (chartRef.current) {
@@ -54,17 +47,30 @@ const Stats = () => {
       chartRef.current.chart = new Chart(ctx, {
         type: "bar",
         data: {
-          labels: parties,
+          labels: partyNames,
           datasets: [{
             label: "Szavazatok száma",
-            data: votes,
+            data: voteCounts,
             backgroundColor: colors,
           }]
-        }
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function (value) {
+                  return value.toLocaleString(); // Szép formázás
+                },
+              },
+            },
+          },
+        },
       });
     }
-
-  }, [parties, votes]);
+  }, [electionData]);
 
   if (loading) return <p>Adatok betöltése...</p>;
   if (error) return <p>Hiba: {error}</p>;
@@ -84,11 +90,13 @@ const Stats = () => {
           </tr>
         </thead>
         <tbody>
-          {parties.map((party, index) => (
+          {electionData.map((party, index) => (
             <tr key={index}>
-              <td>{party}</td>
-              <td>{votes[index].toLocaleString()}</td>
-              <td>{((votes[index] / votes.reduce((a, b) => a + b, 0)) * 100).toFixed(2)}%</td>
+              <td>{party.party}</td>
+              <td>{party.votes.toLocaleString()}</td>
+              <td>
+                {((party.votes / electionData.reduce((a, b) => a + b.votes, 0)) * 100).toFixed(2)}%
+              </td>
             </tr>
           ))}
         </tbody>
