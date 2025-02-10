@@ -4,10 +4,10 @@ import axios from 'axios';
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('users');
   const [users, setUsers] = useState([]);
-  const [votes, setVotes] = useState([]);
-  const [parties, setParties] = useState([]);
+  const [votes, setVotes] = useState([]); // Szavazatok
+  const [parties, setParties] = useState([]); // Partik
   const [editingUser, setEditingUser] = useState(null);
-  const [editingVote, setEditingVote] = useState(null);
+  const [editingVote, setEditingVote] = useState(null); // Szavazat szerkesztése
   const [newParty, setNewParty] = useState({ name: '', description: '' });
   const [error, setError] = useState('');
 
@@ -41,25 +41,6 @@ const AdminPanel = () => {
     }
   };
 
-  // Add a new party
-  const addParty = async () => {
-    if (!newParty.name || !newParty.description) {
-      setError('A párt neve és leírása kötelező.');
-      return;
-    }
-
-    try {
-      const response = await axios.post('/api/parties', newParty);
-      console.log('Párt hozzáadva:', response.data);
-      setNewParty({ name: '', description: '' });
-      setError('');
-      fetchParties(); // Refresh parties list
-    } catch (error) {
-      console.error('Error adding party:', error);
-      setError('Hiba történt a párt hozzáadásakor.');
-    }
-  };
-
   // Update user info
   const updateUser = async (id) => {
     try {
@@ -70,7 +51,7 @@ const AdminPanel = () => {
         status: editingUser.status,
       };
       await axios.put(`/api/users/${id}`, updatedUser);
-      setEditingUser(null);
+      setEditingUser(null); // Reset edit state
       fetchUsers(); // Refresh users list
     } catch (error) {
       console.error('Error updating user:', error);
@@ -95,7 +76,7 @@ const AdminPanel = () => {
         vote_count: editingVote.vote_count,
       };
       await axios.put(`/api/votes/${id}`, updatedVote);
-      setEditingVote(null);
+      setEditingVote(null); // Reset edit state
       fetchVotes(); // Refresh votes list
     } catch (error) {
       console.error('Error updating vote:', error);
@@ -112,22 +93,31 @@ const AdminPanel = () => {
     }
   };
 
-  // Handle change for editing user
-  const handleEditChange = (e) => {
-    const { name, value } = e.target;
-    setEditingUser((prev) => ({ ...prev, [name]: value }));
+  // Add new party
+  const addParty = async () => {
+    if (!newParty.name || !newParty.description) {
+      setError('A párt neve és leírása kötelező.');
+      return;
+    }
+
+    try {
+      await axios.post('/api/parties', newParty);
+      setNewParty({ name: '', description: '' });
+      setError('');
+      fetchParties(); // Refresh parties list
+    } catch (error) {
+      console.error('Error adding party:', error);
+    }
   };
 
-  // Handle change for editing vote
-  const handleVoteChange = (e) => {
-    const { name, value } = e.target;
-    setEditingVote((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Handle change for new party
-  const handlePartyChange = (e) => {
-    const { name, value } = e.target;
-    setNewParty((prev) => ({ ...prev, [name]: value }));
+  // Delete party
+  const deleteParty = async (id) => {
+    try {
+      await axios.delete(`/api/parties/${id}`);
+      fetchParties(); // Refresh parties list
+    } catch (error) {
+      console.error('Error deleting party:', error);
+    }
   };
 
   useEffect(() => {
@@ -141,49 +131,82 @@ const AdminPanel = () => {
   }, [activeTab]);
 
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
+    <div style={{ display: 'flex', height: '100vh', fontFamily: 'Arial, sans-serif' }}>
       {/* Sidebar */}
-      <div style={{ width: '200px', backgroundColor: '#2c3e50', color: 'white', padding: '20px', display: 'flex', flexDirection: 'column' }}>
-        <h2>Admin Panel</h2>
-        <div onClick={() => setActiveTab('users')} style={{ padding: '10px', cursor: 'pointer', marginBottom: '10px' }}>
-          Users
+      <div style={{ width: '200px', backgroundColor: '#2c3e50', color: 'white', padding: '20px', display: 'flex', flexDirection: 'column', borderRadius: '10px 0 0 10px' }}>
+        <h2 style={{ fontSize: '22px', marginBottom: '20px' }}>Admin Panel</h2>
+        <div
+          onClick={() => setActiveTab('users')}
+          style={{
+            padding: '10px',
+            cursor: 'pointer',
+            marginBottom: '10px',
+            backgroundColor: activeTab === 'users' ? '#34495e' : 'transparent',
+            borderRadius: '5px',
+          }}
+        >
+          Felhasználók
         </div>
-        <div onClick={() => setActiveTab('votes')} style={{ padding: '10px', cursor: 'pointer', marginBottom: '10px' }}>
-          Votes
+        <div
+          onClick={() => setActiveTab('votes')}
+          style={{
+            padding: '10px',
+            cursor: 'pointer',
+            marginBottom: '10px',
+            backgroundColor: activeTab === 'votes' ? '#34495e' : 'transparent',
+            borderRadius: '5px',
+          }}
+        >
+          Időzítő
         </div>
-        <div onClick={() => setActiveTab('parties')} style={{ padding: '10px', cursor: 'pointer', marginBottom: '10px' }}>
-          Parties
+        <div
+          onClick={() => setActiveTab('parties')}
+          style={{
+            padding: '10px',
+            cursor: 'pointer',
+            backgroundColor: activeTab === 'parties' ? '#34495e' : 'transparent',
+            borderRadius: '5px',
+          }}
+        >
+          Pártok
         </div>
       </div>
 
       {/* Content Area */}
       <div style={{ flex: 1, padding: '20px' }}>
         {activeTab === 'users' && (
-          <div>
-            <h3>Users</h3>
-            <table border="1" width="100%">
+          <div style={{ backgroundColor: '#ecf0f1', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Personal ID</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                <tr style={{ backgroundColor: '#bdc3c7' }}>
+                  <th style={{ textAlign: 'left', padding: '10px' }}>Név</th>
+                  <th style={{ textAlign: 'left', padding: '10px' }}>Email</th>
+                  <th style={{ textAlign: 'left', padding: '10px' }}>Személyi ID</th>
+                  <th style={{ textAlign: 'left', padding: '10px' }}>Státusz</th>
+                  <th style={{ textAlign: 'left', padding: '10px' }}>Műveletek</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr key={user.id_number}>
-                    <td>{editingUser?.id === user.id_number ? <input type="text" name="name" value={editingUser.name} onChange={handleEditChange} /> : user.name}</td>
-                    <td>{editingUser?.id === user.id_number ? <input type="email" name="email" value={editingUser.email} onChange={handleEditChange} /> : user.email}</td>
-                    <td>{editingUser?.id === user.id_number ? <input type="text" name="personal_id" value={editingUser.personal_id} onChange={handleEditChange} /> : user.personal_id}</td>
-                    <td>{editingUser?.id === user.id_number ? <select name="status" value={editingUser.status} onChange={handleEditChange}><option value="active">Active</option><option value="inactive">Inactive</option></select> : user.status}</td>
-                    <td>
-                      {editingUser?.id === user.id_number ? (
-                        <button onClick={() => updateUser(user.id_number)}>Save</button>
-                      ) : (
-                        <button onClick={() => deleteUser(user.id_number)}>Delete</button>
-                      )}
+                  <tr key={user.id_number} style={{ borderBottom: '1px solid #ddd' }}>
+                    <td style={{ padding: '10px' }}>{user.name}</td>
+                    <td style={{ padding: '10px' }}>{user.email}</td>
+                    <td style={{ padding: '10px' }}>{user.personal_id}</td>
+                    <td style={{ padding: '10px' }}>{user.status}</td>
+                    <td style={{ padding: '10px' }}>
+                      <button
+                        onClick={() => deleteUser(user.id_number)}
+                        style={{
+                          padding: '8px 16px',
+                          backgroundColor: '#e74c3c',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '5px',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Törlés
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -193,30 +216,48 @@ const AdminPanel = () => {
         )}
 
         {activeTab === 'votes' && (
-          <div>
-            <h3>Votes</h3>
-            <table border="1" width="100%">
+          <div style={{ backgroundColor: '#ecf0f1', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr>
-                  <th>Candidate</th>
-                  <th>Vote Count</th>
-                  <th>Actions</th>
+                <tr style={{ backgroundColor: '#bdc3c7' }}>
+                  <th style={{ textAlign: 'left', padding: '10px' }}>Óra</th>
+                  <th style={{ textAlign: 'left', padding: '10px' }}>Perc</th>
+                  <th style={{ textAlign: 'left', padding: '10px' }}>Másodperc</th>
                 </tr>
               </thead>
               <tbody>
                 {votes.map((vote) => (
-                  <tr key={vote.id}>
-                    <td>{editingVote?.id === vote.id ? <input type="text" name="candidate" value={editingVote.candidate} onChange={handleVoteChange} /> : vote.candidate}</td>
-                    <td>{editingVote?.id === vote.id ? <input type="number" name="vote_count" value={editingVote.vote_count} onChange={handleVoteChange} /> : vote.vote_count}</td>
-                    <td>
-                      {editingVote?.id === vote.id ? (
-                        <button onClick={() => updateVote(vote.id)}>Save</button>
-                      ) : (
-                        <>
-                          <button onClick={() => setEditingVote({ ...vote })}>Edit</button>
-                          <button onClick={() => deleteVote(vote.id)}>Delete</button>
-                        </>
-                      )}
+                  <tr key={vote.id} style={{ borderBottom: '1px solid #ddd' }}>
+                    <td style={{ padding: '10px' }}>{vote.candidate}</td>
+                    <td style={{ padding: '10px' }}>{vote.vote_count}</td>
+                    <td style={{ padding: '10px' }}>
+                      <button
+                        onClick={() => updateVote(vote.id)}
+                        style={{
+                          padding: '8px 16px',
+                          backgroundColor: '#f39c12',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '5px',
+                          cursor: 'pointer',
+                          marginRight: '10px',
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => deleteVote(vote.id)}
+                        style={{
+                          padding: '8px 16px',
+                          backgroundColor: '#e74c3c',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '5px',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Törlés
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -226,43 +267,81 @@ const AdminPanel = () => {
         )}
 
         {activeTab === 'parties' && (
-          <div>
-            <h3>Parties</h3>
-            <input
-              type="text"
-              name="name"
-              value={newParty.name}
-              onChange={handlePartyChange}
-              placeholder="Party Name"
-            />
-            <textarea
-              name="description"
-              value={newParty.description}
-              onChange={handlePartyChange}
-              placeholder="Party Description"
-            />
-            <button onClick={addParty}>Add Party</button>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <table border="1" width="100%">
+          <div style={{ backgroundColor: '#ecf0f1', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+                      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Actions</th>
+                <tr style={{ backgroundColor: '#bdc3c7' }}>
+                  <th style={{ textAlign: 'left', padding: '10px' }}>Név</th>
+                  <th style={{ textAlign: 'left', padding: '10px' }}>Lerírás</th>
+                  <th style={{ textAlign: 'left', padding: '10px' }}>Műveletek</th>
                 </tr>
               </thead>
               <tbody>
                 {parties.map((party) => (
-                  <tr key={party.party_id}>
-                    <td>{party.name}</td>
-                    <td>{party.description}</td>
-                    <td>
-                      <button onClick={() => {/* Add logic to delete party */}}>Delete</button>
+                  <tr key={party.party_id} style={{ borderBottom: '1px solid #ddd' }}>
+                    <td style={{ padding: '10px' }}>{party.name}</td>
+                    <td style={{ padding: '10px' }}>{party.description}</td>
+                    <td style={{ padding: '10px' }}>
+                      <button
+                        onClick={() => deleteParty(party.party_id)}
+                        style={{
+                          padding: '8px 16px',
+                          backgroundColor: '#e74c3c',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '5px',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            <div style={{ marginBottom: '20px' }}>
+              <h4 style={{ fontSize: '20px', marginBottom: '10px' }}>Új Párt Hozzáadása</h4>
+              {error && <p style={{ color: 'red' }}>{error}</p>}
+              <input
+                type="text"
+                placeholder="Párt neve"
+                value={newParty.name}
+                onChange={(e) => setNewParty({ ...newParty, name: e.target.value })}
+                style={{
+                  padding: '10px',
+                  width: '100%',
+                  marginBottom: '10px',
+                  borderRadius: '5px',
+                  border: '1px solid #ccc',
+                }}
+              />
+              <textarea
+                placeholder="Párt leírása"
+                value={newParty.description}
+                onChange={(e) => setNewParty({ ...newParty, description: e.target.value })}
+                style={{
+                  padding: '10px',
+                  width: '100%',
+                  borderRadius: '5px',
+                  border: '1px solid #ccc',
+                }}
+              />
+              <button
+                onClick={addParty}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#3498db',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '5px',
+                  cursor: 'pointer',
+                  marginTop: '10px',
+                }}
+              >
+                Párt hozzáadása
+              </button>
+            </div>
           </div>
         )}
       </div>
