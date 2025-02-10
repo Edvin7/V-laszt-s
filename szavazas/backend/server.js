@@ -251,7 +251,7 @@ app.get('/counters', (req, res) => {
 // API végpont a választási eredmények lekéréséhez
 app.get('/election-results', (req, res) => {
   // SQL lekérdezés a pártokra leadott szavazatok összegzésére
-  const query = `
+  const  query = `
     SELECT p.party_id, p.name AS party_name, COUNT(v.vote_id) AS totalVotes
     FROM parties p
     LEFT JOIN votes v ON p.party_id = v.party_id
@@ -275,6 +275,51 @@ app.get('/election-results', (req, res) => {
 });
 
 
+// Get all users
+app.get('/api/users', (req, res) => {
+  const query = 'SELECT * FROM users';
+  db.query(query, (err, result) => {
+    if (err) {
+      res.status(500).send('Error fetching users');
+      return;
+    }
+    res.json(result);
+  });
+});
+
+// Update user info
+app.put('/api/users/:id', (req, res) => {
+  const { name, email, personal_id, status } = req.body;
+  const userId = req.params.id;
+  const query = 'UPDATE users SET name = ?, email = ?, personal_id = ?, status = ? WHERE id_number = ?';
+  
+  db.query(query, [name, email, personal_id, status, userId], (err, result) => {
+    if (err) {
+      res.status(500).send('Error updating user');
+      return;
+    }
+    res.send('User updated');
+  });
+});
+
+// Delete user
+app.delete('/api/users/:id', (req, res) => {
+  const userId = req.params.id;  // A paraméterben kapott id
+  const query = 'DELETE FROM users WHERE id_number = ?';  // SQL lekérdezés
+  
+  db.query(query, [userId], (err, result) => {
+    if (err) {
+      console.error('Hiba történt a felhasználó törlésekor:', err);
+      return res.status(500).send('Hiba történt a törlés közben');
+    }
+    
+    if (result.affectedRows === 0) {
+      return res.status(404).send('Felhasználó nem található');
+    }
+
+    res.send('Felhasználó törölve');
+  });
+});
 
 
 
