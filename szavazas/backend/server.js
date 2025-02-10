@@ -321,6 +321,39 @@ app.delete('/api/users/:id', (req, res) => {
   });
 });
 
+// Hozzáadás endpoint
+app.post('/api/parties', (req, res) => {
+  const { name, description } = req.body;
+
+  db.query(
+    'INSERT INTO parties (name, description, votes) VALUES (?, ?, 0)',
+    [name, description],
+    (err, results) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json({ success: true, message: 'Part hozzáadva' });
+    }
+  );
+});
+
+// Törlés endpoint
+app.post('/api/parties', (req, res) => {
+  const { name, description } = req.body;
+
+  db.query(
+    'INSERT INTO parties (name, description, votes) VALUES (?, ?, 0)',
+    [name, description],
+    (err, results) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json({ success: true, message: 'Part hozzáadva' });
+    }
+  );
+});
 
 
 
