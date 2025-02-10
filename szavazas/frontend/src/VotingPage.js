@@ -46,7 +46,7 @@ const VotingPage = () => {
       // Szavazat adatainak előkészítése
       const voteData = {
         election_id: 1, // Ha több választás van, ennek változnia kell
-        candidate_id: selectedParty.party_id,
+        party_id: selectedParty.party_id,
         vote_hash: generateVoteHash(), // Dinamikusan generált hash
         user_id: userId, // Hozzáadjuk az user_id-t
       };

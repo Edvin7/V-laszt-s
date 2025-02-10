@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Jan 14. 13:09
+-- Létrehozás ideje: 2025. Feb 10. 11:55
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -132,10 +132,6 @@ INSERT INTO `parties` (`party_id`, `name`, `description`) VALUES
 (12, 'Szabadság és Igazságosság Párt', 'A Szabadság és Igazságosság Párt a liberális demokrácia, az emberi jogok és a jogállamiság elkötelezett támogatója. A párt célja, hogy biztosítsa az egyéni szabadságjogokat, az átláthatóságot és a tisztességes kormányzást, miközben küzd a korrupció ellen. A párt programja a törvény előtti egyenlőséget és az igazságosságot helyezi a középpontba, és támogatja a szociális és gazdasági reformokat, amelyek lehetővé teszik az állampolgárok számára, hogy méltó életet élhessenek. A Szabadság és Igazságosság Párt kiemelten foglalkozik az oktatási rendszer reformjával, a szociális védelem megerősítésével és a munkahelyi egyenlőség biztosításával. A párt vezetése szerint a társadalmi fejlődés alapja az emberek szabadsága és méltósága, ezért támogatják a szólásszabadságot, a vallásszabadságot és az önrendelkezési jogot. A Szabadság és Igazságosság Párt hisz abban, hogy a demokrácia és az igazságosság minden ember alapvető joga.'),
 (13, 'Egység és Fejlődés Szövetsége', 'Az Egység és Fejlődés Szövetsége egy centrista politikai párt, amely az ország gazdasági növekedését és társadalmi kohézióját kívánja erősíteni. A szövetség hitvallása, hogy az egyéni szabadságjogok és a közösségi felelősségvállalás egyaránt fontosak a társadalmi harmónia megteremtéséhez. Az Egység és Fejlődés Szövetsége a piacgazdaságot támogatja, miközben kiemelten foglalkozik a társadalmi egyenlőtlenségek csökkentésével. A párt programja a gazdasági reformokra és az infrastrukturális fejlesztésekre koncentrál, hogy elősegítse az ország versenyképességének növelését. Az Egység és Fejlődés Szövetsége különös figyelmet fordít a vidéki területek fejlesztésére, az agrárium modernizációjára és a helyi közösségek támogatására. A párt célja, hogy az ország minden részén javuljon az életszínvonal, és hogy minden állampolgár számára elérhetővé váljon a minőségi egészségügyi ellátás és oktatás. Az Egység és Fejlődés Szövetsége hisz abban, hogy a gazdasági növekedés és a társadalmi jólét nem zárják ki egymást, hanem kölcsönösen erősítik.');
 
-
-
-
-
 -- --------------------------------------------------------
 
 --
@@ -160,7 +156,9 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id_number`, `name`, `email`, `password_hash`, `personal_id`, `agree_terms`, `registered_at`, `status`) VALUES
 (1, 'asdasd', 'asdf@g.c', '$2a$10$xbmELMYirbUdsscb9spbhOQvokv2SMNcDGGhPf93MdwnnygT.NViC', '1234', 1, '2024-12-03 13:18:51', 'active'),
 (2, 'a', 'a@g.c', '$2a$10$/1ejtoPs3WY1ZyDv4IZMGunG11KEIVMVOj4BNZRx5yP2xmYXZjrBG', '123', 1, '2025-01-07 13:11:12', 'active'),
-(3, 'aa', 'aa@g.c', '$2a$10$i0QUtF9EdHJ/6JzcQaIOvuQmKHvwtVqA8zcsE31gMo/aGxTvuGspa', '123', 1, '2025-01-13 10:34:49', 'active');
+(3, 'aa', 'aa@g.c', '$2a$10$i0QUtF9EdHJ/6JzcQaIOvuQmKHvwtVqA8zcsE31gMo/aGxTvuGspa', '123', 1, '2025-01-13 10:34:49', 'active'),
+(4, 'pal', 'pal@g.c', '$2a$10$hSBqx2gCgpun1UTHgibIFedLYt2rca8CBuVH7v20jhUSRY2/8OVTa', '123', 1, '2025-02-10 11:06:17', 'active'),
+(5, 'edv', 'edv@g.c', '$2a$10$Iv/4zrIHBg9jCtExbKa.Me93zq9a9ZBcHutbMz9kjCy6rPaf6yp62', '123', 1, '2025-02-10 11:06:29', 'active');
 
 -- --------------------------------------------------------
 
@@ -171,7 +169,7 @@ INSERT INTO `users` (`id_number`, `name`, `email`, `password_hash`, `personal_id
 CREATE TABLE `votes` (
   `vote_id` int(11) NOT NULL,
   `election_id` int(11) DEFAULT NULL,
-  `candidate_id` int(11) DEFAULT NULL,
+  `party_id` int(11) NOT NULL,
   `vote_time` datetime DEFAULT current_timestamp(),
   `vote_hash` varchar(255) NOT NULL,
   `user_id` int(11) NOT NULL
@@ -181,10 +179,10 @@ CREATE TABLE `votes` (
 -- A tábla adatainak kiíratása `votes`
 --
 
-INSERT INTO `votes` (`vote_id`, `election_id`, `candidate_id`, `vote_time`, `vote_hash`, `user_id`) VALUES
-(10, 1, 9, '2025-01-13 09:15:46', 'c685pyuvgdu', 2),
-(11, 1, 9, '2025-01-13 09:16:30', 'gpyomafdjq', 1),
-(12, 1, 10, '2025-01-13 10:34:58', 'qlyestlpvur', 3);
+INSERT INTO `votes` (`vote_id`, `election_id`, `party_id`, `vote_time`, `vote_hash`, `user_id`) VALUES
+(1, 1, 3, '2025-02-10 11:47:16', 'sryxq1gb17r', 4),
+(2, 1, 3, '2025-02-10 11:52:34', 'hs36vug6vl', 2),
+(3, 1, 12, '2025-02-10 11:53:48', 'r21b7kukiwc', 5);
 
 --
 -- Indexek a kiírt táblákhoz
@@ -214,8 +212,8 @@ ALTER TABLE `users`
 --
 ALTER TABLE `votes`
   ADD PRIMARY KEY (`vote_id`),
-  ADD KEY `candidate_id` (`candidate_id`),
-  ADD KEY `votes_ibfk_2` (`user_id`);
+  ADD KEY `party_id` (`party_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- A kiírt táblák AUTO_INCREMENT értéke
@@ -231,19 +229,19 @@ ALTER TABLE `candidates`
 -- AUTO_INCREMENT a táblához `parties`
 --
 ALTER TABLE `parties`
-  MODIFY `party_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `party_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT a táblához `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_number` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_number` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT a táblához `votes`
 --
 ALTER TABLE `votes`
-  MODIFY `vote_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `vote_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Megkötések a kiírt táblákhoz
@@ -253,7 +251,7 @@ ALTER TABLE `votes`
 -- Megkötések a táblához `votes`
 --
 ALTER TABLE `votes`
-  ADD CONSTRAINT `votes_ibfk_1` FOREIGN KEY (`candidate_id`) REFERENCES `candidates` (`candidate_id`),
+  ADD CONSTRAINT `votes_ibfk_1` FOREIGN KEY (`party_id`) REFERENCES `parties` (`party_id`),
   ADD CONSTRAINT `votes_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_number`);
 COMMIT;
 

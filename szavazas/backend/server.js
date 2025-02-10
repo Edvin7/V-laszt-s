@@ -127,10 +127,10 @@ app.get('/api/user', (req, res) => {
 
 // Szavazat leadása
 app.post('/voting', (req, res) => {
-  const { election_id, candidate_id, vote_hash, user_id } = req.body;
+  const { election_id, party_id, vote_hash, user_id } = req.body;
 
   // Ellenőrizzük, hogy minden szükséges adatot megadtak-e
-  if (!election_id || !candidate_id || !vote_hash || !user_id) {
+  if (!election_id || !party_id || !vote_hash || !user_id) {
     return res.status(400).json({ message: 'Minden mezőt ki kell tölteni!' });
   }
 
@@ -148,8 +148,8 @@ app.post('/voting', (req, res) => {
     }
 
     // Ha még nincs szavazat, akkor rögzítjük a szavazatot
-    const query = 'INSERT INTO votes (election_id, candidate_id, vote_hash, user_id) VALUES (?, ?, ?, ?)';
-    db.query(query, [election_id, candidate_id, vote_hash, user_id], (err, result) => {
+    const query = 'INSERT INTO votes (election_id, party_id, vote_hash, user_id) VALUES (?, ?, ?, ?)';
+    db.query(query, [election_id, party_id, vote_hash, user_id], (err, result) => {
       if (err) {
         console.error('Hiba történt a szavazat mentésekor:', err);
         return res.status(500).json({ message: 'Hiba történt a szavazat leadásakor!' });
@@ -254,11 +254,10 @@ app.get('/election-results', (req, res) => {
   const query = `
     SELECT p.party_id, p.name AS party_name, COUNT(v.vote_id) AS totalVotes
     FROM parties p
-    LEFT JOIN candidates c ON p.name = c.party
-    LEFT JOIN votes v ON c.candidate_id = v.candidate_id
+    LEFT JOIN votes v ON p.party_id = v.party_id
     GROUP BY p.party_id, p.name
     ORDER BY totalVotes DESC;
-  `;
+`;
 
   db.query(query, (err, results) => {
     if (err) {
