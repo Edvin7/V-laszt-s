@@ -2,6 +2,7 @@
     width: 80%;
     margin: auto;
     text-align: center;
+    padding: 30px;
   }
   
   .chart-container {
@@ -10,13 +11,16 @@
     margin: auto;
     height: 400px;
   }
-  
+ 
   .table {
     width: 100%;
     margin-top: 20px;
     border-collapse: collapse;
   }
-  
+  .h11{
+    font-weight: bold;
+    font-size: 40px;
+  }
   .table th, .table td {
     border: 1px solid #ddd;
     padding: 10px;
@@ -24,7 +28,7 @@
   }
   
   .table th {
-    background-color: #4e79a7;
+    background-color: #033473;
     color: white;
   }
   

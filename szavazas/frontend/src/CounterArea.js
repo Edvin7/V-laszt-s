@@ -2,10 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import "./CounterArea.css";
 import CounterUp from "react-countup";
-import mapIcon from "./images/map.png";
-import speechIcon from "./images/speech.png";
-import userIcon from "./images/user.png";
-import democracyIcon from "./images/democracy.png";
+
 
 const CounterArea = () => {
   const [counters, setCounters] = useState([]);

@@ -77,7 +77,7 @@ const Stats = () => {
 
   return (
     <div className="container">
-      <h1>Választási Eredmények</h1>
+      <h1 className="h11">Választási Eredmények</h1>
       <div className="chart-container">
         <canvas ref={chartRef}></canvas>
       </div>

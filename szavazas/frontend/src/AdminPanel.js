@@ -132,19 +132,27 @@ const AdminPanel = () => {
 
   return (
     <div style={{ display: 'flex', height: '100vh', fontFamily: 'Arial, sans-serif' }}>
-      {/* Sidebar */}
-      <div style={{ width: '200px', backgroundColor: '#2c3e50', color: 'white', padding: '20px', display: 'flex', flexDirection: 'column', borderRadius: '10px 0 0 10px' }}>
-        <h2 style={{ fontSize: '22px', marginBottom: '20px' }}>Admin Panel</h2>
-        <div
-          onClick={() => setActiveTab('users')}
-          style={{
-            padding: '10px',
-            cursor: 'pointer',
-            marginBottom: '10px',
-            backgroundColor: activeTab === 'users' ? '#34495e' : 'transparent',
-            borderRadius: '5px',
-          }}
-        >
+  {/* Sidebar */}
+  <div style={{ 
+    width: '200px', 
+    backgroundColor: 'rgb(44, 62, 80)', 
+    color: 'white', 
+    padding: '20px', 
+    display: 'flex', 
+    flexDirection: 'column', 
+    borderRadius: '10px 0 0 10px', 
+    height: '100vh', // Oldalsáv magasságának beállítása
+  }}>
+    <div
+      onClick={() => setActiveTab('users')}
+      style={{
+        padding: '10px',
+        cursor: 'pointer',
+        marginBottom: '10px',
+        backgroundColor: activeTab === 'users' ? '#34495e' : 'transparent',
+        borderRadius: '5px',
+      }}
+    >
           Felhasználók
         </div>
         <div
@@ -293,7 +301,7 @@ const AdminPanel = () => {
                           cursor: 'pointer',
                         }}
                       >
-                        Delete
+                        Törlés
                       </button>
                     </td>
                   </tr>
