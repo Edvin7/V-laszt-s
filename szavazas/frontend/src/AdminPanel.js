@@ -1,78 +1,60 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './AdminPanel.css';  // Saját stílusok hozzáadása
 
 const AdminPanel = () => {
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    setIsMenuOpen(false); // Menü bezárása, ha egy tab-ot választunk
-  };
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const [activeTab, setActiveTab] = useState('users');
 
   return (
-    <div className="admin-panel">
-      {/* Hamburger menu */}
-      <div className={`admin-nav ${isMenuOpen ? 'open' : ''}`}>
-        <button className="menu-toggle" onClick={toggleMenu}>
-          ☰
-        </button>
-        <ul className="nav-list">
-          <li>
-            <Link 
-              to="#" 
-              className={activeTab === 'dashboard' ? 'active' : ''}
-              onClick={() => handleTabChange('dashboard')}
-            >
-              Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link 
-              to="#" 
-              className={activeTab === 'users' ? 'active' : ''}
-              onClick={() => handleTabChange('users')}
-            >
-              Users
-            </Link>
-          </li>
-          <li>
-            <Link 
-              to="#" 
-              className={activeTab === 'settings' ? 'active' : ''}
-              onClick={() => handleTabChange('settings')}
-            >
-              Settings
-            </Link>
-          </li>
-        </ul>
+    <div style={{ display: 'flex', height: '100vh' }}>
+      {/* Sidebar */}
+      <div
+        style={{
+          width: '200px',
+          backgroundColor: '#2c3e50',
+          color: 'white',
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <h2>Admin Panel</h2>
+        <div
+          onClick={() => setActiveTab('users')}
+          style={{ padding: '10px', cursor: 'pointer', marginBottom: '10px' }}
+        >
+          Users
+        </div>
+        <div
+          onClick={() => setActiveTab('votes')}
+          style={{ padding: '10px', cursor: 'pointer', marginBottom: '10px' }}
+        >
+          Votes
+        </div>
+        <div
+          onClick={() => setActiveTab('content')}
+          style={{ padding: '10px', cursor: 'pointer', marginBottom: '10px' }}
+        >
+          Content
+        </div>
       </div>
-      
-      <div className="admin-content">
-        {activeTab === 'dashboard' && (
-          <div className="dashboard">
-            <h2>Dashboard</h2>
-            <p>Welcome to the admin dashboard. Here you can view basic statistics and data.</p>
-          </div>
-        )}
 
+      {/* Content Area */}
+      <div style={{ flex: 1, padding: '20px' }}>
         {activeTab === 'users' && (
-          <div className="users">
-            <h2>User Management</h2>
-            <p>Here you can manage the users of the application.</p>
-            <button className="add-user-btn">Add User</button>
+          <div>
+            <h3>Users</h3>
+            <p>Manage users here...</p>
           </div>
         )}
-
-        {activeTab === 'settings' && (
-          <div className="settings">
-            <h2>Settings</h2>
-            <p>Configure application settings here.</p>
+        {activeTab === 'votes' && (
+          <div>
+            <h3>Votes</h3>
+            <p>Manage votes here...</p>
+          </div>
+        )}
+        {activeTab === 'content' && (
+          <div>
+            <h3>Content</h3>
+            <p>Manage content here...</p>
           </div>
         )}
       </div>
