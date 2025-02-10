@@ -272,7 +272,7 @@ const AdminPanel = () => {
               <thead>
                 <tr style={{ backgroundColor: '#bdc3c7' }}>
                   <th style={{ textAlign: 'left', padding: '10px' }}>Név</th>
-                  <th style={{ textAlign: 'left', padding: '10px' }}>Lerírás</th>
+                  <th style={{ textAlign: 'left', padding: '10px' }}></th>
                   <th style={{ textAlign: 'left', padding: '10px' }}>Műveletek</th>
                 </tr>
               </thead>
