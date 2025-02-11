@@ -321,38 +321,22 @@ app.delete('/api/users/:id', (req, res) => {
   });
 });
 
-// Hozzáadás endpoint
+// Új párt hozzáadása
 app.post('/api/parties', (req, res) => {
   const { name, description } = req.body;
 
-  db.query(
-    'INSERT INTO parties (name, description, votes) VALUES (?, ?, 0)',
-    [name, description],
-    (err, results) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-        return;
-      }
-      res.json({ success: true, message: 'Part hozzáadva' });
-    }
-  );
-});
+  if (!name || !description) {
+    return res.status(400).json({ error: 'A név és a leírás kötelező mezők!' });
+  }
 
-// Törlés endpoint
-app.post('/api/parties', (req, res) => {
-  const { name, description } = req.body;
-
-  db.query(
-    'INSERT INTO parties (name, description, votes) VALUES (?, ?, 0)',
-    [name, description],
-    (err, results) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-        return;
-      }
-      res.json({ success: true, message: 'Part hozzáadva' });
+  const sql = 'INSERT INTO parties (name, description) VALUES (?, ?)';
+  db.query(sql, [name, description], (err, results) => {
+    if (err) {
+      console.error('Adatbázis hiba:', err);
+      return res.status(500).json({ error: 'Hiba történt az adatbázis művelet során.' });
     }
-  );
+    res.status(201).json({ success: true, message: 'Párt sikeresen hozzáadva!' });
+  });
 });
 
 
