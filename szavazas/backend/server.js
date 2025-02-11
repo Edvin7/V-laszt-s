@@ -29,7 +29,7 @@ db.connect((err) => {
   }
   console.log('Sikeresen csatlakoztunk a MySQL adatbázishoz');
 });
-
+   
 // Regisztrációs endpoint
 app.post('/register', (req, res) => {
   const { name, email, pass, personal_id, agreeTerm } = req.body;
