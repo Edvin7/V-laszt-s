@@ -57,7 +57,7 @@ const Contacts = () => {
                 </p>
                 <textarea className="textinput" id="i5vyy-6" placeholder=""></textarea>
               </div>
-            </div>
+            </div>  
             <div className="btn-wrapper">
               <button className="submit-btn">
                 Elküldés
