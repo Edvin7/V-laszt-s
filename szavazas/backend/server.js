@@ -339,6 +339,24 @@ app.post('/api/parties', (req, res) => {
   });
 });
 
+// Párt törlése
+app.delete('/api/parties/:id', (req, res) => {
+  const partyId = req.params.id;
+
+  db.query('DELETE FROM parties WHERE party_id = ?', [partyId], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (results.affectedRows === 0) {
+      res.status(404).json({ error: 'Nem található a párt.' });
+      return;
+    }
+    res.json({ success: true, message: 'Párt sikeresen törölve' });
+  });
+});
+
+
 
 
 
