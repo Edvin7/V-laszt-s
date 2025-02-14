@@ -38,57 +38,44 @@ const Contacts = () => {
 
   return (
     <div className="contact-form-container">
-      <div className="form-wrapper">
-        <h2 className="form-header">Get in Touch</h2>
-        <p className="form-subheader">Please fill out the form below to reach out to us.</p>
-        <form className="contact-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="name" className="form-label">Name</label>
+      <div className="contact-form-wrapper">
+        <h2 className="contact-form-header">Kapcsolat felvétel</h2>
+        <p className="contact-form-subheader">Ha valami hibát észlel, vagy üzenetet szeretne küldeni itt tudja megtenni.</p>
+        <form onSubmit={handleSubmit} className="contact-form">
+          <div className="contact-form-group">
             <input
               type="text"
-              id="name"
               name="name"
+              placeholder="Teljes név"
               value={formData.name}
               onChange={handleChange}
-              className="form-input"
+              className="contact-form-input"
               required
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="email" className="form-label">Email</label>
+          <div className="contact-form-group">
             <input
               type="email"
-              id="email"
               name="email"
+              placeholder="Email cím"
               value={formData.email}
               onChange={handleChange}
-              className="form-input"
+              className="contact-form-input"
               required
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="phone" className="form-label">Phone</label>
-            <input
-              type="text"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className="form-input"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="message" className="form-label">Message</label>
+          
+          <div className="contact-form-group">
             <textarea
-              id="message"
               name="message"
+              placeholder="Üzenet"
               value={formData.message}
               onChange={handleChange}
-              className="form-textarea"
+              className="contact-form-textarea"
               required
-            ></textarea>
+            />
           </div>
-          <button type="submit" className="submit-btn">Submit</button>
+          <button type="submit" className="contact-form-submit">Küldés</button>
         </form>
       </div>
     </div>
