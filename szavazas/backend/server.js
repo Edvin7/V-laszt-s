@@ -235,9 +235,9 @@ app.get('/counters', (req, res) => {
 
         // Válasz küldése a frontend felé
         return res.json([
-          { id: 1, icon: 'https://cdn.jsdelivr.net/gh/Edvin7/V-laszt-s/szavazas/frontend/public/icons/debate.png', value: results.parties, label: 'Pártok' },
+          { id: 1, icon: 'https://cdn.jsdelivr.net/gh/Edvin7/V-laszt-s/szavazas/frontend/public/icons/campaign.png', value: results.parties, label: 'Pártok' },
           { id: 2, icon: 'https://cdn.jsdelivr.net/gh/Edvin7/V-laszt-s/szavazas/frontend/public/icons/friend.png', value: results.users, label: 'Felhasználók' },
-          { id: 3, icon: 'https://cdn.jsdelivr.net/gh/Edvin7/V-laszt-s/szavazas/frontend/public/icons/speech (1).png', value: results.votes, label: 'Leadott Szavazatok' },
+          { id: 3, icon: 'https://cdn.jsdelivr.net/gh/Edvin7/V-laszt-s/szavazas/frontend/public/icons/vote.png', value: results.votes, label: 'Leadott Szavazatok' },
         ]);
         
       });
