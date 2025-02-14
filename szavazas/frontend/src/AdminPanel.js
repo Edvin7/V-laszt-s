@@ -133,52 +133,57 @@ const AdminPanel = () => {
   return (
     <div style={{ display: 'flex', height: '100vh', fontFamily: 'Arial, sans-serif' }}>
   {/* Sidebar */}
-  <div style={{ 
-    width: '200px', 
-    backgroundColor: 'rgb(44, 62, 80)', 
-    color: 'white', 
-    padding: '20px', 
-    display: 'flex', 
-    flexDirection: 'column', 
-    borderRadius: '10px 0 0 10px', 
-    height: '100vh', // Oldalsáv magasságának beállítása
-  }}>
-    <div
-      onClick={() => setActiveTab('users')}
-      style={{
-        padding: '10px',
-        cursor: 'pointer',
-        marginBottom: '10px',
-        backgroundColor: activeTab === 'users' ? '#34495e' : 'transparent',
-        borderRadius: '5px',
+<div style={{ 
+  width: '200px', 
+  backgroundColor: '#033473', 
+  color: 'white', 
+  padding: '20px', 
+  display: 'flex', 
+  flexDirection: 'column', 
+  borderRadius: '10px 0 0 10px', 
+  height: '100vh',
+  fontWeight: 'bold',
+}}>
+  <div
+    onClick={() => setActiveTab('users')}
+    style={{
+      padding: '10px',
+      cursor: 'pointer',
+      marginBottom: '10px',
+      backgroundColor: activeTab === 'users' ? 'white' : 'transparent',
+      color: activeTab === 'users' ? '#033473' : 'white',
+      borderRadius: '5px',
+    }}
+  >
+    Felhasználók
+  </div>
+  <div
+    onClick={() => setActiveTab('votes')}
+    style={{
+      padding: '10px',
+      cursor: 'pointer',
+      marginBottom: '10px',
+      backgroundColor: activeTab === 'votes' ? 'white' : 'transparent',
+      color: activeTab === 'votes' ? '#033473' : 'white',
+      borderRadius: '5px',
+    }}
+  >
+    Időzítő
+  </div>
+  <div
+    onClick={() => setActiveTab('parties')}
+    style={{
+      padding: '10px',
+      cursor: 'pointer',
+      backgroundColor: activeTab === 'parties' ? 'white' : 'transparent',
+      color: activeTab === 'parties' ? '#033473' : 'white', 
+      borderRadius: '5px',
+      fontWeight: 'bold',
       }}
-    >
-          Felhasználók
-        </div>
-        <div
-          onClick={() => setActiveTab('votes')}
-          style={{
-            padding: '10px',
-            cursor: 'pointer',
-            marginBottom: '10px',
-            backgroundColor: activeTab === 'votes' ? '#34495e' : 'transparent',
-            borderRadius: '5px',
-          }}
-        >
-          Időzítő
-        </div>
-        <div
-          onClick={() => setActiveTab('parties')}
-          style={{
-            padding: '10px',
-            cursor: 'pointer',
-            backgroundColor: activeTab === 'parties' ? '#34495e' : 'transparent',
-            borderRadius: '5px',
-          }}
-        >
-          Pártok
-        </div>
-      </div>
+  >
+    Pártok
+  </div>
+</div>
 
       {/* Content Area */}
       <div style={{ flex: 1, padding: '20px' }}>
@@ -186,7 +191,7 @@ const AdminPanel = () => {
           <div style={{ backgroundColor: '#ecf0f1', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ backgroundColor: '#bdc3c7' }}>
+                <tr style={{ backgroundColor: 'rgb(3, 52, 115)', color: 'white' }}>
                   <th style={{ textAlign: 'left', padding: '10px' }}>Név</th>
                   <th style={{ textAlign: 'left', padding: '10px' }}>Email</th>
                   <th style={{ textAlign: 'left', padding: '10px' }}>Személyi ID</th>
@@ -227,7 +232,7 @@ const AdminPanel = () => {
           <div style={{ backgroundColor: '#ecf0f1', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ backgroundColor: '#bdc3c7' }}>
+                <tr style={{ backgroundColor: 'rgb(3, 52, 115)', color:'white'}}>
                   <th style={{ textAlign: 'left', padding: '10px' }}>Óra</th>
                   <th style={{ textAlign: 'left', padding: '10px' }}>Perc</th>
                   <th style={{ textAlign: 'left', padding: '10px' }}>Másodperc</th>
@@ -278,7 +283,7 @@ const AdminPanel = () => {
           <div style={{ backgroundColor: '#ecf0f1', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
                       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ backgroundColor: '#bdc3c7' }}>
+                <tr style={{backgroundColor: 'rgb(3, 52, 115)', color:'white'}}>
                   <th style={{ textAlign: 'left', padding: '10px' }}>Név</th>
                   <th style={{ textAlign: 'left', padding: '10px' }}></th>
                   <th style={{ textAlign: 'left', padding: '10px' }}>Műveletek</th>
