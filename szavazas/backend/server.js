@@ -235,10 +235,11 @@ app.get('/counters', (req, res) => {
 
         // Válasz küldése a frontend felé
         return res.json([
-          { id: 1, icon: 'https://example.com/map-icon.png', value: results.parties, label: 'Pártok' },
-          { id: 2, icon: 'https://example.com/speech-icon.png', value: results.users, label: 'Felhasználók' },
-          { id: 3, icon: 'https://example.com/user-icon.png', value: results.votes, label: 'Leadtott Szavazatok' },
+          { id: 1, icon: 'https://cdn.jsdelivr.net/gh/Edvin7/V-laszt-s/szavazas/frontend/public/icons/debate.png', value: results.parties, label: 'Pártok' },
+          { id: 2, icon: 'https://cdn.jsdelivr.net/gh/Edvin7/V-laszt-s/szavazas/frontend/public/icons/friend.png', value: results.users, label: 'Felhasználók' },
+          { id: 3, icon: 'https://cdn.jsdelivr.net/gh/Edvin7/V-laszt-s/szavazas/frontend/public/icons/speech (1).png', value: results.votes, label: 'Leadott Szavazatok' },
         ]);
+        
       });
     });
   });
