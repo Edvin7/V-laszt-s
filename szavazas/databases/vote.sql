@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Feb 10. 11:55
+-- Létrehozás ideje: 2025. Feb 14. 08:44
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -20,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `vote`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `admin`
+--
+
+CREATE TABLE `admin` (
+  `admin_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `admin`
+--
+
+INSERT INTO `admin` (`admin_id`, `name`, `email`, `password_hash`, `created_at`) VALUES
+(1, 'admin', 'admin@admin.com', '$2y$10$zvOqZ89P7h7bC1sS0qO8oeLPD3wXrP6ksL0Ree5UOyWTqO62JKUta', '2025-02-14 08:43:47');
 
 -- --------------------------------------------------------
 
@@ -189,6 +210,13 @@ INSERT INTO `votes` (`vote_id`, `election_id`, `party_id`, `vote_time`, `vote_ha
 --
 
 --
+-- A tábla indexei `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`admin_id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
 -- A tábla indexei `candidates`
 --
 ALTER TABLE `candidates`
@@ -220,6 +248,12 @@ ALTER TABLE `votes`
 --
 
 --
+-- AUTO_INCREMENT a táblához `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT a táblához `candidates`
 --
 ALTER TABLE `candidates`
@@ -229,7 +263,7 @@ ALTER TABLE `candidates`
 -- AUTO_INCREMENT a táblához `parties`
 --
 ALTER TABLE `parties`
-  MODIFY `party_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `party_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT a táblához `users`
