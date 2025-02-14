@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'; 
 import './Register.css';
-import { Link } from 'react-router-dom'; 
+import { Link, useNavigate } from 'react-router-dom'; 
 import loginImage from './images/loginregister.png'; 
 
 const Register = () => {
@@ -13,6 +13,8 @@ const Register = () => {
     personal_id: '',
     agreeTerm: false,
   });
+
+  const navigate = useNavigate();  // Hozzáadjuk a navigate hook-ot
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -42,24 +44,24 @@ const Register = () => {
       console.log('Regisztráció sikeres:', response.data);
       setFormData({ ...formData, message: response.data.message });
   
+      // Ha a regisztráció sikeres, átirányítjuk a bejelentkezési oldalra
+      setTimeout(() => {
+        navigate('/login');  // 3 másodperc múlva átirányítás
+      }, 3000);
+  
     } catch (error) {
       if (error.response) {
-        // Ha van válasz a backendtőlAA
         console.error('Hiba történt a regisztráció során:', error.response.data);
         alert(`Hiba: ${error.response.data.message || 'Ismeretlen hiba történt.'}`);
       } else if (error.request) {
-        // Ha a kérés elküldésre került, de nem kaptunk választ
         console.error('A kérés nem érkezett vissza:', error.request);
         alert('A kérés nem érkezett vissza. Ellenőrizd a szerver elérhetőségét!');
       } else {
-        // Ha más típusú hiba történt
         console.error('Hiba történt a kérés küldése közben:', error.message);
         alert(`Hiba: ${error.message}`);
       }
     }
   };
-  
-  
 
   return (
     <section className="signup">
@@ -67,7 +69,7 @@ const Register = () => {
         <div className="signup-content">
           <div className="signup-form">
             <h2 className="form-title">Regisztráció</h2>
-            {formData.message && <p>{formData.message}</p>} {/* Üzenet megjelenítése */}
+            {formData.message && <p>{formData.message}</p>}
             <form method="POST" className="register-form" id="register-form" onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="name"><i className="zmdi zmdi-account material-icons-name"></i></label>

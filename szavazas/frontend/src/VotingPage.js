@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importálás
 import './VotingPage.css';
 
 const VotingPage = () => {
   const [selectedParty, setSelectedParty] = useState(null); 
   const [parties, setParties] = useState([]); 
+  const [statusMessage, setStatusMessage] = useState('');  // Üzenet szövege
+  const [statusType, setStatusType] = useState('');  // Hiba vagy siker típusa
+  const [isMessageVisible, setIsMessageVisible] = useState(true); // Az üzenet láthatóságának kezelése
+  const navigate = useNavigate(); // Navigációs hook
 
   // Betöltjük a pártokat az API-ból
   useEffect(() => {
@@ -17,6 +22,8 @@ const VotingPage = () => {
       .then(data => setParties(data))
       .catch((error) => {
         console.error('Hiba történt a pártok betöltésekor:', error);
+        setStatusMessage('Hiba történt a pártok betöltésekor.');
+        setStatusType('error');
       });
   }, []);
 
@@ -39,7 +46,9 @@ const VotingPage = () => {
   
       // Ellenőrizzük, hogy van-e userId
       if (!userId) {
-        alert('A felhasználói ID nem található!');
+        setStatusMessage('A felhasználói ID nem található!');
+        setStatusType('error');
+        setIsMessageVisible(true);
         return;
       }
   
@@ -65,18 +74,27 @@ const VotingPage = () => {
           return response.json();
         })
         .then((data) => {
-          alert(data.message); // Visszajelzés a felhasználónak
+          setStatusMessage(data.message); // Visszajelzés a felhasználónak
+          setStatusType('success');
+          setIsMessageVisible(true);
+          setTimeout(() => setIsMessageVisible(false), 3000); // Az üzenet eltűnik 3 másodperc múlva
+          // Navigálás a statisztika oldalra
+          navigate('/stats'); // Átirányítás a statisztika oldalra
         })
         .catch((error) => {
           console.error('Hiba történt a szavazat leadásakor:', error);
-          alert('Hiba történt a szavazat leadásakor!');
+          setStatusMessage('Ön már szavazott!');
+          setStatusType('error');
+          setIsMessageVisible(true);
+          setTimeout(() => setIsMessageVisible(false), 3000); // Az üzenet eltűnik 3 másodperc múlva
         });
     } else {
-      alert('Kérjük, válasszon egy pártot!');
+      setStatusMessage('Kérjük, válasszon egy pártot!');
+      setStatusType('error');
+      setIsMessageVisible(true);
+      setTimeout(() => setIsMessageVisible(false), 3000); // Az üzenet eltűnik 3 másodperc múlva
     }
   };
-  
-  
 
   return (
     <div className="ballot-wrapper">
@@ -106,6 +124,13 @@ const VotingPage = () => {
           Szavazat leadása
         </button>
       </div>
+
+      {/* Üzenet megjelenítése a bal alsó sarokban */}
+      {statusMessage && isMessageVisible && (
+        <div className={`status-message ${statusType}`}>
+          {statusMessage}
+        </div>
+      )}
     </div>
   );
 };
