@@ -1,76 +1,98 @@
-import React from 'react';
-import './Contacts.css';  
-import './ContactsResponsive.css'
-import Footer from './Footer';  
-import { Link } from 'react-router-dom';
-
+import React, { useState } from 'react';
+import emailjs from 'emailjs-com';
+import './Contacts.css';
 
 const Contacts = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    emailjs.sendForm(
+      'service_mk48q3j',
+      'template_rx0d99h',
+      e.target,
+      'xvGvzwHl7rO8HmBIK'
+    )
+    .then((result) => {
+      alert('Email successfully sent!');
+      console.log(result.text);
+    })
+    .catch((error) => {
+      alert('An error occurred while sending the email!');
+      console.log(error.text);
+    });
+  };
+
   return (
-    <div className="contact_us_green">
-  <div className="responsive-container-block big-container">
-    <div className="responsive-container-block container">
-      <div className="responsive-cell-block wk-tab-12 wk-mobile-12 wk-desk-7 wk-ipadp-10 line" id="i69b-2">
-        <form className="form-box">
-          <div className="container-block form-wrapper">
-            <div className="head-text-box">
-              <p className="text-blk contactus-head">
-                Online Szavazás
-              </p>
-              <p className="text-blk contactus-subhead">
-                Kérjük, vegyen részt az országos online szavazásban! Adja meg az adatokat a szavazás befejezéséhez.
-              </p>
-            </div>
-            <div className="responsive-container-block">
-              <div className="responsive-cell-block wk-ipadp-6 wk-tab-12 wk-mobile-12 wk-desk-6" id="i10mt-6">
-                <p className="text-blk input-title">
-                  NÉV
-                </p>
-                <input className="input" id="ijowk-6" name="FirstName" />
-              </div>
-              <div className="responsive-cell-block wk-desk-6 wk-ipadp-6 wk-tab-12 wk-mobile-12">
-                <p className="text-blk input-title">
-                  VÁLASZTHATÓ OPÍCIÓ
-                </p>
-                <select className="input" name="voteOption">
-                  <option value="option1">Segitség kérés</option>
-                  <option value="option2">Hibajelentés</option>
-                  <option value="option3">Visszajelzés</option>
-                  <option value="option4">Egyéb</option>
-                </select>
-              </div>
-              <div className="responsive-cell-block wk-desk-6 wk-ipadp-6 wk-tab-12 wk-mobile-12">
-                <p className="text-blk input-title">
-                  EMAIL
-                </p>
-                <input className="input" id="ipmgh-6" name="Email" />
-              </div>
-              <div className="responsive-cell-block wk-desk-6 wk-ipadp-6 wk-tab-12 wk-mobile-12">
-                <p className="text-blk input-title">
-                  TELEFONSZÁM
-                </p>
-                <input className="input" id="imgis-5" name="PhoneNumber" />
-              </div>
-              <div className="responsive-cell-block wk-tab-12 wk-mobile-12 wk-desk-12 wk-ipadp-12" id="i634i-6">
-                <p className="text-blk input-title">
-                  MEGJEGYZÉS
-                </p>
-                <textarea className="textinput" id="i5vyy-6" placeholder=""></textarea>
-              </div>
-            </div>
-            <div className="btn-wrapper">
-              <button className="submit-btn">
-                Elküldés
-              </button>
-            </div>
+    <div className="contact-form-container">
+      <div className="form-wrapper">
+        <h2 className="form-header">Get in Touch</h2>
+        <p className="form-subheader">Please fill out the form below to reach out to us.</p>
+        <form className="contact-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="name" className="form-label">Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="form-input"
+              required
+            />
           </div>
+          <div className="form-group">
+            <label htmlFor="email" className="form-label">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="form-input"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="phone" className="form-label">Phone</label>
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="message" className="form-label">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              className="form-textarea"
+              required
+            ></textarea>
+          </div>
+          <button type="submit" className="submit-btn">Submit</button>
         </form>
       </div>
     </div>
-  </div>
-      <Footer />
-    </div>
   );
-}
+};
 
 export default Contacts;
