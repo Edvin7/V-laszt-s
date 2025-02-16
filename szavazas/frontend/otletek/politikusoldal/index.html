@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>János Péter Politikai Profilja</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/scrollreveal"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>János Péter Politikai Profilja</h1>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="profile">
+            <div class="container">
+                <div class="profile-header">
+                    <div class="profile-image">
+                        <img src="Kallo_Mark.jpg" alt="Politikus Kép">
+                    </div>
+                    <div class="profile-info">
+                        <h2>János Péter</h2>
+                        <p class="position">Politikai irányzat: <span class="highlight">Konzervatív</span></p>
+                        <p class="specialization">Szakterület: <span class="highlight">Gazdaság, Oktatás</span></p>
+                        <p class="description">János Péter egy elkötelezett politikai vezető, aki hisz a nemzet erejében és az oktatás fontosságában.</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link">Facebook</a>
+                            <a href="#" class="social-link">Twitter</a>
+                            <a href="#" class="social-link">Instagram</a>
+                            <a href="#" class="social-link">YouTube</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="timeline">
+            <div class="container">
+                <h2>Politikai Évek</h2>
+                <div class="timeline-items">
+                    <div class="timeline-item">
+                        <div class="timeline-circle"></div>
+                        <p><strong>2015</strong>: Kezdte politikai pályafutását a helyi önkormányzatban.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-circle"></div>
+                        <p><strong>2017</strong>: A gazdasági reformok élére állt.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-circle"></div>
+                        <p><strong>2020</strong>: Oktatási miniszter lett.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-circle"></div>
+                        <p><strong>2023</strong>: Nemzetközi gazdasági fórumon képviselte az országot.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="campaigns">
+            <div class="container">
+                <h2>Politikai Kampányok</h2>
+                <div class="campaign-items">
+                    <div class="campaign-item">
+                        <img src="https://via.placeholder.com/400" alt="Kampány 1">
+                        <div class="campaign-info">
+                            <h3>2018-as Kampány</h3>
+                            <p>Ez volt János Péter első országos kampánya, amely a gazdasági reformok fontosságára helyezte a hangsúlyt. A kampány során számos nagyvárosban szerveztek rendezvényeket, ahol a polgárokat tájékoztatták a jövőbeli tervekről.</p>
+                        </div>
+                    </div>
+                    <div class="campaign-item">
+                        <img src="https://via.placeholder.com/400" alt="Kampány 2">
+                        <div class="campaign-info">
+                            <h3>2020-as Oktatási Reform Kampány</h3>
+                            <p>Ebben a kampányban János Péter a magyar oktatás megújítására koncentrált, hangsúlyozva az iskolai infrastruktúra fejlesztését és a tanárok jobb munkakörülményeit.</p>
+                        </div>
+                    </div>
+                    <div class="campaign-item">
+                        <img src="https://via.placeholder.com/400" alt="Kampány 3">
+                        <div class="campaign-info">
+                            <h3>2022-es Gazdasági Fejlődés Kampány</h3>
+                            <p>Az utolsó kampány során János Péter a gazdasági növekedés gyorsítására összpontosított, és a fenntartható fejlődés mellett érvelt. Az üzenete az volt, hogy erősíteni kell a nemzet gazdaságát, hogy minden polgár számára jobb életkörülményeket biztosítson.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+
+    <script>
+        const ctx = document.getElementById('voteChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['2015', '2017', '2020', '2023'],
+                datasets: [{
+                    label: 'Szavazatok (%)',
+                    data: [55, 62, 70, 75],
+                    backgroundColor: ['#2980b9', '#6dd5fa', '#3498db', '#16a085'],
+                    borderColor: ['#2980b9', '#6dd5fa', '#3498db', '#16a085'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        backgroundColor: '#34495e',
+                        titleColor: '#ecf0f1',
+                        bodyColor: '#ecf0f1',
+                        borderColor: '#2980b9',
+                        borderWidth: 1,
+                        padding: 10
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#2980b9',
+                            font: {
+                                size: 14
+                            }
+                        },
+                        grid: {
+                            color: '#ecf0f1',
+                            borderColor: '#ecf0f1'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#2980b9',
+                            font: {
+                                size: 14
+                            }
+                        },
+                        grid: {
+                            color: '#ecf0f1',
+                            borderColor: '#ecf0f1'
+                        }
+                    }
+                }
+            }
+        });
+
+        ScrollReveal().reveal('.profile', { delay: 200, duration: 1000, distance: '50px' });
+        ScrollReveal().reveal('.timeline', { delay: 400, duration: 1000, distance: '50px' });
+        ScrollReveal().reveal('.campaigns', { delay: 600, duration: 1000, distance: '50px' });
+        ScrollReveal().reveal('.vote-results', { delay: 800, duration: 1000, distance: '50px' });
+        ScrollReveal().reveal('.gallery', { delay: 1000, duration: 1000, distance: '50px' });
+    </script>
+</body>
+</html>
