@@ -382,7 +382,8 @@ app.get('/parties', async (req, res) => {
 
 
 //kepek a partokhoz
-app.use('/images', express.static(path.join(__dirname, 'public/images')));
+app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
+
 
 
 // Dummy adatbázis (helyettesítheted egy valódi adatbázissal)
@@ -421,6 +422,7 @@ app.put('/api/users/:id_number/change-password', (req, res) => {
     });
   });
 });
+
 
 // Szerver indítása
 app.listen(port, () => {

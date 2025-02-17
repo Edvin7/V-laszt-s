@@ -36,7 +36,7 @@ const VotingPage = () => {
   const generateVoteHash = () => {
     return Math.random().toString(36).substring(2); // Egyszerű véletlenszerű hash generálása
   };
-  
+
   // Szavazat leadása
   const handleSubmit = () => {
     if (selectedParty) {
@@ -108,8 +108,9 @@ const VotingPage = () => {
               onClick={() => handleVote(party)} // Párt kiválasztása
             >
               <img
-                src={`images/${party.name.toLowerCase()}_logo.png`}
+                src={`http://localhost:3000/images/partieslogo/${party.name.toLowerCase()}.png`} // Dinamikus kép URL
                 alt={`${party.name} logo`}
+                className="party-logo"
               />
               <p>{party.name}</p>
               <div className="vote-wrapper">

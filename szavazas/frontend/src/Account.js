@@ -75,7 +75,6 @@ const Account = () => {
         <p><strong>Email cím:</strong> {userInfo.email}</p>
         <p><strong>Személyi igazolvány szám:</strong> {userInfo.personal_id}</p>
         <p><strong>Regisztráció dátuma:</strong> {userInfo.registered_at}</p>
-        <p><strong>Státusz:</strong> {userInfo.status}</p>
       </div>
 
       {/* Jelszó változtatás */}
