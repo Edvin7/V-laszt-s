@@ -62,8 +62,6 @@ const Main = () => {
             <Route path="/account" element={<Account />} />
             <Route path="/parties" element={<Party />} />
             <Route path="/admin" element={<AdminPanel />} />
-            <Route path="/" element={<VotingPage />} />
-            <Route path="/stats" element={<Stats />} /> {/* Statistika oldal */}
           </Routes>
         </CSSTransition>
       </TransitionGroup>

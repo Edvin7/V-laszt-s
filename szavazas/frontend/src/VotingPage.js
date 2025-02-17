@@ -108,7 +108,10 @@ const VotingPage = () => {
               onClick={() => handleVote(party)} // Párt kiválasztása
             >
               <img
-                src={`http://localhost:3000/images/partieslogo/${party.name.toLowerCase()}.png`} // Dinamikus kép URL
+                src={`/images/partieslogo/${party.photo}`}
+
+
+                // Dinamikus kép URL
                 alt={`${party.name} logo`}
                 className="party-logo"
               />

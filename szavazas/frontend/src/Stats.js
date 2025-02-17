@@ -76,7 +76,7 @@ const Stats = () => {
   if (error) return <p>Hiba: {error}</p>;
 
   return (
-    <div className="container">
+    <div className="ccontainer">
       <h1 className="h11">Választási Eredmények</h1>
       <div className="chart-container">
         <canvas ref={chartRef}></canvas>

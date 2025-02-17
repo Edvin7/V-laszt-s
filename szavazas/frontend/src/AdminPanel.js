@@ -188,7 +188,7 @@ const AdminPanel = () => {
       {/* Content Area */}
       <div style={{ flex: 1, padding: '20px' }}>
         {activeTab === 'users' && (
-          <div style={{ backgroundColor: '#ecf0f1', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+          <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{ backgroundColor: 'rgb(3, 52, 115)', color: 'white' }}>
@@ -229,7 +229,7 @@ const AdminPanel = () => {
         )}
 
         {activeTab === 'votes' && (
-          <div style={{ backgroundColor: '#ecf0f1', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+          <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{ backgroundColor: 'rgb(3, 52, 115)', color:'white'}}>
@@ -280,7 +280,7 @@ const AdminPanel = () => {
         )}
 
         {activeTab === 'parties' && (
-          <div style={{ backgroundColor: '#ecf0f1', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+          <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
                       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{backgroundColor: 'rgb(3, 52, 115)', color:'white'}}>

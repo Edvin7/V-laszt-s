@@ -133,7 +133,8 @@ html, body {
 }
 
 .submit-btn:hover {
-  background-color: #0056b3;
+  background-color: white;
+  color: #003399;
 }
 
 @media (max-width: 768px) {
