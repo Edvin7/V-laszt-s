@@ -384,6 +384,44 @@ app.get('/parties', async (req, res) => {
 //kepek a partokhoz
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
+
+// Dummy adatbázis (helyettesítheted egy valódi adatbázissal)
+const users = [
+  { id: 2, name: 'a', email: 'a@g.c', personal_id: '123', registered_at: '2025-01-07 13:11:12', status: 'active' },
+  { id: 4, name: 'pal', email: 'pal@g.c', personal_id: '123', registered_at: '2025-02-10 11:06:17', status: 'active' },
+  { id: 5, name: 'edv', email: 'edv@g.c', personal_id: '123', registered_at: '2025-02-10 11:06:29', status: 'active' },
+  // ...további felhasználók
+];
+
+// Adatok lekérése
+app.get('/api/users', (req, res) => {
+  res.json(users);
+});
+
+// Jelszó módosító API végpont
+app.put('/api/users/:id_number/change-password', (req, res) => {
+  const { id_number } = req.params;
+  const { password } = req.body;
+
+  // A jelszót először hasheljük
+  bcrypt.hash(password, 10, (err, hashedPassword) => {
+    if (err) {
+      return res.status(500).json({ error: 'Hiba történt a jelszó hashelése közben' });
+    }
+
+    // Jelszó frissítése az adatbázisban
+    const sql = 'UPDATE users SET password_hash = ? WHERE id_number = ?';
+    db.query(sql, [hashedPassword, id_number], (err, result) => {
+      if (err) {
+        return res.status(500).json({ error: 'Hiba történt a jelszó frissítésekor' });
+      }
+
+      // Visszajelzés a frontend számára
+      res.status(200).json({ message: 'A jelszó sikeresen frissítve lett' });
+    });
+  });
+});
+
 // Szerver indítása
 app.listen(port, () => {
   console.log(`Szerver fut a ${port} porton`);

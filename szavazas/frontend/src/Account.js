@@ -1,15 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Account.css';
 
 const Account = () => {
-  const [userInfo, setUserInfo] = useState({
-    name: "Kovács János",
-    email: "janos.kovacs@email.com",
-    phone: "+36 30 123 4567",
-    address: "Budapest, Fő utca 12.",
-  });
-
-  // Profilkép állapota
+  const [userInfo, setUserInfo] = useState(null); // Kezdetben null, mert a felhasználókat lekérdezzük a backendről
   const [profilePic, setProfilePic] = useState(null);
 
   // Jelszó változtatás állapotai
@@ -18,25 +11,47 @@ const Account = () => {
   const [passwordError, setPasswordError] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
 
-  // Jelszó változtatás kezelése
+  // Adatok lekérése a backendről (API hívás)
+  useEffect(() => {
+    fetch('http://localhost:5000/api/users')
+      .then((response) => response.json())
+      .then((data) => {
+        // Például az első felhasználót tároljuk a userInfo állapotban
+        setUserInfo(data[0]);
+      })
+      .catch((error) => console.error('Hiba történt a felhasználók lekérésekor:', error));
+  }, []);
+
+  if (!userInfo) {
+    return <div>Loading...</div>; // Ha még nem töltődtek be az adatok, mutassunk egy betöltés állapotot
+  }
+
+  // Jelszó változtatás kezelése (API hívás)
   const handlePasswordChange = () => {
     if (newPassword !== confirmPassword) {
       setPasswordError("A két jelszó nem egyezik.");
     } else {
       setPasswordError("");
-      alert('A jelszó sikeresen megváltozott!');
-    }
-  };
-
-  // Profilkép módosítás
-  const handleProfilePicChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfilePic(reader.result); // A képet base64 formátumban tároljuk
-      };
-      reader.readAsDataURL(file); // Fájl olvasása base64 formátumban
+      
+      // API hívás a jelszó módosításához
+      fetch(`http://localhost:5000/api/users/${userInfo.id_number}/change-password`, {
+        method: 'PUT', // PUT, mert a meglévő adatokat módosítjuk
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password: newPassword }), // Új jelszó
+      })
+        .then((response) => {
+          if (response.ok) {
+            alert('A jelszó sikeresen megváltozott!');
+          } else {
+            alert('Hiba történt a jelszó változtatásakor.');
+          }
+        })
+        .catch((error) => {
+          console.error('Hiba történt:', error);
+          alert('Hiba történt a jelszó változtatásakor.');
+        });
     }
   };
 
@@ -49,7 +64,7 @@ const Account = () => {
         <input
           type="file"
           accept="image/*"
-          onChange={handleProfilePicChange}
+          onChange={(e) => setProfilePic(URL.createObjectURL(e.target.files[0]))}
           className="file-input"
         />
       </div>
@@ -58,8 +73,9 @@ const Account = () => {
       <div className="user-info">
         <p><strong>Neved:</strong> {userInfo.name}</p>
         <p><strong>Email cím:</strong> {userInfo.email}</p>
-        <p><strong>Telefonszám:</strong> {userInfo.phone}</p>
-        <p><strong>Személyigazolvány szám:</strong> {userInfo.address}</p>
+        <p><strong>Személyi igazolvány szám:</strong> {userInfo.personal_id}</p>
+        <p><strong>Regisztráció dátuma:</strong> {userInfo.registered_at}</p>
+        <p><strong>Státusz:</strong> {userInfo.status}</p>
       </div>
 
       {/* Jelszó változtatás */}
