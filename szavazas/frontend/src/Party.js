@@ -40,7 +40,8 @@ const Stats = () => {
           <div key={party.party_id} className="party-card">
             <div className="party-logo-container">
               <img
-                src={party.image_url || 'https://via.placeholder.com/150'}
+                // Kép elérési útja a public mappában lévő partok logóira
+                src={`/images/partieslogo/${party.photo}`}  // A party.photo itt 'nemzetihaladas.png' vagy más
                 alt={party.name}
                 className="party-logo"
               />
@@ -60,21 +61,10 @@ const Stats = () => {
             <h3>{selectedParty.name}</h3>
             <p>{selectedParty.description}</p>
           </div>
-          
         </div>
       )}
-      <div>
-      
-      </div>
-      
     </div>
-    
   );
 };
-
-<div/>
-  
-
-
 
 export default Stats;

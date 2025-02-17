@@ -3,6 +3,7 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs'); // bcrypt importálása
+const path = require('path');
 
 const app = express();
 const port = 5000;
@@ -357,9 +358,31 @@ app.delete('/api/parties/:id', (req, res) => {
   });
 });
 
+// Adatvédelmi szabályzat lekérdezése
+app.get('/api/privacyTerms', (req, res) => {
+  const query = 'SELECT content FROM privacy_terms WHERE id = 1'; // Feltételezve, hogy az id = 1 a szabályzatot tartalmazó sor
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Hiba a szabályzat lekérdezésekor:', err);
+      return res.status(500).send('Hiba történt az adatbázis lekérdezésekor');
+    }
+    // Válaszként visszaadjuk a szabályzatot
+    res.json({ privacyTerms: results[0].content });
+  });
+});
+
+app.get('/parties', async (req, res) => {
+  const parties = await getPartiesFromDatabase();
+  const partiesWithImageUrls = parties.map(party => ({
+    ...party,
+    photo: `/images/partieslogo/${party.photo}`  // Kép elérési útvonalának beállítása
+  }));
+  res.json(partiesWithImageUrls);
+});
 
 
-
+//kepek a partokhoz
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 // Szerver indítása
 app.listen(port, () => {
