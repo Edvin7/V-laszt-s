@@ -8,7 +8,7 @@ const AdminPanel = () => {
   const [parties, setParties] = useState([]); // Partik
   const [editingUser, setEditingUser] = useState(null);
   const [editingVote, setEditingVote] = useState(null); // Szavazat szerkesztése
-  const [newParty, setNewParty] = useState({ name: '', description: '' });
+  const [newParty, setNewParty] = useState({ name: '', description: '', photo: '' }); // Kép hozzáadása
   const [error, setError] = useState('');
 
   // Fetch users from API
@@ -102,7 +102,7 @@ const AdminPanel = () => {
 
     try {
       await axios.post('/api/parties', newParty);
-      setNewParty({ name: '', description: '' });
+      setNewParty({ name: '', description: '', photo: '' });
       setError('');
       fetchParties(); // Refresh parties list
     } catch (error) {
@@ -120,6 +120,24 @@ const AdminPanel = () => {
     }
   };
 
+  // Handle image file change
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('photo', file);
+  
+      axios.post('/api/upload', formData)
+  .then(response => {
+    setNewParty({ ...newParty, photo: response.data.filePath });
+  })
+  .catch(error => {
+    console.error('Kép feltöltése nem sikerült', error);
+  });
+
+    }
+  };
+  
   useEffect(() => {
     if (activeTab === 'users') {
       fetchUsers();
@@ -132,58 +150,58 @@ const AdminPanel = () => {
 
   return (
     <div style={{ display: 'flex', height: '100vh', fontFamily: 'Arial, sans-serif' }}>
-  {/* Sidebar */}
-<div style={{ 
-  width: '200px', 
-  backgroundColor: '#033473', 
-  color: 'white', 
-  padding: '20px', 
-  display: 'flex', 
-  flexDirection: 'column', 
-  borderRadius: '10px 0 0 10px', 
-  height: '100vh',
-  fontWeight: 'bold',
-}}>
-  <div
-    onClick={() => setActiveTab('users')}
-    style={{
-      padding: '10px',
-      cursor: 'pointer',
-      marginBottom: '10px',
-      backgroundColor: activeTab === 'users' ? 'white' : 'transparent',
-      color: activeTab === 'users' ? '#033473' : 'white',
-      borderRadius: '5px',
-    }}
-  >
-    Felhasználók
-  </div>
-  <div
-    onClick={() => setActiveTab('votes')}
-    style={{
-      padding: '10px',
-      cursor: 'pointer',
-      marginBottom: '10px',
-      backgroundColor: activeTab === 'votes' ? 'white' : 'transparent',
-      color: activeTab === 'votes' ? '#033473' : 'white',
-      borderRadius: '5px',
-    }}
-  >
-    Időzítő
-  </div>
-  <div
-    onClick={() => setActiveTab('parties')}
-    style={{
-      padding: '10px',
-      cursor: 'pointer',
-      backgroundColor: activeTab === 'parties' ? 'white' : 'transparent',
-      color: activeTab === 'parties' ? '#033473' : 'white', 
-      borderRadius: '5px',
-      fontWeight: 'bold',
-      }}
-  >
-    Pártok
-  </div>
-</div>
+      {/* Sidebar */}
+      <div style={{ 
+        width: '200px', 
+        backgroundColor: '#033473', 
+        color: 'white', 
+        padding: '20px', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        borderRadius: '10px 0 0 10px', 
+        height: '100vh',
+        fontWeight: 'bold',
+      }}>
+        <div
+          onClick={() => setActiveTab('users')}
+          style={{
+            padding: '10px',
+            cursor: 'pointer',
+            marginBottom: '10px',
+            backgroundColor: activeTab === 'users' ? 'white' : 'transparent',
+            color: activeTab === 'users' ? '#033473' : 'white',
+            borderRadius: '5px',
+          }}
+        >
+          Felhasználók
+        </div>
+        <div
+          onClick={() => setActiveTab('votes')}
+          style={{
+            padding: '10px',
+            cursor: 'pointer',
+            marginBottom: '10px',
+            backgroundColor: activeTab === 'votes' ? 'white' : 'transparent',
+            color: activeTab === 'votes' ? '#033473' : 'white',
+            borderRadius: '5px',
+          }}
+        >
+          Időzítő
+        </div>
+        <div
+          onClick={() => setActiveTab('parties')}
+          style={{
+            padding: '10px',
+            cursor: 'pointer',
+            backgroundColor: activeTab === 'parties' ? 'white' : 'transparent',
+            color: activeTab === 'parties' ? '#033473' : 'white', 
+            borderRadius: '5px',
+            fontWeight: 'bold',
+          }}
+        >
+          Pártok
+        </div>
+      </div>
 
       {/* Content Area */}
       <div style={{ flex: 1, padding: '20px' }}>
@@ -232,32 +250,18 @@ const AdminPanel = () => {
           <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ backgroundColor: 'rgb(3, 52, 115)', color:'white'}}>
+                <tr style={{ backgroundColor: 'rgb(3, 52, 115)', color:'white' }}>
                   <th style={{ textAlign: 'left', padding: '10px' }}>Óra</th>
                   <th style={{ textAlign: 'left', padding: '10px' }}>Perc</th>
-                  <th style={{ textAlign: 'left', padding: '10px' }}>Másodperc</th>
+                  <th style={{ textAlign: 'left', padding: '10px' }}>Műveletek</th>
                 </tr>
               </thead>
               <tbody>
                 {votes.map((vote) => (
                   <tr key={vote.id} style={{ borderBottom: '1px solid #ddd' }}>
-                    <td style={{ padding: '10px' }}>{vote.candidate}</td>
-                    <td style={{ padding: '10px' }}>{vote.vote_count}</td>
+                    <td style={{ padding: '10px' }}>{vote.hour}</td>
+                    <td style={{ padding: '10px' }}>{vote.minute}</td>
                     <td style={{ padding: '10px' }}>
-                      <button
-                        onClick={() => updateVote(vote.id)}
-                        style={{
-                          padding: '8px 16px',
-                          backgroundColor: '#f39c12',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '5px',
-                          cursor: 'pointer',
-                          marginRight: '10px',
-                        }}
-                      >
-                        Edit
-                      </button>
                       <button
                         onClick={() => deleteVote(vote.id)}
                         style={{
@@ -281,22 +285,71 @@ const AdminPanel = () => {
 
         {activeTab === 'parties' && (
           <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
-                      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <h3>Új párt hozzáadása</h3>
+            <div>
+              <input
+                type="text"
+                placeholder="Párt neve"
+                value={newParty.name}
+                onChange={(e) => setNewParty({ ...newParty, name: e.target.value })}
+                style={{ padding: '8px', marginBottom: '10px', width: '100%' }}
+              />
+            </div>
+            <div>
+              <textarea
+                placeholder="Párt leírása"
+                value={newParty.description}
+                onChange={(e) => setNewParty({ ...newParty, description: e.target.value })}
+                style={{ padding: '8px', marginBottom: '10px', width: '100%', height: '100px' }}
+              />
+            </div>
+            <div>
+              <input
+                type="file"
+                onChange={handleFileChange}
+                style={{ marginBottom: '10px'}}
+              />
+            </div>
+            <button
+              onClick={addParty}
+              style={{
+                padding: '8px 16px',
+                backgroundColor: '#033473',
+                color: 'white',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                marginBlock:'15px'
+              }}
+            >
+              Hozzáadás
+            </button>
+            {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+
+    
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{backgroundColor: 'rgb(3, 52, 115)', color:'white'}}>
-                  <th style={{ textAlign: 'left', padding: '10px' }}>Név</th>
-                  <th style={{ textAlign: 'left', padding: '10px' }}></th>
+                <tr style={{ backgroundColor: 'rgb(3, 52, 115)', color: 'white' }}>
+                  <th style={{ textAlign: 'left', padding: '10px' }}>Párt neve</th>
+                  <th style={{ textAlign: 'left', padding: '10px' }}>Leírás</th>
+                  <th style={{ textAlign: 'left', padding: '10px' }}>Kép</th>
                   <th style={{ textAlign: 'left', padding: '10px' }}>Műveletek</th>
                 </tr>
               </thead>
               <tbody>
                 {parties.map((party) => (
-                  <tr key={party.party_id} style={{ borderBottom: '1px solid #ddd' }}>
+                  <tr key={party.id} style={{ borderBottom: '1px solid #ddd' }}>
                     <td style={{ padding: '10px' }}>{party.name}</td>
                     <td style={{ padding: '10px' }}>{party.description}</td>
                     <td style={{ padding: '10px' }}>
+                      {party.photo && (
+                        <img src={party.photo} alt={party.name} style={{ width: '100px', height: 'auto' }} />
+                      )}
+                    </td>
+                    <td style={{ padding: '10px' }}>
                       <button
-                        onClick={() => deleteParty(party.party_id)}
+                        onClick={() => deleteParty(party.id)}
                         style={{
                           padding: '8px 16px',
                           backgroundColor: '#e74c3c',
@@ -313,48 +366,6 @@ const AdminPanel = () => {
                 ))}
               </tbody>
             </table>
-            <div style={{ marginBottom: '20px' }}>
-              <h4 style={{ fontSize: '20px', marginBottom: '10px' }}>Új Párt Hozzáadása</h4>
-              {error && <p style={{ color: 'red' }}>{error}</p>}
-              <input
-                type="text"
-                placeholder="Párt neve"
-                value={newParty.name}
-                onChange={(e) => setNewParty({ ...newParty, name: e.target.value })}
-                style={{
-                  padding: '10px',
-                  width: '100%',
-                  marginBottom: '10px',
-                  borderRadius: '5px',
-                  border: '1px solid #ccc',
-                }}
-              />
-              <textarea
-                placeholder="Párt leírása"
-                value={newParty.description}
-                onChange={(e) => setNewParty({ ...newParty, description: e.target.value })}
-                style={{
-                  padding: '10px',
-                  width: '100%',
-                  borderRadius: '5px',
-                  border: '1px solid #ccc',
-                }}
-              />
-              <button
-                onClick={addParty}
-                style={{
-                  padding: '10px 20px',
-                  backgroundColor: '#3498db',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '5px',
-                  cursor: 'pointer',
-                  marginTop: '10px',
-                }}
-              >
-                Párt hozzáadása
-              </button>
-            </div>
           </div>
         )}
       </div>

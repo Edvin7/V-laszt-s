@@ -4,7 +4,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs'); // bcrypt importálása
 const path = require('path');
-
+const multer = require('multer');
+const fs = require('fs');
 const app = express();
 const port = 5000;
 
@@ -438,7 +439,36 @@ app.get('/parties/:id', (req, res) => {
   });
 });
 
+// Multer konfiguráció a képfeltöltéshez
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/images/partieslogo/'); // Képek mentése a 'public/images/partieslogo' mappába
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Egyedi fájlnév generálása
+  }
+});
 
+const upload = multer({ storage });
+
+// API végpont a kép feltöltéséhez
+app.post('/api/upload', upload.single('photo'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('No file uploaded.');
+  }
+  res.json({ filePath: `/images/partieslogo/${req.file.filename}` }); // A képet visszaküldjük a frontendnek
+});
+
+// További API végpontok, pl. a pártok listázása, hozzáadása stb.
+app.post('/api/parties', (req, res) => {
+  // Itt helyezheted el a pártok hozzáadásához tartozó logikát
+  res.send('Párt hozzáadása');
+});
+
+// Alapértelmezett válasz
+app.get('/', (req, res) => {
+  res.send('Hello from server!');
+});
 
 // Szerver indítása
 app.listen(port, () => {
