@@ -1,107 +1,146 @@
-/* Alap színek és fontok */
+/* Alap színek */
 :root {
-    --vivid-blue: #0052cc; /* Friss, erős kék */
-    --neon-green: #00ff00; /* Neon zöld */
-    --light-gray: #fafafa; /* Világos szürke háttér */
-    --deep-orange: #ff5733; /* Mély narancs szín */
-    --pure-white: #ffffff; /* Tiszta fehér */
-    --dark-charcoal: #222222; /* Sötét szénszürke */
-    --alert-red: #ff4f4f; /* Hibaszín */
-    --sunshine-yellow: #ffcc00; /* Napfény sárga */
-  }
-  
-  /* Wrapper a party részletekhez */
-  .party-blast-container {
-    width: 85%;
-    margin: 0 auto;
-    background-color: var(--light-gray);
-    border-radius: 15px;
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
-    padding: 30px 0;
-  }
-  
-  /* Fő fejléckép és címek */
-  .party-header-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-  }
-  
-  .party-title-explosion {
-    font-size: 2.8rem;
-    color: var(--vivid-blue);
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  
-  .party-icon-frame {
-    width: 120px;
-    height: 120px;
-    background-color: var(--neon-green);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
-  }
-  
-  .party-main-logo {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid var(--vivid-blue);
-  }
-  
-  /* A party adatok részletes bemutatása */
-  .party-facts-container {
-    font-size: 1.1rem;
-    color: var(--dark-charcoal);
-    line-height: 1.8;
-    margin-top: 30px;
-  }
-  
-  .party-facts-container p {
-    margin-bottom: 15px;
-  }
-  
-  .party-facts-container strong {
-    color: var(--deep-orange);
-    font-weight: 600;
-  }
-  
-  /* Betöltési spinner */
-  .spinner-load {
-    text-align: center;
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: var(--sunshine-yellow);
-  }
-  
-  /* Hibajelzés */
-  .error-blip {
-    color: var(--alert-red);
-    font-size: 1.5rem;
-    text-align: center;
-    font-weight: bold;
-  }
-  
-  /* Media query: Mobil optimalizálás */
-  @media (max-width: 768px) {
-    .party-header-section {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    
-    .party-title-explosion {
-      font-size: 2.2rem;
-    }
-  
-    .party-facts-container {
-      font-size: 1rem;
-    }
-  }
-  
+  --primary-color: #003366; /* Sötétkék */
+  --secondary-color: #c39b6b; /* Arany */
+  --background-color: #f5f5f5; /* Világos szürke */
+  --text-color: #333333;
+}
+
+/* Alap stílusok */
+body {
+  font-family: 'Lora', serif;
+  background-color: var(--background-color);
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+}
+
+/* Oldal konténer */
+.page-container {
+  width: 85%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+/* Fejléc */
+.header-section {
+  background-color: var(--primary-color);
+  color: white;
+  text-align: center;
+  padding: 30px 0;
+  border-radius: 10px 10px 0 0;
+}
+
+.header-section h1 {
+  font-size: 2.5rem;
+  font-family: 'Merriweather', serif;
+}
+
+/* Profil szekció */
+.profile {
+  padding: 30px 0;
+  text-align: center;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.profile-image img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 4px solid var(--primary-color);
+}
+
+.profile-info {
+  max-width: 600px;
+  text-align: left;
+  font-family: 'Merriweather', serif;
+}
+
+.profile-info h2 {
+  font-size: 2.2rem;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.profile-info .position,
+.profile-info .specialization {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.profile-info .description {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Idővonal */
+.timeline {
+  background-color: #fff;
+  padding: 30px;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.timeline h2 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.timeline ul {
+  list-style-type: none;
+  padding: 0;
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.timeline li {
+  margin: 10px 0;
+}
+
+.timeline .year {
+  font-weight: bold;
+  color: var(--secondary-color);
+}
+
+/* Kampányok szekció */
+.campaigns {
+  padding: 30px;
+  background-color: var(--background-color);
+  border: 1px solid #ddd;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+
+.campaigns h2 {
+  font-size: 2rem;
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.campaigns p {
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+/* Betöltés és hibaüzenetek */
+.loading-message,
+.error-message {
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  padding: 20px;
+}

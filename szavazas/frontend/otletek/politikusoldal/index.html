@@ -1,208 +1,78 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>János Péter Politikai Profilja</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header class="header">
-        <div class="container">
-            <h1>János Péter Politikai Profilja</h1>
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import './PartyDetails.css';
+
+const PartyDetails = () => {
+  const { id } = useParams();
+  const [party, setParty] = useState(null);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchPartyDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/parties/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch party details');
+        }
+        const data = await response.json();
+        setParty(data);
+      } catch (error) {
+        console.error('Error fetching party details:', error);
+        setError('Failed to load party details');
+      }
+    };
+
+    fetchPartyDetails();
+  }, [id]);
+
+  if (error) {
+    return <div className="error-message">Uh-oh! Something went wrong.</div>;
+  }
+
+  return (
+    <div className="page-container">
+      {party ? (
+        <div className="card-container">
+          <header className="header-section">
+            <h1 className="party-name">{party.name} Politikai Profilja</h1>
+          </header>
+
+          <section className="profile">
+            <div className="profile-header">
+              <div className="profile-image">
+                <img 
+                  src={`/images/partieslogo/${party.photo}`} 
+                  alt={party.name} 
+                  className="party-logo"
+                />
+              </div>
+              <div className="profile-info">
+                <h2>{party.name}</h2>
+                <p className="position">Politikai irányzat: <strong>{party.political_ideology}</strong></p>
+                <p className="specialization">Szakterület: <strong>{party.political_campaigns}</strong></p>
+                <p className="description">{party.description}</p>
+              </div>
+            </div>
+          </section>
+
+          <section className="timeline">
+            <h2>Politikai Évek</h2>
+            <ul>
+              <li><span className="year">{party.political_years}</span> éve a politikában</li>
+              <li>{party.political_year_description}</li>
+            </ul>
+          </section>
+
+          <section className="campaigns">
+            <h2>Politikai Kampányok</h2>
+            <p>{party.political_campaign_description}</p>
+          </section>
         </div>
-    </header>
+      ) : (
+        <div className="loading-message">Loading...</div>
+      )}
+    </div>
+  );
+};
 
-    <main class="main-content">
-        <section class="profile">
-            <div class="container">
-                <div class="profile-header">
-                    <div class="profile-image">
-                        <img src="Kallo_Mark.jpg" alt="János Péter" />
-                    </div>
-                    <div class="profile-info">
-                        <h2>János Péter</h2>
-                        <p class="position">Politikai irányzat: <strong>Konzervatív</strong></p>
-                        <p class="specialization">Szakterület: <strong>Gazdaság és Oktatás</strong></p>
-                        <p class="description">János Péter egy tapasztalt politikus, aki az ország gazdasági és oktatási reformjaiért dolgozik.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="timeline">
-            <div class="container">
-                <h2>Politikai Évek</h2>
-                <ul>
-                    <li><span class="year">2015</span>: Kezdte politikai pályafutását helyi önkormányzatban.</li>
-                    <li><span class="year">2017</span>: A gazdasági reformok élére állt.</li>
-                    <li><span class="year">2020</span>: Oktatási miniszter lett.</li>
-                    <li><span class="year">2023</span>: Nemzetközi gazdasági fórumokon képviselte Magyarországot.</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="campaigns">
-            <div class="container">
-                <h2>Politikai Kampányok</h2>
-                <div class="campaign-item">
-                    <h3>2018-as Kampány</h3>
-                    <p>A kampány fókusza a gazdasági reformokon volt, hogy erősíteni tudja az ország gazdaságát és biztosítja a jövő generációjának lehetőségeit.</p>
-                </div>
-                <div class="campaign-item">
-                    <h3>2020-as Oktatási Reform Kampány</h3>
-                    <p>Az oktatás reformja a fiatalok jövőjét helyezte előtérbe, célja a minőségi oktatás biztosítása minden fiatal számára.</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 János Péter. Minden jog fenntartva.</p>
-        </div>
-    </footer>
-
-</body>
-</html>
-
-<style>
-/* Alap színek */
-:root {
-    --primary-color: #003366; /* Sötétkék */
-    --secondary-color: #c39b6b; /* Arany */
-    --background-color: #f5f5f5; /* Világos szürke */
-    --text-color: #333333;
-}
-
-/* Alap stílusok */
-body {
-    font-family: 'Lora', serif;
-    background-color: var(--background-color);
-    margin: 0;
-    padding: 0;
-    color: var(--text-color);
-}
-
-/* Konténer */
-.container {
-    width: 85%;
-    margin: 0 auto;
-}
-
-/* Fejléc */
-.header {
-    background-color: var(--primary-color);
-    color: white;
-    text-align: center;
-    padding: 30px 0;
-}
-
-.header h1 {
-    font-size: 2.5rem;
-    font-family: 'Merriweather', serif;
-}
-
-/* Profil szekció */
-.profile {
-    padding: 50px 0;
-    background-color: white;
-}
-
-.profile-header {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    justify-content: center;
-}
-
-.profile-image img {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    border: 4px solid var(--primary-color);
-}
-
-.profile-info {
-    max-width: 600px;
-    font-family: 'Merriweather', serif;
-}
-
-.profile-info h2 {
-    font-size: 2.2rem;
-    margin-bottom: 10px;
-}
-
-.profile-info .position,
-.profile-info .specialization {
-    font-size: 1.1rem;
-    margin-bottom: 8px;
-}
-
-.profile-info .description {
-    font-size: 1rem;
-    line-height: 1.6;
-}
-
-/* Idővonal */
-.timeline {
-    background-color: #fff;
-    padding: 50px 0;
-}
-
-.timeline h2 {
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.timeline ul {
-    list-style-type: none;
-    padding: 0;
-    font-size: 1.1rem;
-    line-height: 1.8;
-}
-
-.timeline li {
-    margin: 15px 0;
-}
-
-.timeline .year {
-    font-weight: bold;
-    color: var(--secondary-color);
-}
-
-/* Kampányok szekció */
-.campaigns {
-    padding: 50px 0;
-    background-color: var(--background-color);
-}
-
-.campaign-item {
-    background-color: white;
-    border: 1px solid #ddd;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-}
-
-.campaign-item h3 {
-    font-size: 1.8rem;
-    color: var(--primary-color);
-    margin-bottom: 10px;
-}
-
-.campaign-item p {
-    font-size: 1rem;
-    line-height: 1.6;
-}
-
-/* Lábléc */
-.footer {
-    background-color: var(--primary-color);
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-}
-</style>
+export default PartyDetails;

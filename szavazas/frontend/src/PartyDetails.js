@@ -26,35 +26,51 @@ const PartyDetails = () => {
   }, [id]);
 
   if (error) {
-    return <div className="error-blip">Uh-oh! Something went wrong.</div>;
+    return <div className="error-message">Uh-oh! Something went wrong.</div>;
   }
 
   return (
-    <div className="party-blast-container">
+    <div className="page-container">
       {party ? (
-        <div className="party-details-pod">
-          <div className="party-header-section">
-            <h1 className="party-title-explosion">{party.name}</h1>
-            <div className="party-icon-frame">
-              <img
-                src={`/images/partieslogo/${party.photo}`}
-                alt={party.name}
-                className="party-main-logo"
-              />
+        <div className="card-container">
+          <header className="header-section">
+            <h1 className="party-name">{party.name} Politikai Profilja</h1>
+          </header>
+
+          <section className="profile">
+            <div className="profile-header">
+              <div className="profile-image">
+                <img 
+                  src={`/images/partieslogo/${party.photo}`} 
+                  alt={party.name} 
+                  className="party-logo"
+                />
+              </div>
+              <div className="profile-info">
+                <h2>{party.name}</h2>
+                <p className="position">Politikai irányzat: <strong>{party.political_ideology}</strong></p>
+                <p className="specialization">Szakterület: <strong>{party.political_campaigns}</strong></p>
+                <p className="description">{party.description}</p>
+              </div>
             </div>
-          </div>
-          
-          <div className="party-facts-container">
-            <p><strong>Description:</strong> {party.description}</p>
-            <p><strong>Ideology:</strong> {party.political_ideology}</p>
-            <p><strong>Years in Politics:</strong> {party.political_years}</p>
-            <p><strong>Campaigns:</strong> {party.political_campaigns}</p>
-            <p><strong>Campaign Description:</strong> {party.political_campaign_description}</p>
-            <p><strong>Year Description:</strong> {party.political_year_description}</p>
-          </div>
+          </section>
+
+          <section className="timeline">
+            <h2>Politikai Évek</h2>
+            <ul>
+              <li><span className="year">{party.political_years}</span> éve a politikában</li>
+              <li>{party.political_year_description}</li>
+            </ul>
+          </section>
+
+          <section className="campaigns">
+            <h2>Politikai Kampányok</h2>
+            <p>{party.political_campaign_description}</p>
+          </section>
+
         </div>
       ) : (
-        <div className="spinner-load">Loading...</div>
+        <div className="loading-message">Loading...</div>
       )}
     </div>
   );
