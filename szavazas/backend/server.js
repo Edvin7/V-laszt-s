@@ -2,7 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcryptjs'); // bcrypt importálása
+const bcrypt = require('bcryptjs');
 const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
@@ -19,9 +19,9 @@ app.use(bodyParser.json()); // JSON kérések kezelése
 // MySQL kapcsolat beállítása
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'root', // a MySQL felhasználó neve
-  password: '', // a MySQL jelszó
-  database: 'vote', // az adatbázis neve
+  user: 'root',
+  password: '',
+  database: 'vote',
 });
 
 db.connect((err) => {
@@ -163,8 +163,6 @@ app.post('/voting', (req, res) => {
   });
 });
 
-
-
 // Új endpoint a pártok adatainak lekérésére
 app.get('/parties', (req, res) => {
     const query = 'SELECT * FROM parties'; // A parties tábla adatainak lekérése
@@ -189,8 +187,6 @@ app.get('/parties', (req, res) => {
     });
   });
  
-  
-
   app.get('/voting', (req, res) => {
     const query = 'SELECT * FROM parties';
     db.query(query, (err, results) => {
@@ -246,11 +242,7 @@ app.get('/counters', (req, res) => {
     });
   });
 });
-
-
-
-
-  
+ 
 // API végpont a választási eredmények lekéréséhez
 app.get('/election-results', (req, res) => {
   // SQL lekérdezés a pártokra leadott szavazatok összegzésére
@@ -276,7 +268,6 @@ app.get('/election-results', (req, res) => {
     })));
   });
 });
-
 
 // Get all users
 app.get('/api/users', (req, res) => {
