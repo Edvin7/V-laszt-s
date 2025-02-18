@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 import "./Stats.css";
+import Footer from "./Footer";
 
 const Stats = () => {
   const chartRef = useRef(null);
@@ -9,7 +10,7 @@ const Stats = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/election-results") // Backend végpont meghívása
+    fetch("http://localhost:3000/election-results")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Hálózati hiba történt");
@@ -62,7 +63,7 @@ const Stats = () => {
               beginAtZero: true,
               ticks: {
                 callback: function (value) {
-                  return value.toLocaleString(); // Szép formázás
+                  return value.toLocaleString();
                 },
               },
             },
@@ -101,6 +102,7 @@ const Stats = () => {
           ))}
         </tbody>
       </table>
+      <Footer />
     </div>
   );
 };

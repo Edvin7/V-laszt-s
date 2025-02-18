@@ -1,18 +1,15 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import './BackButton.css';
 
 const BackButton = () => {
-  const navigate = useNavigate();
-
   const handleBackClick = () => {
-    window.scrollTo(0, 0);  // Ugrás a lap tetejére
-    navigate(-1);  // Visszalépés az előző oldalra
+    window.history.back();  // Visszalépés a böngésző előző oldalára
   };
 
   return (
-    <div className="back-button" onClick={handleBackClick}>
-      <div className="arrow"></div>  
-    </div>
+    <button className="side-back-btn" onClick={handleBackClick}>
+      <span>&#8636;</span>
+    </button>
   );
 };
 

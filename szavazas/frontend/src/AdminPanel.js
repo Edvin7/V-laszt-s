@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import BackButton from './BackButton';
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('users');
@@ -150,6 +151,7 @@ const AdminPanel = () => {
 
   return (
     <div style={{ display: 'flex', height: '100vh', fontFamily: 'Arial, sans-serif' }}>
+      <BackButton/>
       {/* Sidebar */}
       <div style={{ 
         width: '200px', 

@@ -55,6 +55,7 @@ const Partyies = () => {
           </div>
         ))}
       </div>
+      <Footer/>
     </div>
   );
 };
