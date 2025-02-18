@@ -33,8 +33,7 @@ const PartyDetails = () => {
     <div className="page-container">
       {party ? (
         <div className="card-container">
-          <header className="header-section">
-          </header>
+       
 
           <section className="profile">
             <div className="profile-header">
@@ -53,18 +52,7 @@ const PartyDetails = () => {
             </div>
           </section>
 
-          <section className="timeline">
-            <h2>Politikai Évek</h2>
-            <ul>
-              {/* Az évek és leírások most külön sorokban jelennek meg */}
-              <li>
-                <div className="timeline-entry">
-                  <span className="year">{party.political_years}</span>
-                  <p>{party.political_year_description}</p>
-                </div>
-              </li>
-            </ul>
-          </section>
+          
 
           <section className="campaigns">
             <h2><strong className='kamp'>Politikai Kampányok</strong></h2>

@@ -68,10 +68,11 @@ body {
 .cim{
   font-weight: bold;
   color: #033473;
+  font-size: 1.2rem;
 }
 .profile-info .position,
 .profile-info .specialization {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   margin-bottom: 8px;
 
 }
@@ -79,7 +80,7 @@ body {
   color:  #033473;
 }
 .profile-info .description {
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.6;
   font-family: "Poppins", sans-serif;
 }
@@ -93,7 +94,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-weight: bold;
+  
 }
 
 .timeline h2 {
@@ -131,6 +132,7 @@ body {
 .timeline-entry p {
   margin: 0; /* Nincs extra margó */
   line-height: 1.6;
+  
 }
 
 /* Kampányok szekció */
