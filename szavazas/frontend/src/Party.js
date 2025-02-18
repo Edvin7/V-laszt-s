@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // A useNavigate importálása
 import './Party.css';
 import Footer from './Footer';
 
-const Stats = () => {
+const Partyies = () => {
   const [parties, setParties] = useState([]);
-  const [selectedParty, setSelectedParty] = useState(null);
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // A navigate hook, hogy átirányíthassunk egy új oldalra
 
   useEffect(() => {
     const fetchParties = async () => {
@@ -25,8 +26,9 @@ const Stats = () => {
     fetchParties();
   }, []);
 
-  const closeModal = () => {
-    setSelectedParty(null);
+  const handleViewMore = (partyId) => {
+    // A partyId segítségével átirányítjuk a részletes oldalra
+    navigate(`/party/${partyId}`);
   };
 
   return (
@@ -47,24 +49,14 @@ const Stats = () => {
               />
             </div>
             <h3 className="party-name">{party.name}</h3>
-            <button className="view-more-button" onClick={() => setSelectedParty(party)}>
+            <button className="view-more-button" onClick={() => handleViewMore(party.party_id)}>
               Több információ
             </button>
           </div>
         ))}
       </div>
-
-      {selectedParty && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-modal" onClick={closeModal}>X</button>
-            <h3>{selectedParty.name}</h3>
-            <p>{selectedParty.description}</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
-export default Stats;
+export default Partyies;

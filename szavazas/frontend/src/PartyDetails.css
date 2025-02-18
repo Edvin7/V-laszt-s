@@ -1,0 +1,107 @@
+/* Alap színek és fontok */
+:root {
+    --vivid-blue: #0052cc; /* Friss, erős kék */
+    --neon-green: #00ff00; /* Neon zöld */
+    --light-gray: #fafafa; /* Világos szürke háttér */
+    --deep-orange: #ff5733; /* Mély narancs szín */
+    --pure-white: #ffffff; /* Tiszta fehér */
+    --dark-charcoal: #222222; /* Sötét szénszürke */
+    --alert-red: #ff4f4f; /* Hibaszín */
+    --sunshine-yellow: #ffcc00; /* Napfény sárga */
+  }
+  
+  /* Wrapper a party részletekhez */
+  .party-blast-container {
+    width: 85%;
+    margin: 0 auto;
+    background-color: var(--light-gray);
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+    padding: 30px 0;
+  }
+  
+  /* Fő fejléckép és címek */
+  .party-header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+  
+  .party-title-explosion {
+    font-size: 2.8rem;
+    color: var(--vivid-blue);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  
+  .party-icon-frame {
+    width: 120px;
+    height: 120px;
+    background-color: var(--neon-green);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .party-main-logo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--vivid-blue);
+  }
+  
+  /* A party adatok részletes bemutatása */
+  .party-facts-container {
+    font-size: 1.1rem;
+    color: var(--dark-charcoal);
+    line-height: 1.8;
+    margin-top: 30px;
+  }
+  
+  .party-facts-container p {
+    margin-bottom: 15px;
+  }
+  
+  .party-facts-container strong {
+    color: var(--deep-orange);
+    font-weight: 600;
+  }
+  
+  /* Betöltési spinner */
+  .spinner-load {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--sunshine-yellow);
+  }
+  
+  /* Hibajelzés */
+  .error-blip {
+    color: var(--alert-red);
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  /* Media query: Mobil optimalizálás */
+  @media (max-width: 768px) {
+    .party-header-section {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .party-title-explosion {
+      font-size: 2.2rem;
+    }
+  
+    .party-facts-container {
+      font-size: 1rem;
+    }
+  }
+  

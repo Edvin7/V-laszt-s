@@ -360,7 +360,7 @@ app.delete('/api/parties/:id', (req, res) => {
 
 // Adatvédelmi szabályzat lekérdezése
 app.get('/api/privacyTerms', (req, res) => {
-  const query = 'SELECT content FROM privacy_terms WHERE id = 1'; // Feltételezve, hogy az id = 1 a szabályzatot tartalmazó sor
+  const query = 'SELECT content FROM privacy_terms WHERE id = 1'; 
   db.query(query, (err, results) => {
     if (err) {
       console.error('Hiba a szabályzat lekérdezésekor:', err);
@@ -422,6 +422,22 @@ app.put('/api/users/:id_number/change-password', (req, res) => {
     });
   });
 });
+
+// Feltételezve, hogy Express-t használsz
+app.get('/parties/:id', (req, res) => {
+  const partyId = req.params.id;
+  // Az adatbázis lekérdezése az id alapján
+  db.query('SELECT * FROM parties WHERE party_id = ?', [partyId], (err, results) => {
+    if (err) {
+      return res.status(500).json({ message: 'Database query error' });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'Party not found' });
+    }
+    res.json(results[0]);  // Visszaadja az első párt adatát
+  });
+});
+
 
 
 // Szerver indítása

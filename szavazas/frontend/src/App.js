@@ -20,6 +20,7 @@ import './App.css';
 import './Transitions.css';
 import Party from './Party';
 import AdminPanel from './AdminPanel';
+import PartyDetails from './PartyDetails';
 
 axios.defaults.baseURL = 'http://localhost:5000'; 
 axios.defaults.withCredentials = true; 
@@ -61,6 +62,7 @@ const Main = () => {
             <Route path="/stats" element={<Stats />} />
             <Route path="/account" element={<Account />} />
             <Route path="/parties" element={<Party />} />
+            <Route path="/party/:id" element={<PartyDetails />} />
             <Route path="/admin" element={<AdminPanel />} />
           </Routes>
         </CSSTransition>
