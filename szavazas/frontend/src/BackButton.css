@@ -1,8 +1,8 @@
-/* Visszanyíl stílusa */
+
 .back-button {
     position: fixed;
-    bottom: 20px;  /* 20px a képernyő aljától */
-    left: 20px;    /* 20px a bal oldaltól */
+    bottom: 20px;  
+    left: 20px;    
     cursor: pointer;
     z-index: 9999;
   }
@@ -15,11 +15,11 @@
     align-items: center;
     border-left: 5px solid black;
     border-bottom: 5px solid black;
-    transform: rotate(45deg);  /* Balra fordított nyíl */
+    transform: rotate(45deg);  
     transition: transform 0.3s ease;
   }
   
   .arrow:hover {
-    transform: rotate(45deg) scale(1.1);  /* Növekszik kattintáskor */
+    transform: rotate(45deg) scale(1.1); 
   }
   

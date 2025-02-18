@@ -10,8 +10,8 @@ const Contacts = () => {
     message: '',
   });
 
-  const [statusMessage, setStatusMessage] = useState('');  // Üzenet szövege
-  const [statusType, setStatusType] = useState('');  // Hiba vagy siker típusa
+  const [statusMessage, setStatusMessage] = useState('');  
+  const [statusType, setStatusType] = useState(''); 
 
   const handleChange = (e) => {
     setFormData({

@@ -4,11 +4,11 @@ import axios from 'axios';
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('users');
   const [users, setUsers] = useState([]);
-  const [votes, setVotes] = useState([]); // Szavazatok
-  const [parties, setParties] = useState([]); // Partik
+  const [votes, setVotes] = useState([]); 
+  const [parties, setParties] = useState([]); 
   const [editingUser, setEditingUser] = useState(null);
-  const [editingVote, setEditingVote] = useState(null); // Szavazat szerkesztése
-  const [newParty, setNewParty] = useState({ name: '', description: '', photo: '' }); // Kép hozzáadása
+  const [editingVote, setEditingVote] = useState(null); 
+  const [newParty, setNewParty] = useState({ name: '', description: '', photo: '' });
   const [error, setError] = useState('');
 
   // Fetch users from API

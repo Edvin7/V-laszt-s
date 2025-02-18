@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Account.css';
 
 const Account = () => {
-  const [userInfo, setUserInfo] = useState(null); // Kezdetben null, mert a felhasználókat lekérdezzük a backendről
+  const [userInfo, setUserInfo] = useState(null);
   const [profilePic, setProfilePic] = useState(null);
 
   // Jelszó változtatás állapotai
@@ -23,7 +23,7 @@ const Account = () => {
   }, []);
 
   if (!userInfo) {
-    return <div>Loading...</div>; // Ha még nem töltődtek be az adatok, mutassunk egy betöltés állapotot
+    return <div>Loading...</div>;
   }
 
   // Jelszó változtatás kezelése (API hívás)

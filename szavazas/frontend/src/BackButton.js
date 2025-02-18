@@ -11,7 +11,7 @@ const BackButton = () => {
 
   return (
     <div className="back-button" onClick={handleBackClick}>
-      <div className="arrow"></div>  {/* Az arrow osztály az, ami a nyíl stílust adja */}
+      <div className="arrow"></div>  
     </div>
   );
 };

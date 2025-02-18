@@ -15,7 +15,7 @@ const CounterArea = () => {
     // Adatok lekérése a backendből
     const fetchCounters = async () => {
       try {
-        const response = await fetch("http://localhost:3000/counters"); // Backend URL
+        const response = await fetch("http://localhost:3000/counters");
         if (!response.ok) {
           throw new Error("Hiba történt az adatok lekérésekor.");
         }
