@@ -1,18 +1,13 @@
-/* Alap színek */
 :root {
-  --primary-color: #003366; /* Sötétkék */
-  --secondary-color: #c39b6b; /* Arany */
-  --background-color: #f5f5f5; /* Világos szürke */
-  --text-color: #333333;
+  --secondary-color: #c39b6b; 
+  --background-color: #f5f5f5; 
+  --text-color: white;
+  font-family: "Poppins", sans-serif;
 }
 
-/* Alap stílusok */
+
 body {
-  font-family: 'Lora', serif;
-  background-color: var(--background-color);
-  margin: 0;
-  padding: 0;
-  color: var(--text-color);
+  font-family: "Poppins", sans-serif;
 }
 
 /* Oldal konténer */
@@ -21,13 +16,10 @@ body {
   margin: 0 auto;
   padding: 20px;
   background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
 }
 
 /* Fejléc */
 .header-section {
-  background-color: var(--primary-color);
   color: white;
   text-align: center;
   padding: 30px 0;
@@ -63,24 +55,33 @@ body {
 .profile-info {
   max-width: 600px;
   text-align: left;
-  font-family: 'Merriweather', serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .profile-info h2 {
   font-size: 2.2rem;
-  color: var(--primary-color);
-  margin-bottom: 10px;
+  color: black;
+  margin-bottom: 40px;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
 }
-
+.cim{
+  font-weight: bold;
+  color: #033473;
+}
 .profile-info .position,
 .profile-info .specialization {
   font-size: 1.1rem;
   margin-bottom: 8px;
-}
 
+}
+.kamp{
+  color:  #033473;
+}
 .profile-info .description {
   font-size: 1rem;
   line-height: 1.6;
+  font-family: "Poppins", sans-serif;
 }
 
 /* Idővonal */
@@ -88,14 +89,18 @@ body {
   background-color: #fff;
   padding: 30px;
   margin-top: 20px;
-  border: 1px solid #ddd;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
 }
 
 .timeline h2 {
   font-size: 2rem;
   text-align: center;
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .timeline ul {
@@ -103,24 +108,40 @@ body {
   padding: 0;
   font-size: 1.1rem;
   line-height: 1.8;
+  display: flex;
+  flex-direction: column; /* A lista elemei egymás alatt */
+  align-items: center;
 }
 
 .timeline li {
-  margin: 10px 0;
+  margin-bottom: 15px; /* A lista elemek közötti távolság */
+  display: flex;
+  flex-direction: column; /* Az év és a leírás külön sorokban */
+  align-items: center;
+  text-align: center;
 }
 
 .timeline .year {
   font-weight: bold;
   color: var(--secondary-color);
+  font-size: 1.3rem;
+  margin-bottom: 5px; /* Az év és leírás közötti távolság */
+}
+
+.timeline-entry p {
+  margin: 0; /* Nincs extra margó */
+  line-height: 1.6;
 }
 
 /* Kampányok szekció */
 .campaigns {
   padding: 30px;
   background-color: var(--background-color);
-  border: 1px solid #ddd;
   margin-top: 20px;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .campaigns h2 {
@@ -134,6 +155,7 @@ body {
   font-size: 1rem;
   line-height: 1.6;
   text-align: justify;
+  max-width: 800px;
 }
 
 /* Betöltés és hibaüzenetek */

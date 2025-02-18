@@ -26,7 +26,7 @@ const PartyDetails = () => {
   }, [id]);
 
   if (error) {
-    return <div className="error-message">Uh-oh! Something went wrong.</div>;
+    return <div className="error-message">Hiba történt.</div>;
   }
 
   return (
@@ -34,7 +34,6 @@ const PartyDetails = () => {
       {party ? (
         <div className="card-container">
           <header className="header-section">
-            <h1 className="party-name">{party.name} Politikai Profilja</h1>
           </header>
 
           <section className="profile">
@@ -48,8 +47,7 @@ const PartyDetails = () => {
               </div>
               <div className="profile-info">
                 <h2>{party.name}</h2>
-                <p className="position">Politikai irányzat: <strong>{party.political_ideology}</strong></p>
-                <p className="specialization">Szakterület: <strong>{party.political_campaigns}</strong></p>
+                <p className="position">Politikai irányzat: <strong className='cim'>{party.political_ideology}</strong></p>
                 <p className="description">{party.description}</p>
               </div>
             </div>
@@ -58,19 +56,24 @@ const PartyDetails = () => {
           <section className="timeline">
             <h2>Politikai Évek</h2>
             <ul>
-              <li><span className="year">{party.political_years}</span> éve a politikában</li>
-              <li>{party.political_year_description}</li>
+              {/* Az évek és leírások most külön sorokban jelennek meg */}
+              <li>
+                <div className="timeline-entry">
+                  <span className="year">{party.political_years}</span>
+                  <p>{party.political_year_description}</p>
+                </div>
+              </li>
             </ul>
           </section>
 
           <section className="campaigns">
-            <h2>Politikai Kampányok</h2>
+            <h2><strong className='kamp'>Politikai Kampányok</strong></h2>
             <p>{party.political_campaign_description}</p>
           </section>
 
         </div>
       ) : (
-        <div className="loading-message">Loading...</div>
+        <div className="loading-message">Betöltés...</div>
       )}
     </div>
   );
