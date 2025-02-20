@@ -3,8 +3,7 @@ frontend:
 -  logok, szinek 
 -  szavazo oldal meretezes
 -  admin panel
--  profil
--  responsive
+-  responzivitas
 -  teszteles
 -  gombokat ne lehessen nyomni ha mar nem aktiv
 

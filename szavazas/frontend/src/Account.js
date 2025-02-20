@@ -57,7 +57,7 @@ const Account = () => {
 
   return (
     <div className="account-container">
-      <h1>Fiók információ</h1>
+      <h1>Fiók információk</h1>
 
       {/* Profilkép szekció */}
       <div className="profile-pic-section">
