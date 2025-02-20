@@ -346,7 +346,7 @@ const AdminPanel = () => {
                     <td style={{ padding: '10px' }}>{party.description}</td>
                     <td style={{ padding: '10px' }}>
                       {party.photo && (
-                        <img src={party.photo} alt={party.name} style={{ width: '100px', height: 'auto' }} />
+                        <img src={`http://localhost:5000/uploads/${party.photo}`} style={{ width: '100px', height: 'auto' }} />
                       )}
                     </td>
                     <td style={{ padding: '10px' }}>
