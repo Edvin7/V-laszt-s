@@ -130,7 +130,6 @@ const AdminPanel = () => {
   
       axios.post('http://localhost:5000/api/upload', formData)
         .then(response => {
-          // A válaszban kapott elérési utat tároljuk a party adatban
           setNewParty({ ...newParty, photo: response.data.filePath });
         })
         .catch(error => {

@@ -434,6 +434,9 @@ app.get('/parties/:id', (req, res) => {
 //
 // 
 // 
+// CORS engedélyezése, ha különböző domain-ről érkeznek a kérések
+app.use(cors());
+
 // Ellenőrizzük, hogy létezik-e a 'uploads' mappa
 const uploadDir = './uploads';
 if (!fs.existsSync(uploadDir)) {
@@ -447,26 +450,26 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     // Egyedi fájlnevet generálunk, hogy ne ütközzenek a fájlnevek
-    cb(null, Date.now() + path.extname(file.originalname));
+    cb(null, Date.now() + path.extname(file.originalname)); // Új fájlnév generálása
   }
 });
 
-// Multer middleware
+// Multer middleware a fájlok feltöltésére
 const upload = multer({ storage: storage });
 
 // Kép feltöltése endpoint
-app.post('/upload', upload.single('image'), (req, res) => {
+app.post('/api/upload', upload.single('photo'), (req, res) => {
   if (!req.file) {
     return res.status(400).send('Nincs fájl feltöltve.');
   }
-  res.send({
+  res.json({
     message: 'Fájl sikeresen feltöltve!',
-    file: req.file
+    filePath: `/uploads/${req.file.filename}`  // Visszaadjuk az elérési utat
   });
 });
 
 // A feltöltött fájlok elérhetősége (statikus fájlok kiszolgálása)
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(uploadDir));
 
 
 
