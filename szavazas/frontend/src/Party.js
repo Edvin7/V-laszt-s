@@ -41,12 +41,11 @@ const Partyies = () => {
         {parties.map((party) => (
           <div key={party.party_id} className="party-card">
             <div className="party-logo-container">
-              <img
-                // Kép elérési útja a public mappában lévő partok logóira
-                src={`/images/partieslogo/${party.photo}`}  // A party.photo itt 'nemzetihaladas.png' vagy más
-                alt={party.name}
-                className="party-logo"
-              />
+            <img
+  src={`http://localhost:5000/uploads/${party.photo}`}  // A kép elérési útja a backend által visszaadott relatív útvonal alapján
+  alt={party.name}
+  className="party-logo"
+/>
             </div>
             <h3 className="party-name">{party.name}</h3>
             <button className="view-more-button" onClick={() => handleViewMore(party.party_id)}>

@@ -128,16 +128,17 @@ const AdminPanel = () => {
       const formData = new FormData();
       formData.append('photo', file);
   
-      axios.post('/api/upload', formData)
-  .then(response => {
-    setNewParty({ ...newParty, photo: response.data.filePath });
-  })
-  .catch(error => {
-    console.error('Kép feltöltése nem sikerült', error);
-  });
-
+      axios.post('http://localhost:5000/api/upload', formData)
+        .then(response => {
+          // A válaszban kapott elérési utat tároljuk a party adatban
+          setNewParty({ ...newParty, photo: response.data.filePath });
+        })
+        .catch(error => {
+          console.error('Kép feltöltése nem sikerült', error);
+        });
     }
   };
+  
   
   useEffect(() => {
     if (activeTab === 'users') {

@@ -367,14 +367,14 @@ app.get('/parties', async (req, res) => {
   const parties = await getPartiesFromDatabase();
   const partiesWithImageUrls = parties.map(party => ({
     ...party,
-    photo: `/images/partieslogo/${party.photo}`  // Kép elérési útvonalának beállítása
+    photo: `/uploads/${party.photo}`  // Kép elérési útvonalának beállítása
   }));
   res.json(partiesWithImageUrls);
 });
 
 
 //kepek a partokhoz
-app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
+app.use('/uploads', express.static(path.join(__dirname, 'public', 'images')));
 
 
 
@@ -430,36 +430,45 @@ app.get('/parties/:id', (req, res) => {
   });
 });
 
-// Multer konfiguráció a képfeltöltéshez
+
+//
+// 
+// 
+// Ellenőrizzük, hogy létezik-e a 'uploads' mappa
+const uploadDir = './uploads';
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+
+// Kép tárolás beállítása
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/images/partieslogo/'); // Képek mentése a 'public/images/partieslogo' mappába
+    cb(null, uploadDir); // A fájlok tárolásának helye
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Egyedi fájlnév generálása
+    // Egyedi fájlnevet generálunk, hogy ne ütközzenek a fájlnevek
+    cb(null, Date.now() + path.extname(file.originalname));
   }
 });
 
-const upload = multer({ storage });
+// Multer middleware
+const upload = multer({ storage: storage });
 
-// API végpont a kép feltöltéséhez
-app.post('/api/upload', upload.single('photo'), (req, res) => {
+// Kép feltöltése endpoint
+app.post('/upload', upload.single('image'), (req, res) => {
   if (!req.file) {
-    return res.status(400).send('No file uploaded.');
+    return res.status(400).send('Nincs fájl feltöltve.');
   }
-  res.json({ filePath: `/images/partieslogo/${req.file.filename}` }); // A képet visszaküldjük a frontendnek
+  res.send({
+    message: 'Fájl sikeresen feltöltve!',
+    file: req.file
+  });
 });
 
-// További API végpontok, pl. a pártok listázása, hozzáadása stb.
-app.post('/api/parties', (req, res) => {
-  // Itt helyezheted el a pártok hozzáadásához tartozó logikát
-  res.send('Párt hozzáadása');
-});
+// A feltöltött fájlok elérhetősége (statikus fájlok kiszolgálása)
+app.use('/uploads', express.static('uploads'));
 
-// Alapértelmezett válasz
-app.get('/', (req, res) => {
-  res.send('Hello from server!');
-});
+
 
 // Szerver indítása
 app.listen(port, () => {
