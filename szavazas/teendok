@@ -1,0 +1,16 @@
+frontend: 
+-  hamburger menu
+-  logok, szinek 
+-  szavazo oldal meretezes
+-  admin panel
+-  profil
+-  responsive
+-  teszteles
+-  gombokat ne lehessen nyomni ha mar nem aktiv
+
+backend:
+-  admin user adatbazis, idozito adatbazis
+-  admin oldal: (user: torles), (idozito: start,stop,reset, ido allitas),  (partok: torles,   Politikai irányzat hozzaadas, kep feltoltes a parthoz)
+-  profil oldal: adatok frissitese, jelszo valtoztatas
+-  oldalak frissuljenek egyfolytaban
+-  
