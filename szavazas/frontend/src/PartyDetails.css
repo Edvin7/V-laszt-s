@@ -16,6 +16,8 @@ body {
   margin: 0 auto;
   padding: 20px;
   background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Fejléc */
@@ -65,11 +67,17 @@ body {
   font-weight: bold;
   font-family: "Poppins", sans-serif;
 }
+
 .cim{
   font-weight: bold;
-  color: #033473;
+  color: #003399;
   font-size: 1.2rem;
 }
+
+.pp{
+  font-weight: bold;
+}
+
 .profile-info .position,
 .profile-info .specialization {
   font-size: 1.2rem;

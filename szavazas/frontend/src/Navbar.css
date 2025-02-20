@@ -4,6 +4,7 @@ nav {
   justify-content: space-between;
   align-items: center;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  font-weight: bold;
 }
 
 nav .logo {
@@ -15,13 +16,13 @@ nav .logo {
   color: white;
   transition: background-color 0.3s ease, color 0.3s ease;
   font-weight: bold;
-  padding: 8px 12px; /* Adj meg paddinget */
-  border: none; /* Eltávolítja a button alapértelmezett keretét */
+  padding: 8px 12px;
+  border: none; 
   border-radius: 5px;
   text-align: center;
   cursor: pointer;
-  text-decoration: none; /* Eltávolítja a Link alapértelmezett aláhúzását */
-  display: inline-block; /* Hasonló viselkedés, mint a button */
+  text-decoration: none; 
+  display: inline-block; 
 }
 
 .loginbutton:hover, .logoutbutton:hover {
@@ -39,22 +40,22 @@ nav .logo img {
 
 nav ul {
   display: flex;
-  align-items: center; /* Függőlegesen középre igazít minden elemet */
+  align-items: center; 
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
 nav ul li {
-  margin-left: 1.5rem; /* Távolság az elemek között */
+  margin-left: 1.5rem;
 }
 
 nav ul li a,
 nav ul li button {
-  display: inline-flex; /* Az elemek ugyanazt a megjelenési típust kapják */
-  align-items: center; /* Szöveg és ikon függőlegesen középen lesz */
-  justify-content: center; /* Középre igazítás */
-  padding: 8px 12px; /* Egységes padding */
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  padding: 8px 12px; 
   border-radius: 5px;
   text-decoration: none;
   font-size: 95%;
@@ -102,10 +103,12 @@ nav ul li button {
 
 .nav-links {
   display: flex;
+  font-weight: bold;
 }
 
 .nav-links ul {
   display: flex;
+  font-weight: bold;
 }
 
 .nav-links.active ul {
@@ -117,6 +120,7 @@ nav ul li button {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   padding: 10px;
   border-radius: 5px;
+  font-weight: bold;
 }
 
 .nav-links li {
@@ -126,6 +130,7 @@ nav ul li button {
 @media screen and (max-width: 768px) {
   .nav-links {
     display: none; 
+    font-weight: bold;
   }
 
   .hamburger-icon {

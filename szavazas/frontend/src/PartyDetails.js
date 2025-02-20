@@ -39,7 +39,7 @@ const PartyDetails = () => {
             <div className="profile-header">
               <div className="profile-image">
                 <img 
-                  src={`/images/partieslogo/${party.photo}`} 
+                  src={`/uploads/${party.photo}`} 
                   alt={party.name} 
                   className="party-logo"
                 />
@@ -56,7 +56,7 @@ const PartyDetails = () => {
 
           <section className="campaigns">
             <h2><strong className='kamp'>Politikai Kampányok</strong></h2>
-            <p>{party.political_campaign_description}</p>
+            <p className='pp'>{party.political_campaign_description}</p>
           </section>
 
         </div>

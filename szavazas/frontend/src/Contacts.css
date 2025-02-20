@@ -77,13 +77,14 @@ body {
 }
 
 .contact-form-submit {
+  font-size: large;
   display: inline-block;
   background: #033473;
   color: #fff;
   border: none;
   width: auto;
   padding: 15px 39px;
-  border-radius: 5px;
+  border-radius: 8px;
   margin-top: 25px;
   cursor: pointer;
   font-weight: bold;
@@ -94,7 +95,7 @@ body {
   color: #033473;
   text-decoration: none;
   transition: 0.3s ease all;
-  border: 1px solid #033473;
+  font-weight: bold;
 }
 
 @media (max-width: 768px) {

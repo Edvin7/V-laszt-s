@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css';
-import loginImage from './images/loginregister.png';
+import loginImage from './images/loginlogo.png';
 
 
 // Beállítjuk, hogy az Axios minden kéréshez küldje a cookie-t

@@ -156,9 +156,6 @@ input[type="password"]:focus + label {
 .form-submit:hover {
   background: white;
   color: #033473;
-  text-decoration: none;
-  transition: 0.3s ease all;
-  border: 1px solid #033473;
 }
 
 @media (max-width: 768px) {

@@ -1,20 +1,19 @@
-/* Side Back button stílus */
 .side-back-btn {
-  background-color: transparent;  /* Átlátszó háttér */
-  border: none;  /* Nincs keret */
-  padding: 0;  /* Nincs extra padding */
-  cursor: pointer;  /* Mutatókészítő kurzor */
-  font-size: 2em;  /* A nyíl megfelelő méretű */
-  position: fixed;  /* Rögzítve az oldal bal szélén */
-  top: 50%;  /* Vertikálisan középen */
-  left: -50px;  /* Kezdetben elrejtjük a gombot a bal szélen */
-  transform: translateY(-50%);  /* Középre igazítja a gombot vertikálisan */
-  z-index: 1000;  /* Biztosítja, hogy a gomb a többi elem felett legyen */
-  opacity: 0;  /* Kezdetben átlátszó */
-  animation: slideIn 0.5s ease-out forwards;  /* Az animációt alkalmazzuk */
+  background-color: transparent; 
+  border: none;  
+  padding: 0; 
+  cursor: pointer;  
+  font-size: 2em; 
+  position: fixed;
+  top: 50%;  
+  left: -50px;  
+  transform: translateY(-50%);  
+  z-index: 1000;
+  opacity: 0; 
+  animation: slideIn 0.5s ease-out forwards; 
+  color: #033473;
 }
 
-/* Animáció definíciója */
 @keyframes slideIn {
   0% {
     left: -50px;
@@ -27,5 +26,5 @@
 }
 
 .side-back-btn span {
-  font-size: inherit;  /* Örökli a font méretet a button-ból */
+  font-size: inherit;  
 }

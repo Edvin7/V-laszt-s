@@ -154,15 +154,17 @@ const AdminPanel = () => {
       <BackButton/>
       {/* Sidebar */}
       <div style={{ 
+        margin:'10px',
         width: '200px', 
         backgroundColor: '#033473', 
         color: 'white', 
         padding: '20px', 
         display: 'flex', 
         flexDirection: 'column', 
-        borderRadius: '10px 0 0 10px', 
-        height: '100vh',
+        borderRadius: '10px', 
+        height: 'max-content',
         fontWeight: 'bold',
+        
       }}>
         <div
           onClick={() => setActiveTab('users')}
@@ -286,7 +288,7 @@ const AdminPanel = () => {
         )}
 
         {activeTab === 'parties' && (
-          <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+          <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px',fontWeight:'bold', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
             <h3>Új párt hozzáadása</h3>
             <div>
               <input

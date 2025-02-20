@@ -23,7 +23,6 @@ const Contacts = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Email küldés emailjs segítségével
     emailjs.sendForm(
       'service_mk48q3j',
       'template_rx0d99h',

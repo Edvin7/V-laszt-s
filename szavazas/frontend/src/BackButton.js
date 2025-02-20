@@ -3,7 +3,7 @@ import './BackButton.css';
 
 const BackButton = () => {
   const handleBackClick = () => {
-    window.history.back();  // Visszalépés a böngésző előző oldalára
+    window.history.back();
   };
 
   return (

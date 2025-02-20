@@ -11,7 +11,7 @@ body{
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     font-family: 'Poppins', sans-serif;
-    color: #033473;
+    color: #003399;
     border: 6px solid transparent;
     border-image: linear-gradient(
         to bottom right,
@@ -28,7 +28,7 @@ h1 {
     text-align: center;
     font-size: 28px;
     margin-bottom: 30px;
-    color: #033473;
+    color: #003399;
     font-weight: 600;
 }
 

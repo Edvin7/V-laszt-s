@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios'; 
 import './Register.css';
 import { Link, useNavigate } from 'react-router-dom'; 
-import loginImage from './images/loginregister.png'; 
+import loginImage from './images/loginlogo.png'; 
 
 const Register = () => {
   const [formData, setFormData] = useState({
