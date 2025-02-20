@@ -13,4 +13,5 @@ backend:
 -  admin oldal: (user: torles), (idozito: start,stop,reset, ido allitas),  (partok: torles,   Politikai irányzat hozzaadas, kep feltoltes a parthoz)
 -  profil oldal: adatok frissitese, jelszo valtoztatas
 -  oldalak frissuljenek egyfolytaban
--  
+
+//dokumentaciot jora megkene meg
