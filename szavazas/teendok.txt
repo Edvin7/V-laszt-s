@@ -1,6 +1,4 @@
-frontend: 
--  hamburger menu
--  logok, szinek 
+frontend:  
 -  szavazo oldal meretezes
 -  admin panel
 -  responzivitas
