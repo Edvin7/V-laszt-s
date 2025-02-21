@@ -137,29 +137,45 @@ html, body {
   color: #003399;
 }
 
+/* Reszponzív kiegészítések */
 @media (max-width: 768px) {
+  .ballot-container {
+    padding: 20px;
+  }
+
   .ballot-container h1 {
     font-size: 20px;
   }
+
   .party {
-    width: 120px; /* Kisebb szélesség */
+    width: 160px; /* Kisebb szélesség */
     height: 160px; /* Kisebb magasság */
   }
+
   .party p {
     font-size: 14px;
   }
+
   .party img {
     width: 60px;
     height: 60px;
   }
+
   .vote-circle {
     width: 30px;
     height: 30px;
   }
+
   .vote-circle.selected::after {
     font-size: 16px;
   }
+
+  .submit-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
 }
+
 /* A státusz üzenet pozicionálása */
 .status-message {
   position: fixed;

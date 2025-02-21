@@ -6,6 +6,7 @@ import logo from './images/logo1.png';
 const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
@@ -22,6 +23,10 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     navigate('/');
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <nav className="navbar">
       <div className="logo">
@@ -30,7 +35,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
         </Link>
       </div>
 
-      <div className="nav-links">
+      <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
         <ul>
           {isAdmin && <li><Link to="/admin">Admin</Link></li>}  {/* Csak adminoknak */}
           <li><Link to="/parties">Pártok</Link></li>
@@ -48,6 +53,12 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
             <li><Link to="/login" className="loginbutton">Bejelentkezés</Link></li>
           )}
         </ul>
+      </div>
+
+      <div className="hamburger-icon" onClick={toggleMenu}>
+        <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
+        <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
+        <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
       </div>
     </nav>
   );
