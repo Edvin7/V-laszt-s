@@ -1,80 +1,21 @@
-nav {
-  padding: 5px 5%;
+/* --- Alap navbar stílusok --- */
+.navbar {
+  padding: 10px 5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: white;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-  font-weight: bold;
 }
 
-nav .logo {
-  display: flex;
-  align-items: center;
-}
-.loginbutton, .logoutbutton {
-  background: #033473;
-  color: white;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  font-weight: bold;
-  padding: 8px 12px;
-  border: none; 
-  border-radius: 5px;
-  text-align: center;
-  cursor: pointer;
-  text-decoration: none; 
-  display: inline-block; 
-}
-
-.loginbutton:hover, .logoutbutton:hover {
-  background: white;
-  color: #033473;
-}
-.loginbutton, .logoutbutton {
-  box-sizing: border-box;
-}
-nav .logo img {
-  height: 70px;
+.navbar .logo img {
+  height: 50px;
   width: auto;
-  margin-right: 10px;
 }
 
-nav ul {
-  display: flex;
-  align-items: center; 
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-nav ul li {
-  margin-left: 1.5rem;
-}
-
-nav ul li a,
-nav ul li button {
-  display: inline-flex; 
-  align-items: center; 
-  justify-content: center; 
-  padding: 8px 12px; 
-  border-radius: 5px;
-  text-decoration: none;
-  font-size: 95%;
-  font-weight: 400;
-}
-.loginbutton {
-  background: #033473;
-  color: white;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  font-weight: bold;
-}
-
-.loginbutton:hover {
-  background: white;
-  color: #033473;
-}
-
+/* --- Hamburger ikon --- */
 .hamburger-icon {
-  display: none; 
+  display: none;
   flex-direction: column;
   justify-content: space-between;
   height: 25px;
@@ -85,12 +26,12 @@ nav ul li button {
 .hamburger-icon .bar {
   height: 4px;
   width: 100%;
-  background-color: #000;
-  transition: transform 0.3s ease-in-out;
+  background-color: #033473;
+  transition: all 0.3s ease-in-out;
 }
 
 .hamburger-icon .bar.open:nth-child(1) {
-  transform: rotate(45deg) translateY(7px);
+  transform: rotate(45deg) translateY(6px);
 }
 
 .hamburger-icon .bar.open:nth-child(2) {
@@ -98,46 +39,132 @@ nav ul li button {
 }
 
 .hamburger-icon .bar.open:nth-child(3) {
-  transform: rotate(-45deg) translateY(-7px);
+  transform: rotate(-45deg) translateY(-6px);
 }
 
+/* --- Menü linkek --- */
 .nav-links {
   display: flex;
-  font-weight: bold;
+  align-items: center;
 }
 
 .nav-links ul {
   display: flex;
-  font-weight: bold;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.nav-links.active ul {
-  flex-direction: column;
-  position: absolute;
-  top: 60px;
-  right: 5%;
-  background-color: white;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-  padding: 10px;
+.nav-links ul li {
+  margin-left: 1.5rem;
+}
+
+.nav-links ul li a,
+.nav-links ul li button {
+  padding: 8px 12px;
+  text-decoration: none;
+  font-size: 95%;
+  font-weight: 400;
+}
+
+/* --- Bejelentkezés és kijelentkezés gombok --- */
+.loginbutton, .logoutbutton {
+  background: #033473;
+  color: white;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: bold;
+  padding: 8px 12px;
+  border: none;
   border-radius: 5px;
-  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
 }
 
-.nav-links li {
-  margin: 1rem 0;
+.loginbutton:hover, .logoutbutton:hover {
+  background: white;
+  color: #033473;
 }
 
+/* --- Mobilnézet --- */
 @media screen and (max-width: 768px) {
-  .nav-links {
-    display: none; 
-    font-weight: bold;
-  }
-
+  /* Hamburger ikon látható lesz */
   .hamburger-icon {
-    display: flex; 
+    display: flex;
   }
 
+  /* Menü alapból rejtve */
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 5%;
+    width: 60%;
+    background-color: white;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 100;
+  }
+
+  /* Menü nyitott állapotban */
   .nav-links.active {
     display: block;
+  }
+
+  /* Mobil nézetben a linkek egymás alatt lesznek */
+  .nav-links ul {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links li {
+    margin: 10px 0;
+  }
+}
+@media screen and (max-width: 1200px) {
+  /* Hamburger ikon látható lesz */
+  .hamburger-icon {
+    display: flex;
+    position: relative;
+    z-index: 200; /* Mindig az előtérben van */
+  }
+
+  /* Menü alapból rejtve */
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 5%;
+    width: 60%;
+    background-color: white;
+    padding: 10px;
+    z-index: 100;
+  }
+
+  /* Menü nyitott állapotban */
+  .nav-links.active {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    padding-top: 80px;
+    z-index: 150; /* A teljes képernyőt lefedi */
+  }
+
+  /* Mobil nézetben a linkek egymás alatt lesznek */
+  .nav-links ul {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .nav-links li {
+    margin: 20px 0;
   }
 }
