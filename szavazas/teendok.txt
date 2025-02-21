@@ -1,5 +1,4 @@
 frontend: 
--  hamburger menu
 -  logok, szinek 
 -  szavazo oldal meretezes
 -  admin panel
