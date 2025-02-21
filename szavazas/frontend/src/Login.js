@@ -19,20 +19,18 @@ function Login({ setIsLoggedIn }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await axios.post('http://localhost:5000/login', { email, password });
-      const user = response.data.user;
-  
-      localStorage.setItem('user', JSON.stringify(user));
-  
-      if (user && user.isAdmin) {
-        navigate('/admin'); // Ha admin, akkor az admin oldalra irányítjuk
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+
+      const user = localStorage.getItem('user');
+      if (user && user !== '0') {
+        setIsLoggedIn(true); 
+        navigate('/'); 
       } else {
-        navigate('/'); // Ha nem admin, akkor a főoldalra
+        setError('Bejelentkezés nem sikerült. Kérlek, próbáld újra!');
       }
-      
-      setIsLoggedIn(true);
     } catch (error) {
       console.error('Hiba a bejelentkezés során:', error.response?.data || error.message);
       setError(error.response?.data?.message || 'Ismeretlen hiba történt');
