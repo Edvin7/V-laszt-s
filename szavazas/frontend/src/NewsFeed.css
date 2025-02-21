@@ -1,139 +1,96 @@
 .news-feed {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-  background-color: #f4f7fb; /* Világos háttér szín */
-}
-
-.news-feed ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* A hírek rugalmas elrendezése */
-  gap: 30px;
-  max-width: 1200px;
-  width: 100%;
-}
-
-.news-feed p {
-  font-size: 18px;
-  color: #888;
-  text-align: center;
-}
-
-.news-feed .featured-article {
-  grid-column: span 2; /* Kiemelt blokk, ami szélesebb lesz */
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-  cursor: pointer;
-}
-
-.news-feed .featured-article:hover {
-  transform: translateY(-10px); /* Hover effekt */
-}
-
-.news-feed .featured-article img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-}
-
-.news-feed .featured-article h3 {
-  padding: 20px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-}
-
-.news-feed .featured-article p {
-  padding: 0 20px 20px;
-  font-size: 16px;
-  color: #555;
-}
-
-.news-item {
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.news-item:hover {
-  transform: translateY(-10px);
-}
-
-.news-item img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-}
-
-.news-item h3 {
-  padding: 15px;
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-}
-
-.news-item p {
-  padding: 0 15px 20px;
-  font-size: 14px;
-  color: #666;
-}
-
-.news-item a {
-  text-decoration: none;
-  color: inherit;
-}
-
-/* --- Reszponzivitás beállítások mobil nézethez --- */
-@media screen and (max-width: 768px) {
-  .news-feed {
-    padding: 20px 10px; /* Kevesebb padding mobilon */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    background-color: #f4f7fb; /* Világos háttér szín */
   }
-
+  
   .news-feed ul {
-    grid-template-columns: 1fr; /* Mobilon egy oszlop */
-    gap: 20px; /* Kevesebb térköz */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* A hírek rugalmas elrendezése */
+    gap: 30px;
+    max-width: 1200px;
+    width: 100%;
   }
-
+  
+  .news-feed p {
+    font-size: 18px;
+    color: #888;
+    text-align: center;
+  }
+  
   .news-feed .featured-article {
-    grid-column: span 1; /* Kiemelt blokk egy oszlopot foglal el */
+    grid-column: span 2; /* Kiemelt blokk, ami szélesebb lesz */
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
   }
-
+  
+  .news-feed .featured-article:hover {
+    transform: translateY(-10px); /* Hover effekt */
+  }
+  
   .news-feed .featured-article img {
-    height: 200px; /* Kisebb kép mobilon */
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
   }
-
+  
   .news-feed .featured-article h3 {
-    font-size: 18px; /* Kisebb cím */
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
   }
-
+  
   .news-feed .featured-article p {
-    font-size: 14px; /* Kisebb leírás */
+    padding: 0 20px 20px;
+    font-size: 16px;
+    color: #555;
   }
-
+  
   .news-item {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Mobilon kisebb árnyék */
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+    cursor: pointer;
   }
-
+  
+  .news-item:hover {
+    transform: translateY(-10px);
+  }
+  
   .news-item img {
-    height: 150px; /* Kép kisebb mobilon */
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
   }
-
+  
   .news-item h3 {
-    font-size: 16px; /* Kisebb cím */
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
   }
-
+  
   .news-item p {
-    font-size: 12px; /* Kisebb leírás */
+    padding: 0 15px 20px;
+    font-size: 14px;
+    color: #666;
   }
-}
+  
+  .news-item a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
