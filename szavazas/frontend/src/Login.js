@@ -4,13 +4,11 @@ import axios from 'axios';
 import './Login.css';
 import loginImage from './images/loginlogo.png';
 
-
 // Beállítjuk, hogy az Axios minden kéréshez küldje a cookie-t
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = 'http://localhost:5000';
 
-
-function Login({ setIsLoggedIn }) {
+function Login({ setIsLoggedIn, setIsAdmin }) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,26 +17,28 @@ function Login({ setIsLoggedIn }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
     try {
       const response = await axios.post('http://localhost:5000/login', { email, password });
       const user = response.data.user;
-  
+
+      // Mentés a localStorage-ba
       localStorage.setItem('user', JSON.stringify(user));
   
-      if (user && user.isAdmin) {
-        navigate('/admin'); // Ha admin, akkor az admin oldalra irányítjuk
-      } else {
-        navigate('/'); // Ha nem admin, akkor a főoldalra
-      }
-      
+      // Frissítjük a logged-in és admin állapotokat
       setIsLoggedIn(true);
+      setIsAdmin(user.isAdmin);  // Az isAdmin frissítése közvetlenül itt
+  
+      // Ha admin a felhasználó, akkor admin oldalra irányítjuk, egyébként főoldalra
+      if (user && user.isAdmin) {
+        navigate('/admin'); // Admin oldalra navigálás
+      } else {
+        navigate('/'); // Főoldalra navigálás
+      }
     } catch (error) {
       console.error('Hiba a bejelentkezés során:', error.response?.data || error.message);
       setError(error.response?.data?.message || 'Ismeretlen hiba történt');
     }
   };
-  
 
   return (
     <section className="sign-in">
@@ -75,10 +75,7 @@ function Login({ setIsLoggedIn }) {
               </div>
               <div className='form-group form-button'>
                 <input className='form-submit' type="submit" value="Bejelentkezés" />
-                </div>
-                
-                
-             
+              </div>
             </form>
           </div>
         </div>

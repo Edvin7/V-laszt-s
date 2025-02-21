@@ -17,10 +17,10 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   }, [isLoggedIn]);
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    setIsLoggedIn(false);
-    setIsAdmin(false);
-    navigate('/');
+    localStorage.removeItem('user'); // Felhasználó adatainak eltávolítása
+    setIsLoggedIn(false);  // Állapot frissítése
+    setIsAdmin(false);  // Admin státusz eltávolítása
+    navigate("/"); // Navigálás a kezdőlapra
   };
 
   const toggleMenu = () => {

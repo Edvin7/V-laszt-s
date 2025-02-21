@@ -22,7 +22,7 @@ import Party from './Party';
 import AdminPanel from './AdminPanel';
 import PartyDetails from './PartyDetails';
 import BackButton from './BackButton';
- 
+import ProtectedRoute from './ProtectedRoute';  // Importáljuk a ProtectedRoute-ot
 
 axios.defaults.baseURL = 'http://localhost:5000'; 
 axios.defaults.withCredentials = true; 
@@ -37,13 +37,16 @@ const App = () => {
 
 const Main = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);  // Admin státusz
 
   useEffect(() => {
-    const user = localStorage.getItem('user');
-    if (user && user !== '0') {
-      setIsLoggedIn(true); 
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      const user = JSON.parse(userData);
+      setIsLoggedIn(true);
+      setIsAdmin(user.isAdmin);  // Frissítjük az admin státuszt, ha már be van jelentkezve
     }
-  }, []);
+  }, []);  // A `useEffect` egyszer fut le az oldal betöltésekor
 
   const location = useLocation();
 
@@ -60,13 +63,16 @@ const Main = () => {
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/news" element={<NewsFeed />} />
             <Route path="/voting" element={<VotingPage />} />
-            <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setIsAdmin={setIsAdmin} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/stats" element={<Stats />} />
             <Route path="/account" element={<Account />} />
             <Route path="/parties" element={<Party />} />
             <Route path="/party/:id" element={<PartyDetails />} />
-            <Route path="/admin" element={<AdminPanel />} />
+            <Route 
+              path="/admin" 
+              element={<ProtectedRoute element={<AdminPanel />} isAdmin={isAdmin} />} 
+            />
           </Routes>
         </CSSTransition>
       </TransitionGroup>
