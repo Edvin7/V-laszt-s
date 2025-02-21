@@ -2,10 +2,8 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcryptjs');
-const path = require('path');
-const multer = require('multer');
-const fs = require('fs');
+const bcrypt = require('bcryptjs'); // bcrypt importálása
+
 const app = express();
 const port = 5000;
 
@@ -19,9 +17,9 @@ app.use(bodyParser.json()); // JSON kérések kezelése
 // MySQL kapcsolat beállítása
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'vote',
+  user: 'root', // a MySQL felhasználó neve
+  password: '', // a MySQL jelszó
+  database: 'vote', // az adatbázis neve
 });
 
 db.connect((err) => {
@@ -76,46 +74,84 @@ app.post('/register', (req, res) => {
   });
 });
 
+
+
 // Bejelentkezés végpont
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
 
-  // Ellenőrizzük, hogy létezik-e a felhasználó a megadott email címmel
+  // Először a users táblában keresünk
   db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
     if (err) {
-      console.error('Hiba történt a lekérdezés során:', err);
+      console.error('Hiba történt a users lekérdezésekor:', err);
       return res.status(500).json({ message: 'Belső hiba történt!' });
     }
 
-    if (results.length === 0) {
-      return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
-    }
+    if (results.length > 0) {
+      // Ha talált felhasználót a users táblában
+      const user = results[0];
+      bcrypt.compare(password, user.password_hash, (err, isMatch) => {
+        if (err) {
+          console.error('Hiba a jelszó ellenőrzésekor:', err);
+          return res.status(500).json({ message: 'Belső hiba történt' });
+        }
 
-    const user = results[0];
+        if (!isMatch) {
+          return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
+        }
 
-    // bcrypt jelszó ellenőrzés
-    bcrypt.compare(password, user.password_hash, (err, isMatch) => {
-      if (err) {
-        console.error('Hiba a jelszó ellenőrzésekor:', err);
-        return res.status(500).json({ message: 'Belső hiba történt' });
-      }
-
-      if (!isMatch) {
-        return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
-      }
-
-      // Sikeres bejelentkezés
-      res.status(200).json({
-        message: 'Sikeres bejelentkezés',
-        user: {
-          id: user.id_number,
-          name: user.name,
-          email: user.email,
-        },
+        return res.status(200).json({
+          message: 'Sikeres bejelentkezés',
+          user: {
+            id: user.id_number,
+            name: user.name,
+            email: user.email,
+            isAdmin: false, // users táblából jövő felhasználók nem adminok
+          },
+        });
       });
-    });
+    } else {
+      // Ha nem találtunk a users táblában, akkor megnézzük az admin táblát
+      db.query('SELECT * FROM admin WHERE email = ?', [email], (err, results) => {
+        if (err) {
+          console.error('Hiba történt az admin lekérdezésekor:', err);
+          return res.status(500).json({ message: 'Belső hiba történt!' });
+        }
+
+        if (results.length === 0) {
+          return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
+        }
+
+        const admin = results[0];
+
+        bcrypt.compare(password, admin.password_hash, (err, isMatch) => {
+          if (err) {
+            console.error('Hiba a jelszó ellenőrzésekor:', err);
+            return res.status(500).json({ message: 'Belső hiba történt' });
+          }
+
+          if (!isMatch) {
+            return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
+          }
+
+          return res.status(200).json({
+            message: 'Sikeres bejelentkezés',
+            user: {
+              id: admin.admin_id,
+              name: admin.name,
+              email: admin.email,
+              isAdmin: true, // admin tábla felhasználói adminok
+            },
+          });
+        });
+      });
+    }
   });
 });
+
+
+	
+
 
 // Bejelentkezett felhasználó ellenőrzése
 app.get('/api/user', (req, res) => {
@@ -163,6 +199,8 @@ app.post('/voting', (req, res) => {
   });
 });
 
+
+
 // Új endpoint a pártok adatainak lekérésére
 app.get('/parties', (req, res) => {
     const query = 'SELECT * FROM parties'; // A parties tábla adatainak lekérése
@@ -187,6 +225,8 @@ app.get('/parties', (req, res) => {
     });
   });
  
+  
+
   app.get('/voting', (req, res) => {
     const query = 'SELECT * FROM parties';
     db.query(query, (err, results) => {
@@ -242,7 +282,11 @@ app.get('/counters', (req, res) => {
     });
   });
 });
- 
+
+
+
+
+  
 // API végpont a választási eredmények lekéréséhez
 app.get('/election-results', (req, res) => {
   // SQL lekérdezés a pártokra leadott szavazatok összegzésére
@@ -268,6 +312,7 @@ app.get('/election-results', (req, res) => {
     })));
   });
 });
+
 
 // Get all users
 app.get('/api/users', (req, res) => {
@@ -350,126 +395,7 @@ app.delete('/api/parties/:id', (req, res) => {
   });
 });
 
-// Adatvédelmi szabályzat lekérdezése
-app.get('/api/privacyTerms', (req, res) => {
-  const query = 'SELECT content FROM privacy_terms WHERE id = 1'; 
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error('Hiba a szabályzat lekérdezésekor:', err);
-      return res.status(500).send('Hiba történt az adatbázis lekérdezésekor');
-    }
-    // Válaszként visszaadjuk a szabályzatot
-    res.json({ privacyTerms: results[0].content });
-  });
-});
 
-app.get('/parties', async (req, res) => {
-  const parties = await getPartiesFromDatabase();
-  const partiesWithImageUrls = parties.map(party => ({
-    ...party,
-    photo: `/uploads/${party.photo}`  // Kép elérési útvonalának beállítása
-  }));
-  res.json(partiesWithImageUrls);
-});
-
-
-//kepek a partokhoz
-app.use('/uploads', express.static(path.join(__dirname, 'public', 'images')));
-
-
-
-// Dummy adatbázis (helyettesítheted egy valódi adatbázissal)
-const users = [
-  { id: 2, name: 'a', email: 'a@g.c', personal_id: '123', registered_at: '2025-01-07 13:11:12', status: 'active' },
-  { id: 4, name: 'pal', email: 'pal@g.c', personal_id: '123', registered_at: '2025-02-10 11:06:17', status: 'active' },
-  { id: 5, name: 'edv', email: 'edv@g.c', personal_id: '123', registered_at: '2025-02-10 11:06:29', status: 'active' },
-  // ...további felhasználók
-];
-
-// Adatok lekérése
-app.get('/api/users', (req, res) => {
-  res.json(users);
-});
-
-// Jelszó módosító API végpont
-app.put('/api/users/:id_number/change-password', (req, res) => {
-  const { id_number } = req.params;
-  const { password } = req.body;
-
-  // A jelszót először hasheljük
-  bcrypt.hash(password, 10, (err, hashedPassword) => {
-    if (err) {
-      return res.status(500).json({ error: 'Hiba történt a jelszó hashelése közben' });
-    }
-
-    // Jelszó frissítése az adatbázisban
-    const sql = 'UPDATE users SET password_hash = ? WHERE id_number = ?';
-    db.query(sql, [hashedPassword, id_number], (err, result) => {
-      if (err) {
-        return res.status(500).json({ error: 'Hiba történt a jelszó frissítésekor' });
-      }
-
-      // Visszajelzés a frontend számára
-      res.status(200).json({ message: 'A jelszó sikeresen frissítve lett' });
-    });
-  });
-});
-
-// Feltételezve, hogy Express-t használsz
-app.get('/parties/:id', (req, res) => {
-  const partyId = req.params.id;
-  // Az adatbázis lekérdezése az id alapján
-  db.query('SELECT * FROM parties WHERE party_id = ?', [partyId], (err, results) => {
-    if (err) {
-      return res.status(500).json({ message: 'Database query error' });
-    }
-    if (results.length === 0) {
-      return res.status(404).json({ message: 'Party not found' });
-    }
-    res.json(results[0]);  // Visszaadja az első párt adatát
-  });
-});
-
-
-//
-// 
-// 
-// CORS engedélyezése, ha különböző domain-ről érkeznek a kérések
-app.use(cors());
-
-// Ellenőrizzük, hogy létezik-e a 'uploads' mappa
-const uploadDir = './uploads';
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
-
-// Kép tárolás beállítása
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir); // A fájlok tárolásának helye
-  },
-  filename: (req, file, cb) => {
-    // Egyedi fájlnevet generálunk, hogy ne ütközzenek a fájlnevek
-    cb(null, Date.now() + path.extname(file.originalname)); // Új fájlnév generálása
-  }
-});
-
-// Multer middleware a fájlok feltöltésére
-const upload = multer({ storage: storage });
-
-// Kép feltöltése endpoint
-app.post('/api/upload', upload.single('photo'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).send('Nincs fájl feltöltve.');
-  }
-  res.json({
-    message: 'Fájl sikeresen feltöltve!',
-    filePath: `/uploads/${req.file.filename}`  // Visszaadjuk az elérési utat
-  });
-});
-
-// A feltöltött fájlok elérhetősége (statikus fájlok kiszolgálása)
-app.use('/uploads', express.static(uploadDir));
 
 
 
