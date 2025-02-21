@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import logo from "./images/logo1.png";
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const location = useLocation(); // Lekérjük az aktuális oldalt
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("user"); // Felhasználó eltávolítása a LocalStorage-ból
+    setIsLoggedIn(false); // Beállítjuk az állapotot kijelentkezettnek
+    navigate("/"); // Átirányítjuk a főoldalra
+  };
 
   return (
     <nav className="navbar">
@@ -48,7 +55,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                 <Link to="/voting" className={location.pathname === "/voting" ? "active" : ""}>Szavazz</Link>
               </li>
               <li>
-                <button className="logoutbutton">Kijelentkezés</button>
+                <button onClick={handleLogout} className="logoutbutton">Kijelentkezés</button>
               </li>
             </>
           ) : (
