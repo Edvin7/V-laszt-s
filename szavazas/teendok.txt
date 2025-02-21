@@ -1,5 +1,4 @@
-frontend: 
--  logok, szinek 
+frontend:  
 -  szavazo oldal meretezes
 -  admin panel
 -  responzivitas
