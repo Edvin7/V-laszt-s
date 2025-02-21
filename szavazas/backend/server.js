@@ -80,42 +80,75 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
 
-  // Ellenőrizzük, hogy létezik-e a felhasználó a megadott email címmel
+  // Először a users táblában keresünk
   db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
     if (err) {
-      console.error('Hiba történt a lekérdezés során:', err);
+      console.error('Hiba történt a users lekérdezésekor:', err);
       return res.status(500).json({ message: 'Belső hiba történt!' });
     }
 
-    if (results.length === 0) {
-      return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
-    }
+    if (results.length > 0) {
+      // Ha talált felhasználót a users táblában
+      const user = results[0];
+      bcrypt.compare(password, user.password_hash, (err, isMatch) => {
+        if (err) {
+          console.error('Hiba a jelszó ellenőrzésekor:', err);
+          return res.status(500).json({ message: 'Belső hiba történt' });
+        }
 
-    const user = results[0];
+        if (!isMatch) {
+          return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
+        }
 
-    // bcrypt jelszó ellenőrzés
-    bcrypt.compare(password, user.password_hash, (err, isMatch) => {
-      if (err) {
-        console.error('Hiba a jelszó ellenőrzésekor:', err);
-        return res.status(500).json({ message: 'Belső hiba történt' });
-      }
-
-      if (!isMatch) {
-        return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
-      }
-
-      // Sikeres bejelentkezés
-      res.status(200).json({
-        message: 'Sikeres bejelentkezés',
-        user: {
-          id: user.id_number,
-          name: user.name,
-          email: user.email,
-        },
+        return res.status(200).json({
+          message: 'Sikeres bejelentkezés',
+          user: {
+            id: user.id_number,
+            name: user.name,
+            email: user.email,
+            isAdmin: false, // users táblából jövő felhasználók nem adminok
+          },
+        });
       });
-    });
+    } else {
+      // Ha nem találtunk a users táblában, akkor megnézzük az admin táblát
+      db.query('SELECT * FROM admin WHERE email = ?', [email], (err, results) => {
+        if (err) {
+          console.error('Hiba történt az admin lekérdezésekor:', err);
+          return res.status(500).json({ message: 'Belső hiba történt!' });
+        }
+
+        if (results.length === 0) {
+          return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
+        }
+
+        const admin = results[0];
+
+        bcrypt.compare(password, admin.password_hash, (err, isMatch) => {
+          if (err) {
+            console.error('Hiba a jelszó ellenőrzésekor:', err);
+            return res.status(500).json({ message: 'Belső hiba történt' });
+          }
+
+          if (!isMatch) {
+            return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
+          }
+
+          return res.status(200).json({
+            message: 'Sikeres bejelentkezés',
+            user: {
+              id: admin.admin_id,
+              name: admin.name,
+              email: admin.email,
+              isAdmin: true, // admin tábla felhasználói adminok
+            },
+          });
+        });
+      });
+    }
   });
 });
+
 
 // Bejelentkezett felhasználó ellenőrzése
 app.get('/api/user', (req, res) => {
