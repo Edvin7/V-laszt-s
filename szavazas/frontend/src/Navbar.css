@@ -22,6 +22,7 @@
   height: 25px;
   width: 30px;
   cursor: pointer;
+  z-index: 2000; /* Mindig a menü felett */
 }
 
 .hamburger-icon .bar {
@@ -66,15 +67,20 @@
   padding: 8px 12px;
   text-decoration: none;
   font-size: 95%;
-  font-weight: 400;
   font-weight: bold;
 }
 
+/* Aktív menüpont kiemelése */
+.nav-links ul li a.active {
+  font-weight: bold;
+  color: #033473;
+}
+
+/* Bejelentkezés és kijelentkezés gombok */
 .loginbutton, .logoutbutton {
   background: #033473;
   color: white;
   transition: background-color 0.3s ease, color 0.3s ease;
-  font-weight: bold;
   padding: 8px 12px;
   border: none;
   border-radius: 5px;
@@ -89,62 +95,22 @@
 }
 
 /* --- Mobilnézet --- */
-@media screen and (max-width: 768px) {
-  /* Hamburger ikon látható lesz */
+@media screen and (max-width: 1400px) {
   .hamburger-icon {
     display: flex;
   }
 
-  /* Menü alapból rejtve */
   .nav-links {
     display: none;
-    position: absolute;
-    top: 60px;
-    right: 5%;
-    width: 60%;
-    background-color: white;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    padding: 10px;
-    border-radius: 5px;
-    z-index: 100;
-  }
-
-  /* Menü nyitott állapotban */
-  .nav-links.active {
-    display: block;
-  }
-
-  /* Mobil nézetben a linkek egymás alatt lesznek */
-  .nav-links ul {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .nav-links li {
-    margin: 10px 0;
-  }
-}
-@media screen and (max-width: 1200px) {
-  /* Hamburger ikon látható lesz */
-  .hamburger-icon {
-    display: flex;
-    position: relative;
-    z-index: 200; /* Mindig az előtérben van */
-  }
-
-  /* Menü alapból rejtve */
-  .nav-links {
-    display: none;
-    position: absolute;
+    position: fixed;
     top: 60px;
     right: 5%;
     width: 60%;
     background-color: white;
     padding: 10px;
-    z-index: 100;
+    z-index: 1500; /* Mindig a szöveg felett */
   }
 
-  /* Menü nyitott állapotban */
   .nav-links.active {
     display: flex;
     flex-direction: column;
@@ -153,20 +119,11 @@
     left: 0;
     width: 100vw;
     height: 100vh;
+    background-color: rgba(255, 255, 255, 0.97);
     padding-top: 80px;
-    z-index: 150; /* A teljes képernyőt lefedi */
-    
+    z-index: 1500;
   }
 
-/* Aktív menüpont kiemelése */
-.nav-links ul li a.active {
-  font-weight: bold;
-  color: #033473; /* Kiemelt szín */
-  text-decoration: underline; /* Opcionális */
-}
-
-
-  /* Mobil nézetben a linkek egymás alatt lesznek */
   .nav-links ul {
     flex-direction: column;
     align-items: center;
