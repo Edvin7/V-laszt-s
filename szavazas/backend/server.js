@@ -506,6 +506,51 @@ app.use('/uploads', express.static(uploadDir));
 
 
 
+// API route to get countdown date
+app.get('/api/countdown-date', (req, res) => {
+  db.query('SELECT countdown_date FROM settings LIMIT 1', (err, results) => {
+    if (err) {
+      console.error('Database error:', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+
+    if (results.length > 0) {
+      const countdownDate = results[0].countdown_date;
+      res.json({ countdownDate });
+    } else {
+      res.status(404).json({ error: 'Countdown date not found' });
+    }
+  });
+});
+
+app.post('/api/date-plus', (req, res) => {
+ const { countdownDate } = req.body;
+
+  if (!countdownDate) {
+    return res.status(400).json({ error: 'A név és a leírás kötelező mezők!' });
+  }
+  const date = new Date(countdownDate);
+  if (isNaN(date.getTime())) {
+    return res.status(400).json({ error: 'Invalid date format' });
+  }
+
+  db.query('UPDATE settings SET countdown_date = ? WHERE id = 1', [countdownDate], (err, results) => {
+    if (err) {
+      console.error('Database error:', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+
+    res.json({ message: 'Countdown date updated successfully' });
+  });
+});
+
+
+
+
+
+
+
+
 // Szerver indítása
 app.listen(port, () => {
   console.log(`Szerver fut a ${port} porton`);

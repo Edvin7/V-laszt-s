@@ -142,6 +142,8 @@ INSERT INTO `parties` (`party_id`, `name`, `description`, `photo`, `political_id
 
 -- --------------------------------------------------------
 
+
+
 --
 -- Tábla szerkezet ehhez a táblához `terms_of_service`
 --
@@ -220,7 +222,17 @@ INSERT INTO `votes` (`vote_id`, `election_id`, `party_id`, `vote_time`, `vote_ha
 --
 -- Indexek a kiírt táblákhoz
 --
+CREATE TABLE `settings` (
+  `id` int(11) NOT NULL,
+  `countdown_date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
+--
+-- A tábla adatainak kiíratása `votes`
+--
+
+INSERT INTO `settings` (`id`, `countdown_date`) VALUES
+(1, '2025-02-28 11:47:16');
 --
 -- A tábla indexei `candidates`
 --

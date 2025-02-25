@@ -3,6 +3,21 @@ import axios from 'axios';
 import BackButton from './BackButton';
 
 const AdminPanel = () => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const [activeTab, setActiveTab] = useState('users');
   const [users, setUsers] = useState([]);
   const [votes, setVotes] = useState([]); 
@@ -149,6 +164,88 @@ const AdminPanel = () => {
     }
   }, [activeTab]);
 
+
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  const [countdownDate, setCountdownDate] = useState(null); // Az új countdown date
+
+  const [newCountdownDate, setNewCountdownDate] = useState(''); // A bevitt új dátum
+
+  // Az új countdown dátum beállítása az input mezőből
+  const handleDateChange = (e) => {
+    setNewCountdownDate(e.target.value);
+  };
+
+  const updateCountdownDate = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/date-plus', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ countdownDate: newCountdownDate }),
+      });
+      
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log(data.message); // Siker üzenet
+        setCountdownDate(new Date(newCountdownDate).getTime()); // Frissítjük az új countdown dátumot
+      } else {
+        console.error(data.error); // Hiba üzenet
+      }
+    } catch (error) {
+      console.error('Error updating countdown date:', error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchCountdownDate = async () => {
+      try {
+        const response = await fetch('/api/countdown-date');
+        const data = await response.json();
+        setCountdownDate(new Date(data.countdownDate).getTime());
+      } catch (error) {
+        console.error('Error fetching countdown date:', error);
+      }
+    };
+
+    fetchCountdownDate();
+  }, []);
+
+  useEffect(() => {
+    if (countdownDate) {
+      const interval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = countdownDate - now;
+
+        if (distance < 0) {
+          clearInterval(interval);
+        } else {
+          setTimeLeft({
+            days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+            hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+            minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+            seconds: Math.floor((distance % (1000 * 60)) / 1000),
+          });
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [countdownDate]);
+
+
+
+  
+
+
+
   return (
     <div style={{ display: 'flex', height: '100vh', fontFamily: 'Arial, sans-serif' }}>
       <BackButton/>
@@ -251,8 +348,8 @@ const AdminPanel = () => {
         )}
 
         {activeTab === 'votes' && (
-          <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+         <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+            {/*<table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{ backgroundColor: 'rgb(3, 52, 115)', color:'white' }}>
                   <th style={{ textAlign: 'left', padding: '10px' }}>Óra</th>
@@ -283,8 +380,40 @@ const AdminPanel = () => {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table>*/}
+      <h3>Választás dátum beállítása</h3>
+
+            
+<div className="admin-controls">
+<input
+  type="datetime-local"
+  value={newCountdownDate}
+  onChange={handleDateChange}
+  style={{ padding: '8px', marginBottom: '10px', width: '100%' }}
+/>
+
+<button
+             onClick={updateCountdownDate}
+              style={{
+                padding: '8px 16px',
+                backgroundColor: '#033473',
+                color: 'white',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                marginBlock:'15px'
+              }}
+            >
+              Frissítés
+            </button>
+</div>
+
           </div>
+
+
+
+
         )}
 
         {activeTab === 'parties' && (

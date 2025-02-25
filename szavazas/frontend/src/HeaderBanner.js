@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import parlamentVideo from './images/parlamentvideo.mp4';
 import './HeaderBanner.css';
-import './CountdownTimer.css'; 
+import './CountdownTimer.css';
 
 const HeaderBanner = () => {
-  const countdownDate = new Date("2024-12-31T00:00:00").getTime();
-
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -13,36 +11,77 @@ const HeaderBanner = () => {
     seconds: 0,
   });
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = countdownDate - now;
+  const [countdownDate, setCountdownDate] = useState(null); // Az új countdown date
 
-      if (distance < 0) {
-        clearInterval(interval);
+  const [newCountdownDate, setNewCountdownDate] = useState(''); // A bevitt új dátum
+
+  // Az új countdown dátum beállítása az input mezőből
+  const handleDateChange = (e) => {
+    setNewCountdownDate(e.target.value);
+  };
+
+  const updateCountdownDate = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/date-plus', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ countdownDate: newCountdownDate }),
+      });
+      
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log(data.message); // Siker üzenet
+        setCountdownDate(new Date(newCountdownDate).getTime()); // Frissítjük az új countdown dátumot
       } else {
-        setTimeLeft({
-          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((distance % (1000 * 60)) / 1000),
-        });
+        console.error(data.error); // Hiba üzenet
       }
-    }, 1000);
+    } catch (error) {
+      console.error('Error updating countdown date:', error);
+    }
+  };
 
-    return () => clearInterval(interval);
+  useEffect(() => {
+    const fetchCountdownDate = async () => {
+      try {
+        const response = await fetch('/api/countdown-date');
+        const data = await response.json();
+        setCountdownDate(new Date(data.countdownDate).getTime());
+      } catch (error) {
+        console.error('Error fetching countdown date:', error);
+      }
+    };
+
+    fetchCountdownDate();
+  }, []);
+
+  useEffect(() => {
+    if (countdownDate) {
+      const interval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = countdownDate - now;
+
+        if (distance < 0) {
+          clearInterval(interval);
+        } else {
+          setTimeLeft({
+            days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+            hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+            minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+            seconds: Math.floor((distance % (1000 * 60)) / 1000),
+          });
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
   }, [countdownDate]);
 
   return (
     <header className="header-banner">
-      <video
-        className="banner-video"
-        autoPlay
-        loop
-        muted
-        playsInline
-        type="video/mp4"
-      >
+      <video className="banner-video" autoPlay loop muted playsInline type="video/mp4">
         <source src={parlamentVideo} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
@@ -69,6 +108,14 @@ const HeaderBanner = () => {
                   <span>{timeLeft.seconds} <span className="card-label">MÁSODPERC</span></span>
                 </div>
               </div>
+             {/* <div className="admin-controls">
+                <input
+                  type="datetime-local"
+                  value={newCountdownDate}
+                  onChange={handleDateChange}
+                />
+                <button onClick={updateCountdownDate}>Frissítés</button>
+              </div>*/}
             </div>
           </div>
         </div>
