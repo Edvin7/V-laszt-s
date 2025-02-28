@@ -3,21 +3,7 @@ import axios from 'axios';
 import BackButton from './BackButton';
 
 const AdminPanel = () => {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
   const [activeTab, setActiveTab] = useState('users');
   const [users, setUsers] = useState([]);
   const [votes, setVotes] = useState([]); 
@@ -347,66 +333,60 @@ const AdminPanel = () => {
           </div>
         )}
 
-        {activeTab === 'votes' && (
-         <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
-            {/*<table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ backgroundColor: 'rgb(3, 52, 115)', color:'white' }}>
-                  <th style={{ textAlign: 'left', padding: '10px' }}>Óra</th>
-                  <th style={{ textAlign: 'left', padding: '10px' }}>Perc</th>
-                  <th style={{ textAlign: 'left', padding: '10px' }}>Műveletek</th>
-                </tr>
-              </thead>
-              <tbody>
-                {votes.map((vote) => (
-                  <tr key={vote.id} style={{ borderBottom: '1px solid #ddd' }}>
-                    <td style={{ padding: '10px' }}>{vote.hour}</td>
-                    <td style={{ padding: '10px' }}>{vote.minute}</td>
-                    <td style={{ padding: '10px' }}>
-                      <button
-                        onClick={() => deleteVote(vote.id)}
-                        style={{
-                          padding: '8px 16px',
-                          backgroundColor: '#e74c3c',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '5px',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        Törlés
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>*/}
-      <h3>Választás dátum beállítása</h3>
+{activeTab === 'votes' && (
+  <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+    <h3 
+      style={{ 
+        fontWeight: 'bold', 
+        transition: 'all 0.3s ease', 
+        display: 'inline-block', 
+        padding: '5px',
+        fontSize:'20px' 
+      }}
+      onMouseEnter={(e) => {
+        e.target.style.color = '#033473';
+        e.target.style.backgroundColor = 'white';
+      }}
+      onMouseLeave={(e) => {
+        e.target.style.color = 'black';
+        e.target.style.backgroundColor = 'transparent';
+      }}
+    >
+      Választás dátum beállítása
+    </h3>
 
-            
-<div className="admin-controls">
-<input
-  type="datetime-local"
-  value={newCountdownDate}
-  onChange={handleDateChange}
-  style={{ padding: '8px', marginBottom: '10px', width: '100%' }}
-/>
+    <div className="admin-controls">
+      <input
+        type="datetime-local"
+        value={newCountdownDate}
+        onChange={handleDateChange}
+        style={{ padding: '8px', marginBottom: '10px', width: '100%' }}
+      />
 
-<button
-             onClick={updateCountdownDate}
-              style={{
-                padding: '8px 16px',
-                backgroundColor: '#033473',
-                color: 'white',
-                border: 'none',
-                borderRadius: '5px',
-                cursor: 'pointer',
-                fontWeight: 'bold',
-                marginBlock:'15px'
-              }}
-            >
-              Frissítés
-            </button>
+      <button
+        onClick={updateCountdownDate}
+        style={{
+          padding: '8px 16px',
+          backgroundColor: '#033473',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          fontWeight: 'bold',
+          marginBlock: '15px',
+          transition: 'all 0.3s ease'
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.backgroundColor = 'white';
+          e.target.style.color = '#033473';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.backgroundColor = '#033473';
+          e.target.style.color = 'white';
+        }}
+      >
+        Frissítés
+      </button>
 </div>
 
           </div>
