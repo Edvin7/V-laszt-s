@@ -219,6 +219,29 @@ INSERT INTO `votes` (`vote_id`, `election_id`, `party_id`, `vote_time`, `vote_ha
 (5, 1, 1, '2025-02-18 09:16:56', 'c31xgu7o4qv', 8),
 (6, 1, 15, '2025-02-18 09:21:09', 'nbbznljn22', 9);
 
+
+--
+-- Tábla szerkezet ehhez a táblához `admin`
+--
+
+CREATE TABLE `admin` (
+  `admin_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `admin`
+--
+
+INSERT INTO `admin` (`admin_id`, `name`, `email`, `password_hash`, `created_at`) VALUES
+(0, 'admin', 'admin@admin.com', '$2a$10$OAAls9KPJ4mflgrVZeOCAuA.i6i/Y/20V8dUEGFuvceRjIPNRWY.O', '2025-02-14 11:54:26');
+COMMIT;
+
+
+
 --
 -- Indexek a kiírt táblákhoz
 --
