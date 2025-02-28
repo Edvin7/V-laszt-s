@@ -1,0 +1,13 @@
+http://localhost:3000/ kesz
+http://localhost:3000/register kesz
+http://localhost:3000/login kesz
+http://localhost:3000/voting kesz
+http://localhost:3000/parties kesz
+http://localhost:3000/stats kesz
+
+http://localhost:3000/terms
+http://localhost:3000/privacy
+http://localhost:3000/contact
+http://localhost:3000/admin 
+http://localhost:3000/news
+http://localhost:3000/account
