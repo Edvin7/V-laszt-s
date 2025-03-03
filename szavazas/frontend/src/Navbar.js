@@ -7,20 +7,40 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isVotingActive, setIsVotingActive] = useState(false); // Szavazás aktív státusz
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
     if (userData) {
       const user = JSON.parse(userData);
-      setIsAdmin(user.isAdmin);  // Ellenőrizzük, hogy admin-e
+      setIsAdmin(user.isAdmin);
     }
   }, [isLoggedIn]);
 
+  useEffect(() => {
+    const fetchVotingStatus = async () => {
+      try {
+        const response = await fetch('/api/is-voting-active');
+        const data = await response.json();
+        console.log('Voting status:', data.isActive); // Ellenőrizzük, mi érkezik
+        setIsVotingActive(data.isActive); // Frissítjük az állapotot
+      } catch (error) {
+        console.error('Error fetching voting status:', error);
+      }
+    };
+
+    fetchVotingStatus(); // Elindítjuk az első lekérést
+
+    // Frissítjük 5 másodpercenként
+    const interval = setInterval(fetchVotingStatus, 5000);
+    return () => clearInterval(interval); // Tisztítjuk az interval-t, ha a komponens eltűnik
+  }, []);
+
   const handleLogout = () => {
-    localStorage.removeItem('user'); // Felhasználó adatainak eltávolítása
-    setIsLoggedIn(false);  // Állapot frissítése
-    setIsAdmin(false);  // Admin státusz eltávolítása
-    navigate("/"); // Navigálás a kezdőlapra
+    localStorage.removeItem('user');
+    setIsLoggedIn(false);
+    setIsAdmin(false);
+    navigate("/");
   };
 
   const toggleMenu = () => {
@@ -37,7 +57,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
       <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
         <ul>
-          {isAdmin && <li><Link to="/admin">Admin</Link></li>}  {/* Csak adminoknak */}
+          {isAdmin && <li><Link to="/admin">Admin</Link></li>}
           <li><Link to="/parties">Pártok</Link></li>
           <li><Link to="/contact">Kapcsolat</Link></li>
           <li><a href="/news" target="_blank" rel="noopener noreferrer">Hírek</a></li>
@@ -46,7 +66,8 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
             <>
               <li><Link to="/stats">Statisztikák</Link></li>
               <li><Link to="/account">Profil</Link></li>
-              <li><Link to="/voting">Szavazz</Link></li>
+              {/* Ha a szavazás aktív, akkor jelenjen meg a Szavazz link */}
+              {isVotingActive && <li><Link to="/voting">Szavazz</Link></li>}
               <li><button onClick={handleLogout} className="logoutbutton">Kijelentkezés</button></li>
             </>
           ) : (

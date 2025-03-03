@@ -572,8 +572,53 @@ const checkAndResetCountdown = () => {
   });
 };
 
-// Futtassuk az ellenőrzést minden 30 másodpercben
-setInterval(checkAndResetCountdown, 30 * 1000);
+// Futtassuk az ellenőrzést minden 1 másodpercben
+setInterval(checkAndResetCountdown, 1 * 1000);
+
+
+
+
+
+
+// Timer állapotának lekérdezése
+app.get('/api/is-voting-active', (req, res) => {
+  db.query('SELECT countdown_date FROM settings WHERE id = 1', (err, results) => {
+    if (err) {
+      console.error('Database error:', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+
+    if (results.length > 0) {
+      const countdownDate = results[0].countdown_date;
+
+      // Ha a countdown_date NULL vagy '0000-00-00 00:00:00', a szavazás inaktív
+      if (!countdownDate || countdownDate === '0000-00-00 00:00:00') {
+        return res.json({ isActive: false });
+      }
+
+      // Ellenőrizzük, hogy érvényes dátum-e
+      const countdownDateObj = new Date(countdownDate);
+      if (isNaN(countdownDateObj.getTime())) {
+        return res.json({ isActive: false });
+      }
+
+      const now = new Date();
+
+      // Ha a countdown_date lejárt, a szavazás inaktív
+      if (countdownDateObj <= now) {
+        return res.json({ isActive: false });
+      }
+
+      // Ha minden érvényes, és a dátum még aktív, a szavazás aktív
+      return res.json({ isActive: true });
+    } else {
+      res.status(404).json({ error: 'Countdown date not found' });
+    }
+  });
+});
+
+
+
 
 
 
