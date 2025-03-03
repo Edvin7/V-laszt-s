@@ -546,6 +546,35 @@ app.post('/api/date-plus', (req, res) => {
 
 
 
+const checkAndResetCountdown = () => {
+  const now = new Date();
+  
+  db.query('SELECT countdown_date FROM settings WHERE id = 1', (err, results) => {
+    if (err) {
+      console.error('Database error:', err);
+      return;
+    }
+
+    if (results.length > 0) {
+      const countdownDate = new Date(results[0].countdown_date);
+      
+      if (countdownDate <= now) {
+        // Ha lejárt az időzítő, állítsuk NULL-ra
+        db.query('UPDATE settings SET countdown_date = NULL WHERE id = 1', (updateErr) => {
+          if (updateErr) {
+            console.error('Database update error:', updateErr);
+          } else {
+            console.log('Countdown date reset to NULL.');
+          }
+        });
+      }
+    }
+  });
+};
+
+// Futtassuk az ellenőrzést minden 30 másodpercben
+setInterval(checkAndResetCountdown, 30 * 1000);
+
 
 
 

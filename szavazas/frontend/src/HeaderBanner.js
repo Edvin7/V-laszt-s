@@ -108,14 +108,6 @@ const HeaderBanner = () => {
                   <span>{timeLeft.seconds} <span className="card-label">MÁSODPERC</span></span>
                 </div>
               </div>
-             {/* <div className="admin-controls">
-                <input
-                  type="datetime-local"
-                  value={newCountdownDate}
-                  onChange={handleDateChange}
-                />
-                <button onClick={updateCountdownDate}>Frissítés</button>
-              </div>*/}
             </div>
           </div>
         </div>
