@@ -352,7 +352,7 @@ const AdminPanel = () => {
         e.target.style.backgroundColor = 'transparent';
       }}
     >
-      Választás dátum beállítása
+      Választási dátum beállítása
     </h3>
 
     <div className="admin-controls">
@@ -363,38 +363,82 @@ const AdminPanel = () => {
         style={{ padding: '8px', marginBottom: '10px', width: '100%' }}
       />
 
-      <button
-        onClick={updateCountdownDate}
-        style={{
-          padding: '8px 16px',
-          backgroundColor: '#033473',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          fontWeight: 'bold',
-          marginBlock: '15px',
-          transition: 'all 0.3s ease'
-        }}
-        onMouseEnter={(e) => {
-          e.target.style.backgroundColor = 'white';
-          e.target.style.color = '#033473';
-        }}
-        onMouseLeave={(e) => {
-          e.target.style.backgroundColor = '#033473';
-          e.target.style.color = 'white';
-        }}
-      >
-        Frissítés
-      </button>
-</div>
+      <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
+        <button
+          onClick={updateCountdownDate}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#033473',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = 'white';
+            e.target.style.color = '#033473';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = '#033473';
+            e.target.style.color = 'white';
+          }}
+        >
+          Indítás
+        </button>
 
-          </div>
+        <button
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#033473',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = 'white';
+            e.target.style.color = '#033473';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = '#033473';
+            e.target.style.color = 'white';
+          }}
+        >
+          Leállítás
+        </button>
 
+        <button
+          style={{
+            padding: '8px 16px',
+            gap:'20px',
+            backgroundColor: '#033473',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = 'white';
+            e.target.style.color = '#033473';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = '#033473';
+            e.target.style.color = 'white';
+          }}
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
-
-
-        )}
 
         {activeTab === 'parties' && (
           <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px',fontWeight:'bold', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
