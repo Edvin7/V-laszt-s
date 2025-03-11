@@ -11,3 +11,10 @@ backend:
 -  oldalak frissuljenek egyfolytaban
 
 //dokumentaciot jora megkene meg
+
+
+- statisztika oldal eltuntetese miutan lejart a idozito
+- flhasznalok es partok torlese
+- reset gomb, szavazatokat es az idozitot nullaza
+- url-ek letiltasa
+- a timer lejarata utan ha ott vagyok a szavazolapon akkor onnan kidobjon a fooldalra
