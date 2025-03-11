@@ -9,95 +9,45 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.chart-container {
-  width: 100%;
-  max-width: 700px;
-  margin: auto;
-  height: 400px;
-  padding-top: 20px;
-}
-
-.lline {
-  width: 190px;
-  height: 5px;
-  background-color: #033473;
-  margin: 0 auto 25px;
-  border-radius: 10px;
-}
-
-.table {
-  width: 100%;
-  margin-top: 20px;
-  border-collapse: collapse;
-}
-
-.h11 {
-  font-weight: bold;
-  font-size: 40px;
-  padding-bottom: 15px;
-}
-
-.table th, .table td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
-}
-
-.table th {
-  background-color: rgb(3, 52, 115);
-  color: white;
-}
-
-.table tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-/* Reszponzív módosítások mobil eszközökre */
-@media (max-width: 768px) {
-  .ccontainer {
-    width: 90%; /* Kisebb szélesség mobilon */
-    margin-top: 50px; /* Kisebb margó */
-    padding: 20px;
-  }
-
-  .h11 {
-    font-size: 28px; /* Kisebb főcím mobilon */
-  }
-
+  
   .chart-container {
-    max-width: 100%; /* A grafikon szélessége legyen maximálisan elérhető */
-    height: 300px; /* Kisebb magasság mobilon */
+    width: 100%;
+    max-width: 700px;
+    margin: auto;
+    height: 400px;
+    padding-top: 20px;
   }
-
-  .lline {
-    width: 150px; /* Kisebb vonal mobilon */
+ 
+  .lline{
+    width: 190px;
+    height: 5px;
+    background-color: #033473;
+    margin: 0 auto 25px;
+    border-radius: 10px;
   }
 
   .table {
-    font-size: 14px; /* Kisebb betűméret a táblázatban */
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
   }
-
+  .h11{
+    font-weight: bold;
+    font-size: 40px;
+    padding-bottom: 15px;
+  }
   .table th, .table td {
-    padding: 8px; /* Kisebb cellapárnázás mobilon */
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
   }
-
-  /* A táblázat vízszintes görgetése, ha túl széles lenne */
-  .table-container {
-    overflow-x: auto;
+  
+  .table th {
+    background-color: rgb(3, 52, 115);
+    color: white;
   }
-}
-
-/* Nagyobb képernyők esetén (pl. asztali gépek) */
-@media (min-width: 1024px) {
-  .ccontainer {
-    width: 70%; /* Szélesebb tartalom asztali gépeken */
+  
+  .table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
   }
-
-  .h11 {
-    font-size: 45px; /* Nagyobb főcím asztali képernyőkön */
-  }
-
-  .chart-container {
-    height: 450px; /* Magasabb grafikon asztali gépeken */
-  }
-}
+  
