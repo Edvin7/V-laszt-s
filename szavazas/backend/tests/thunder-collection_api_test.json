@@ -1,0 +1,264 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "api_test",
+    "collectionId": "04f55d04-4a23-4788-b91f-66967286948f",
+    "dateExported": "2025-03-11T09:15:08.782Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "407526d6-f01d-4439-a4dc-7e28e8f81319",
+            "colId": "04f55d04-4a23-4788-b91f-66967286948f",
+            "containerId": "",
+            "name": "DatabaseConnection",
+            "url": "http://localhost:5000/api/db-test",
+            "method": "GET",
+            "sortNum": 5000,
+            "created": "2025-03-11T08:31:17.296Z",
+            "modified": "2025-03-11T08:32:17.577Z",
+            "headers": []
+        },
+        {
+            "_id": "5713acaa-00ed-488a-a435-370bfa8a296d",
+            "colId": "04f55d04-4a23-4788-b91f-66967286948f",
+            "containerId": "",
+            "name": "AdminLoginSuccess",
+            "url": "http://localhost:5000/login",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2025-03-11T08:24:18.772Z",
+            "modified": "2025-03-11T08:26:35.012Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\r\n  \"email\": \"admin@admin.com\",\r\n  \"password\": \"admin\"\r\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "a95c7097-560e-43d7-9cfe-b870b2e276f0",
+            "colId": "04f55d04-4a23-4788-b91f-66967286948f",
+            "containerId": "",
+            "name": "AdminLoginFailed",
+            "url": "http://localhost:5000/login",
+            "method": "POST",
+            "sortNum": 15000,
+            "created": "2025-03-11T08:28:16.406Z",
+            "modified": "2025-03-11T08:28:48.355Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\r\n  \"email\": \"admin@admin.com\",\r\n  \"password\": \"admin123123123\"\r\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "e10e239e-762e-46ca-bc42-d18b3dcdec30",
+            "colId": "04f55d04-4a23-4788-b91f-66967286948f",
+            "containerId": "",
+            "name": "UserLoginSuccess",
+            "url": "http://localhost:5000/login",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2025-03-11T08:27:13.791Z",
+            "modified": "2025-03-11T08:27:47.445Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\r\n  \"email\": \"a@g.c\",\r\n  \"password\": \"asd\"\r\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "a49e32ed-a9c1-4516-b0fe-40383b1e9446",
+            "colId": "04f55d04-4a23-4788-b91f-66967286948f",
+            "containerId": "",
+            "name": "UserLoginFailed",
+            "url": "http://localhost:5000/login",
+            "method": "POST",
+            "sortNum": 25000,
+            "created": "2025-03-11T08:28:59.304Z",
+            "modified": "2025-03-11T08:29:41.936Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\r\n  \"email\": \"pal.edvin@gmail.com\",\r\n  \"password\": \"Edvin123\"\r\n}\r\n",
+                "form": []
+            }
+        },
+        {
+            "_id": "846d63f5-679b-45ba-a7ae-2e04eae385a4",
+            "colId": "04f55d04-4a23-4788-b91f-66967286948f",
+            "containerId": "",
+            "name": "UserRegisterSuccess",
+            "url": "http://localhost:5000/register",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2025-03-11T08:30:03.608Z",
+            "modified": "2025-03-11T08:38:28.951Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\r\n  \"name\": \"Hotváth Dániel\",\r\n  \"email\": \"hdaniel06@gmail.com\",\r\n  \"pass\": \"ZXcAg78v\",\r\n  \"personal_id\": \"1234567839\",\r\n  \"agreeTerm\": true\r\n}\r\n",
+                "form": []
+            }
+        },
+        {
+            "_id": "d08fcbc6-6302-43c9-b7f4-6409300ed285",
+            "colId": "04f55d04-4a23-4788-b91f-66967286948f",
+            "containerId": "",
+            "name": "UserRegisterFailed",
+            "url": "http://localhost:5000/register",
+            "method": "POST",
+            "sortNum": 55000,
+            "created": "2025-03-11T08:37:31.806Z",
+            "modified": "2025-03-11T08:38:32.235Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\r\n  \"name\": \"Hotváth Dániel\",\r\n  \"email\": \"hdaniel06@gmail.com\",\r\n  \"pass\": \"ZXcAg78v\",\r\n  \"personal_id\": \"1234567839\",\r\n  \"agreeTerm\": true\r\n}\r\n",
+                "form": []
+            }
+        },
+        {
+            "_id": "31870714-ed5c-45d2-ac17-0916116f509f",
+            "colId": "04f55d04-4a23-4788-b91f-66967286948f",
+            "containerId": "",
+            "name": "VoteSend",
+            "url": "http://localhost:5000/voting",
+            "method": "POST",
+            "sortNum": 90000,
+            "created": "2025-03-11T08:41:21.298Z",
+            "modified": "2025-03-11T08:46:44.424Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\r\n  \"election_id\": 1,\r\n  \"party_id\": 1,\r\n  \"vote_hash\": \"abc123xyz\",\r\n  \"user_id\": 10\r\n}\r\n",
+                "form": []
+            }
+        },
+        {
+            "_id": "4f36eb37-7f2a-4523-82a2-41274d5bb3e0",
+            "colId": "04f55d04-4a23-4788-b91f-66967286948f",
+            "containerId": "",
+            "name": "GetParties",
+            "url": "http://localhost:5000/parties",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2025-03-11T08:59:01.454Z",
+            "modified": "2025-03-11T08:59:12.842Z",
+            "headers": []
+        },
+        {
+            "_id": "6100f698-bdec-43e3-8b71-83fad8c8f056",
+            "colId": "04f55d04-4a23-4788-b91f-66967286948f",
+            "containerId": "",
+            "name": "GetStats",
+            "url": "http://localhost:5000/counters",
+            "method": "GET",
+            "sortNum": 120000,
+            "created": "2025-03-11T09:01:16.653Z",
+            "modified": "2025-03-11T09:01:24.911Z",
+            "headers": []
+        },
+        {
+            "_id": "cd567a96-e3c5-4560-836f-5704742dde36",
+            "colId": "04f55d04-4a23-4788-b91f-66967286948f",
+            "containerId": "",
+            "name": "GetElectionResults",
+            "url": "http://localhost:5000/election-results",
+            "method": "GET",
+            "sortNum": 130000,
+            "created": "2025-03-11T09:02:44.500Z",
+            "modified": "2025-03-11T09:02:51.560Z",
+            "headers": []
+        },
+        {
+            "_id": "4b1b6483-1c3e-4cfd-8071-fdba45a48abb",
+            "colId": "04f55d04-4a23-4788-b91f-66967286948f",
+            "containerId": "",
+            "name": "GetUsers",
+            "url": "http://localhost:5000/api/users",
+            "method": "GET",
+            "sortNum": 140000,
+            "created": "2025-03-11T09:04:19.375Z",
+            "modified": "2025-03-11T09:04:21.126Z",
+            "headers": []
+        },
+        {
+            "_id": "ab60bdeb-9c15-4449-a3e1-dc331a882a29",
+            "colId": "04f55d04-4a23-4788-b91f-66967286948f",
+            "containerId": "",
+            "name": "UserUpdate",
+            "url": "http://localhost:5000/api/users/1",
+            "method": "PUT",
+            "sortNum": 160000,
+            "created": "2025-03-11T09:05:19.119Z",
+            "modified": "2025-03-11T09:05:22.308Z",
+            "headers": []
+        },
+        {
+            "_id": "846c0e82-3ba4-4cb0-a6f3-662aa7773d11",
+            "colId": "04f55d04-4a23-4788-b91f-66967286948f",
+            "containerId": "",
+            "name": "PartyAdd",
+            "url": "http://localhost:5000/api/parties",
+            "method": "POST",
+            "sortNum": 170000,
+            "created": "2025-03-11T09:08:23.191Z",
+            "modified": "2025-03-11T09:09:02.188Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\r\n  \"name\": \"Párt Neve\",\r\n  \"description\": \"Ez a párt leírása\"\r\n}\r\n",
+                "form": []
+            }
+        },
+        {
+            "_id": "5979ac8b-1987-48de-a787-f455a298d813",
+            "colId": "04f55d04-4a23-4788-b91f-66967286948f",
+            "containerId": "",
+            "name": "CountdownDateNull",
+            "url": "http://localhost:5000/api/countdown-date",
+            "method": "POST",
+            "sortNum": 180000,
+            "created": "2025-03-11T09:12:51.281Z",
+            "modified": "2025-03-11T09:13:43.202Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{ \"countdownDate\": \"2025-04-01T12:00:00Z\" }\r\n",
+                "form": []
+            }
+        },{
+            "_id": "eac49591-168e-40c4-9c61-6ca6ee6157d6",
+            "colId": "876f73f2-619c-402e-912e-cd207b4258cc",
+            "containerId": "",
+            "name": "CountdownTimerUpdate",
+            "url": "http://localhost:5000/api/date-plus",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2025-03-11T09:17:44.189Z",
+            "modified": "2025-03-11T09:18:23.358Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{ \"countdownDate\": \"2025-04-01T12:00:00Z\" }\r\n",
+                "form": []
+            }
+        },
+        {
+            "_id": "8c1631da-a366-42c2-a54e-9894ee639938",
+            "colId": "876f73f2-619c-402e-912e-cd207b4258cc",
+            "containerId": "",
+            "name": "CountdownTimerStatus",
+            "url": "http://localhost:5000/api/is-voting-active",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2025-03-11T09:19:05.560Z",
+            "modified": "2025-03-11T09:19:19.104Z",
+            "headers": []
+        }
+    ],
+    "ref": "Rn93o3hLmBi3ltPGagmPSvsfj8ITD1LghsgWf-mZ2fl5ddpiAF5kVwYkYeybBjCkiIe4Gt5fpkRn54iC1KLJVw"
+}
