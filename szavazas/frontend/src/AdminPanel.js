@@ -431,29 +431,53 @@ const AdminPanel = () => {
   Leállítás
 </button>
 
-        <button
-          style={{
-            padding: '8px 16px',
-            gap:'20px',
-            backgroundColor: '#033473',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.backgroundColor = 'white';
-            e.target.style.color = '#033473';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.backgroundColor = '#033473';
-            e.target.style.color = 'white';
-          }}
-        >
-          Reset
-        </button>
+<button
+  style={{
+    padding: '8px 16px',
+    gap: '20px',
+    backgroundColor: '#033473',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontWeight: 'bold',
+    transition: 'all 0.3s ease'
+  }}
+  onMouseEnter={(e) => {
+    e.target.style.backgroundColor = 'white';
+    e.target.style.color = '#033473';
+  }}
+  onMouseLeave={(e) => {
+    e.target.style.backgroundColor = '#033473';
+    e.target.style.color = 'white';
+  }}
+  onClick={async () => {
+    if (!window.confirm('Biztosan törölni szeretnéd az összes szavazatot és nullázni az időzítőt?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/reset-all', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert('Az időzítő nullázva és az összes szavazat törölve!');
+      } else {
+        alert('Hiba történt: ' + data.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Hiba történt a művelet közben.');
+    }
+  }}
+>
+  Reset
+</button>
       </div>
     </div>
   </div>

@@ -561,6 +561,49 @@ app.post('/api/reset-countdown', (req, res) => {
   });
 });
 
+
+
+app.post('/api/reset-all', (req, res) => {
+  db.beginTransaction((err) => {
+    if (err) {
+      console.error('Transaction error:', err);
+      return res.status(500).json({ error: 'Transaction error' });
+    }
+
+    // 1. Az időzítő lenullázása
+    db.query('UPDATE settings SET countdown_date = "0000-00-00 00:00:00" WHERE id = 1', (updateErr) => {
+      if (updateErr) {
+        return db.rollback(() => {
+          console.error('Database update error:', updateErr);
+          res.status(500).json({ error: 'Failed to reset countdown date' });
+        });
+      }
+
+      // 2. Szavazatok törlése
+      db.query('DELETE FROM votes', (deleteErr) => {
+        if (deleteErr) {
+          return db.rollback(() => {
+            console.error('Vote deletion error:', deleteErr);
+            res.status(500).json({ error: 'Failed to delete votes' });
+          });
+        }
+
+        // Ha minden sikerült, akkor commit
+        db.commit((commitErr) => {
+          if (commitErr) {
+            return db.rollback(() => {
+              console.error('Commit error:', commitErr);
+              res.status(500).json({ error: 'Transaction commit failed' });
+            });
+          }
+          res.json({ message: 'Reset successful: countdown reset and votes deleted' });
+        });
+      });
+    });
+  });
+});
+
+
 // Szerver indítása
 app.listen(port, () => {
   console.log(`Szerver fut a ${port} porton`);
