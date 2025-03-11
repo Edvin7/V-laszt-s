@@ -551,6 +551,16 @@ app.get('/api/is-voting-active', (req, res) => {
 });
 
 
+app.post('/api/reset-countdown', (req, res) => {
+  db.query('UPDATE settings SET countdown_date = "0000-00-00 00:00:00" WHERE id = 1', (err, results) => {
+    if (err) {
+      console.error('Database error:', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    res.json({ message: 'Countdown date reset successfully' });
+  });
+});
+
 // Szerver indítása
 app.listen(port, () => {
   console.log(`Szerver fut a ${port} porton`);

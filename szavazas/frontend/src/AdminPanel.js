@@ -389,27 +389,47 @@ const AdminPanel = () => {
         </button>
 
         <button
-          style={{
-            padding: '8px 16px',
-            backgroundColor: '#033473',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.backgroundColor = 'white';
-            e.target.style.color = '#033473';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.backgroundColor = '#033473';
-            e.target.style.color = 'white';
-          }}
-        >
-          Leállítás
-        </button>
+  style={{
+    padding: '8px 16px',
+    backgroundColor: '#033473',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontWeight: 'bold',
+    transition: 'all 0.3s ease'
+  }}
+  onMouseEnter={(e) => {
+    e.target.style.backgroundColor = 'white';
+    e.target.style.color = '#033473';
+  }}
+  onMouseLeave={(e) => {
+    e.target.style.backgroundColor = '#033473';
+    e.target.style.color = 'white';
+  }}
+  onClick={async () => {
+    try {
+      const response = await fetch('/api/reset-countdown', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert('Időzítő sikeresen lenullázva!');
+      } else {
+        alert('Hiba történt: ' + data.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Hiba történt az időzítő nullázása közben.');
+    }
+  }}
+>
+  Leállítás
+</button>
 
         <button
           style={{
