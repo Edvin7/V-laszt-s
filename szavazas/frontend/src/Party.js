@@ -41,7 +41,8 @@ const Partyies = () => {
 
   return (
     <div className="stats-container">
-      <h2 className="stats-title">Politikai Pártok</h2>
+      <h2 className="stats-title">Politikai <span style={{ color: '#033473' }}>Pártok</span></h2>
+      <div className="lline"></div>
 
       {error && <p className="error-message">{error}</p>}
 

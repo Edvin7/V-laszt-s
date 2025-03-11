@@ -1,17 +1,16 @@
-body {
-  font-family: 'Arial', sans-serif;
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
-  background: #f4f4f9;
 }
 
 .contact-form-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #e9eff1;
   padding: 20px;
+  box-sizing: border-box;
+  margin-top: 150px;
 }
 
 .contact-form-wrapper {
@@ -121,9 +120,8 @@ body {
   transition: opacity 1s ease, visibility 1s ease;
 }
 
-
 .status-message.success {
-  background-color: #4CAF50; 
+  background-color: #4CAF50;
   color: white;
 }
 

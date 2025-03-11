@@ -4,11 +4,12 @@ body{
 }
 
 .header-banner {
-    position: relative;
-    width: 100%;
-    height: 80vh; 
-    overflow: hidden; 
-  }
+  margin-top: 70px; /* Navbar helyet kap */
+  height: 80vh;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
   
   .banner-video {
     position: absolute;
@@ -79,7 +80,7 @@ body{
     background-color: #d4ac0d;
   }
   
-  @media (max-width: 768px) {
+  @media (max-width: 1000px) {
     .header-banner {
       height: 300px; 
     }
@@ -87,12 +88,16 @@ body{
     .caption h3 {
       font-size: 1.5rem;
     }
-  
+    .hero-sec{
+      margin-top: 80px;
+    }
     .caption .description {
       font-size: 1rem; 
       padding: 0 20px;
     }
-  
+    .countdown-cards{
+      font-size: 4px;
+    }
     .btn {
       flex-direction: column;
     }

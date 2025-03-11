@@ -5,6 +5,7 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
     cursor: pointer;
+    
   }
   
   .news-item:hover {
@@ -36,4 +37,6 @@
     text-decoration: none;
     color: inherit;
   }
-  
+  .news-feed{
+    margin-top: 80px;
+  }

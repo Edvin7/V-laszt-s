@@ -1,20 +1,31 @@
 .ccontainer {
-    width: 80%;
-    margin: auto;
-    text-align: center;
-    padding: 30px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
+  width: 80%;
+  margin: auto;
+  margin-top: 80px;
+  text-align: center;
+  padding: 30px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
   
   .chart-container {
     width: 100%;
     max-width: 700px;
     margin: auto;
     height: 400px;
+    padding-top: 20px;
   }
  
+  .lline{
+    width: 190px;
+    height: 5px;
+    background-color: #033473;
+    margin: 0 auto 25px;
+    border-radius: 10px;
+  }
+
   .table {
     width: 100%;
     margin-top: 20px;
@@ -23,6 +34,7 @@
   .h11{
     font-weight: bold;
     font-size: 40px;
+    padding-bottom: 15px;
   }
   .table th, .table td {
     border: 1px solid #ddd;
@@ -31,7 +43,7 @@
   }
   
   .table th {
-    background-color: #033473;
+    background-color: rgb(3, 52, 115);
     color: white;
   }
   

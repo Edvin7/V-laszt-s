@@ -15,7 +15,7 @@ const Stats = () => {
     const userData = localStorage.getItem("user");
     if (userData) {
       const user = JSON.parse(userData);
-      setIsLoggedIn(true);  // Ha van felhasználói adat, be van jelentkezve
+      setIsLoggedIn(true); // Ha van felhasználói adat, be van jelentkezve
     }
   }, []);
 
@@ -44,8 +44,16 @@ const Stats = () => {
     const voteCounts = electionData.map((item) => item.votes);
 
     const colors = [
-      "#4e79a7", "#f28e2c", "#e15759", "#76b7b2", "#59a14f",
-      "#edc948", "#b07aa1", "#ff9da7", "#9c755f", "#bab0ab"
+      "#4e79a7",
+      "#f28e2c",
+      "#e15759",
+      "#76b7b2",
+      "#59a14f",
+      "#edc948",
+      "#b07aa1",
+      "#ff9da7",
+      "#9c755f",
+      "#bab0ab"
     ];
 
     if (chartRef.current) {
@@ -88,7 +96,8 @@ const Stats = () => {
 
   return (
     <div className="ccontainer">
-      <h1 className="h11">Választási Eredmények</h1>
+      <h1 className="h11">Választási <span style={{ color: '#033473' }}>Eredmények</span></h1>
+      <div className="lline"></div>
       <div className="chart-container">
         <canvas ref={chartRef}></canvas>
       </div>
@@ -112,7 +121,6 @@ const Stats = () => {
           ))}
         </tbody>
       </table>
-      {/* Átadjuk az isLoggedIn állapotot a Footer komponensnek */}
       <Footer isLoggedIn={isLoggedIn} />
     </div>
   );

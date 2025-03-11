@@ -47,31 +47,37 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Funkció, hogy a menü automatikusan bezáródjon kattintáskor
+  const handleMenuLinkClick = () => {
+    if (isMenuOpen) {
+      setIsMenuOpen(false); // Bezárjuk a menüt, ha egy linket választunk
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="logo">
-        <Link to="/">
+        <Link to="/" onClick={handleMenuLinkClick}>
           <img src={logo} alt="Logo" />
         </Link>
       </div>
 
       <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
         <ul>
-          {isAdmin && <li><Link to="/admin">Admin</Link></li>}
-          <li><Link to="/parties">Pártok</Link></li>
-          <li><Link to="/contact">Kapcsolat</Link></li>
-          <li><a href="/news" target="_blank" rel="noopener noreferrer">Hírek</a></li>
+          {isAdmin && <li><Link to="/admin" onClick={handleMenuLinkClick}>Admin</Link></li>}
+          <li><Link to="/parties" onClick={handleMenuLinkClick}>Pártok</Link></li>
+          <li><Link to="/contact" onClick={handleMenuLinkClick}>Kapcsolat</Link></li>
+          <li><a href="/news" target="_blank" rel="noopener noreferrer" onClick={handleMenuLinkClick}>Hírek</a></li>
 
           {isLoggedIn ? (
             <>
-              <li><Link to="/stats">Statisztikák</Link></li>
-              <li><Link to="/account">Profil</Link></li>
-              {/* Ha a szavazás aktív, akkor jelenjen meg a Szavazz link */}
-              {isVotingActive && <li><Link to="/voting">Szavazz</Link></li>}
+              <li><Link to="/stats" onClick={handleMenuLinkClick}>Statisztikák</Link></li>
+              <li><Link to="/account" onClick={handleMenuLinkClick}>Profil</Link></li>
+              {isVotingActive && <li><Link to="/voting" onClick={handleMenuLinkClick}>Szavazz</Link></li>}
               <li><button onClick={handleLogout} className="logoutbutton">Kijelentkezés</button></li>
             </>
           ) : (
-            <li><Link to="/login" className="loginbutton">Bejelentkezés</Link></li>
+            <li><Link to="/login" className="loginbutton" onClick={handleMenuLinkClick}>Bejelentkezés</Link></li>
           )}
         </ul>
       </div>
