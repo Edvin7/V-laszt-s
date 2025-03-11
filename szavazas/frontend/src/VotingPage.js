@@ -79,7 +79,7 @@ const VotingPage = () => {
           setIsMessageVisible(true);
           setTimeout(() => setIsMessageVisible(false), 3000); // Az üzenet eltűnik 3 másodperc múlva
           // Navigálás a statisztika oldalra
-          navigate('/stats'); // Átirányítás a statisztika oldalra
+          navigate('/'); // Átirányítás a statisztika oldalra
         })
         .catch((error) => {
           console.error('Hiba történt a szavazat leadásakor:', error);

@@ -8,6 +8,16 @@ const Stats = () => {
   const [electionData, setElectionData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Nyilvántartjuk, hogy be van-e jelentkezve a felhasználó
+
+  // Ellenőrizzük, hogy a felhasználó be van-e jelentkezve
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const user = JSON.parse(userData);
+      setIsLoggedIn(true);  // Ha van felhasználói adat, be van jelentkezve
+    }
+  }, []);
 
   useEffect(() => {
     fetch("http://localhost:3000/election-results")
@@ -102,7 +112,8 @@ const Stats = () => {
           ))}
         </tbody>
       </table>
-      <Footer />
+      {/* Átadjuk az isLoggedIn állapotot a Footer komponensnek */}
+      <Footer isLoggedIn={isLoggedIn} />
     </div>
   );
 };

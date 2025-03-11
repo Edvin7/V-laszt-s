@@ -6,9 +6,17 @@ import Footer from './Footer';
 const Partyies = () => {
   const [parties, setParties] = useState([]);
   const [error, setError] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Nyilvántartjuk, hogy a felhasználó be van-e jelentkezve
   const navigate = useNavigate(); // A navigate hook, hogy átirányíthassunk egy új oldalra
 
   useEffect(() => {
+    // Ellenőrizzük a helyi tárolót, hogy a felhasználó be van-e jelentkezve
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      const user = JSON.parse(userData);
+      setIsLoggedIn(true);
+    }
+
     const fetchParties = async () => {
       try {
         const response = await fetch('http://localhost:5000/parties');
@@ -24,7 +32,7 @@ const Partyies = () => {
     };
 
     fetchParties();
-  }, []);
+  }, []);  // Ez egyszer fut le a komponens első betöltődésekor
 
   const handleViewMore = (partyId) => {
     // A partyId segítségével átirányítjuk a részletes oldalra
@@ -41,11 +49,11 @@ const Partyies = () => {
         {parties.map((party) => (
           <div key={party.party_id} className="party-card">
             <div className="party-logo-container">
-            <img
-  src={`http://localhost:5000/uploads/${party.photo}`}  // A kép elérési útja a backend által visszaadott relatív útvonal alapján
-  alt={party.name}
-  className="party-logo"
-/>
+              <img
+                src={`http://localhost:5000/uploads/${party.photo}`}  // A kép elérési útja a backend által visszaadott relatív útvonal alapján
+                alt={party.name}
+                className="party-logo"
+              />
             </div>
             <h3 className="party-name">{party.name}</h3>
             <button className="view-more-button" onClick={() => handleViewMore(party.party_id)}>
@@ -54,7 +62,9 @@ const Partyies = () => {
           </div>
         ))}
       </div>
-      <Footer/>
+
+      {/* A Footer itt kapja meg az isLoggedIn prop-ot */}
+      <Footer isLoggedIn={isLoggedIn} />
     </div>
   );
 };

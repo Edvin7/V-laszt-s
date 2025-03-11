@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Navbar from './Navbar';
 import VotingPage from './VotingPage';
@@ -22,10 +22,9 @@ import Party from './Party';
 import AdminPanel from './AdminPanel';
 import PartyDetails from './PartyDetails';
 import BackButton from './BackButton';
-import ProtectedRoute from './ProtectedRoute';  // Importáljuk a ProtectedRoute-ot
 
 axios.defaults.baseURL = 'http://localhost:5000'; 
-axios.defaults.withCredentials = true; 
+axios.defaults.withCredentials = true;
 
 const App = () => {
   return (
@@ -37,16 +36,16 @@ const App = () => {
 
 const Main = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);  // Admin státusz
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
     if (userData) {
       const user = JSON.parse(userData);
       setIsLoggedIn(true);
-      setIsAdmin(user.isAdmin);  // Frissítjük az admin státuszt, ha már be van jelentkezve
+      setIsAdmin(user.isAdmin);
     }
-  }, []);  // A `useEffect` egyszer fut le az oldal betöltésekor
+  }, []);
 
   const location = useLocation();
 
@@ -57,22 +56,19 @@ const Main = () => {
       <TransitionGroup>
         <CSSTransition key={location.key} classNames="fade" timeout={300}>
           <Routes location={location}>
-            <Route path="/" element={<><HeaderBanner/><ScrollingSteps /><CounterArea/><Footer /></>} />
+            <Route path="/" element={<><HeaderBanner /><ScrollingSteps /><CounterArea /><Footer isLoggedIn={isLoggedIn} /></>} />
             <Route path="/contact" element={<Contacts />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/news" element={<NewsFeed />} />
-            <Route path="/voting" element={<VotingPage />} />
-            <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setIsAdmin={setIsAdmin} />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/stats" element={<Stats />} />
-            <Route path="/account" element={<Account />} />
+            <Route path="/voting" element={isLoggedIn ? <VotingPage /> : <Navigate to="/" />} />
+            <Route path="/stats" element={isLoggedIn ? <Stats /> : <Navigate to="/" />} />
+            <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <Login setIsLoggedIn={setIsLoggedIn} setIsAdmin={setIsAdmin} />}/>
+            <Route path="/register" element={isLoggedIn ? <Navigate to="/" /> : <Register />}/>
+            <Route path="/account" element={isLoggedIn ? <Account /> : <Navigate to="/login" />} />
             <Route path="/parties" element={<Party />} />
             <Route path="/party/:id" element={<PartyDetails />} />
-            <Route 
-              path="/admin" 
-              element={<ProtectedRoute element={<AdminPanel />} isAdmin={isAdmin} />} 
-            />
+            <Route path="/admin" element={isAdmin ? <AdminPanel /> : <Navigate to="/" />} />
           </Routes>
         </CSSTransition>
       </TransitionGroup>

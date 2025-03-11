@@ -47,7 +47,7 @@ const Register = () => {
       // Ha a regisztráció sikeres, átirányítjuk a bejelentkezési oldalra
       setTimeout(() => {
         navigate('/login');  // 3 másodperc múlva átirányítás
-      }, 3000);
+      }, 1000);
   
     } catch (error) {
       if (error.response) {
