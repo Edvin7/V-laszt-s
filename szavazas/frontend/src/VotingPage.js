@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Importálás
 import './VotingPage.css';
+import emailjs from 'emailjs-com';  // Importáljuk az EmailJS könyvtárat
+
 
 const VotingPage = () => {
   const [selectedParty, setSelectedParty] = useState(null); 
@@ -78,6 +80,10 @@ const VotingPage = () => {
           setStatusType('success');
           setIsMessageVisible(true);
           setTimeout(() => setIsMessageVisible(false), 3000); // Az üzenet eltűnik 3 másodperc múlva
+          
+          // Email küldése a szavazat sikerességéről - helyesen hívva!
+          sendConfirmationEmail(user.email, user.name, selectedParty.name); 
+        
           // Navigálás a statisztika oldalra
           navigate('/'); // Átirányítás a statisztika oldalra
         })
@@ -96,6 +102,28 @@ const VotingPage = () => {
     }
   };
 
+ // Email küldése EmailJS-sel
+ const sendConfirmationEmail = (userEmail, userName, partyName) => {
+  emailjs.send(
+    'service_3smt6kr', // EmailJS service ID
+    'template_9b68uwi', // Template ID
+    {
+      to_email: userEmail,           // EmailJS sablonban ez fog a "Címzett" mezőbe kerülni
+      name: userName,                // {{name}} a sablonban
+      party: partyName,              // {{party}} a sablonban
+      time: new Date().toLocaleString(), // {{time}} a sablonban
+      message: `Köszönjük, hogy szavazott a(z) ${partyName} pártra!`, // {{message}} a sablonban
+    },
+    'e23gZwKPhdYed1RRP' // Public key
+  )
+  .then((result) => {
+    console.log('Email sikeresen elküldve:', result.text);
+  })
+  .catch((error) => {
+    console.error('Hiba az email küldésekor:', error.text);
+  });
+};
+
   return (
     <div className="ballot-wrapper">
       <div className="ballot-container">
@@ -108,10 +136,10 @@ const VotingPage = () => {
               onClick={() => handleVote(party)} // Párt kiválasztása
             >
               <img
-  src={`http://localhost:3000/uploads/${party.photo}`}  // Kép URL dinamikusan
-  alt={`${party.name} logo`}
-  className="party-logo"
-/>
+                src={`http://localhost:3000/uploads/${party.photo}`}  // Kép URL dinamikusan
+                alt={`${party.name} logo`}
+                className="party-logo"
+              />
 
               <p>{party.name}</p>
               <div className="vote-wrapper">
