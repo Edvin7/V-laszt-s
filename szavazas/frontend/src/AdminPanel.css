@@ -1,204 +1,186 @@
-/* ======= Global settings ======= */
+/* ======= Alap beállítások ======= */
 body {
-  background-color: #f5f7fa;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
   margin: 0;
   padding: 0;
+  background: #f5f7fa;
+  font-family: 'Poppins', sans-serif;
+  color: #333;
 }
 
-.admin-panel-container {
+.xr12-panel-wrap {
   max-width: 1200px;
-  margin: 40px auto;
+  margin: 20px auto;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
+  margin-top: 90px;
 }
 
-/* ======= Card-style section ======= */
-.section {
-  background: white;
-  padding: 30px;
+/* ======= Szekciók (kártyák) ======= */
+.tg98-section {
+  background: #fff;
+  padding: 24px;
+  margin-bottom: 30px;
   border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  transition: 0.3s;
 }
 
-.section:hover {
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-}
-
-/* ======= Headings ======= */
 h2 {
-  margin-bottom: 25px;
-  font-size: 24px;
-  font-weight: 600;
-  color: #222;
-  border-left: 5px solid #4a90e2;
-  padding-left: 15px;
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: black;
+  font-weight: bold;
 }
 
-/* ======= Input fields ======= */
-.input-group input,
-.input-group textarea {
+/* ======= Táblázatok ======= */
+.qw33-table-wrap {
+  overflow-x: auto;
+}
+
+.er09-table {
   width: 100%;
-  padding: 14px 18px;
-  margin-top: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
-  background: #fafafa;
-  font-size: 16px;
-  transition: all 0.2s ease;
+  border-collapse: collapse;
 }
 
-.input-group input:focus,
-.input-group textarea:focus {
-  border-color: #4a90e2;
-  background: white;
+.er09-table th,
+.er09-table td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 15px;
+}
+
+.er09-table th {
+  background: #033473;
+  font-weight: 600;
+  color: white;
+}
+
+.er09-table tr:hover td {
+  background: #f9f9f9;
+}
+
+/* ======= Input mezők ======= */
+.ip55-input-group input,
+.ip55-input-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fafafa;
+  font-size: 15px;
+  transition: border 0.3s;
+}
+
+.ip55-input-group input:focus,
+.ip55-input-group textarea:focus {
+  border: 1px solid #033473;
+  background: #fff;
   outline: none;
 }
 
-.input-group textarea {
-  min-height: 120px;
+.ip55-input-group textarea {
   resize: vertical;
+  min-height: 100px;
 }
 
-/* ======= Buttons ======= */
-.button-group button,
-.action-button {
-  padding: 14px 28px;
-  background-color: #4a90e2;
-  color: white;
+/* ======= Gombok ======= */
+.bn44-btn-group button,
+.btn-del {
+  padding: 12px 20px;
+  font-size: 15px;
   border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: bold;
-  margin-right: 15px;
-  margin-top: 15px;
+  border-radius: 8px;
+  margin: 5px 10px 5px 0;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: background 0.2s ease;
+  color: white;
+  display: inline-block;
+  font-weight: bold;
 }
 
-.button-group button:hover,
-.action-button:hover {
-  background: white;
-  color: #4a90e2;
-  border: 2px solid #4a90e2;
+.bn44-btn-group button {
+  background: #033473;
+  font-weight: bold;
+  margin-bottom: 30px;
 }
 
-/* ======= Error messages ======= */
-.error-message {
+.bn44-btn-group button:hover {
+  background: transparent;
+  color: #033473;
+}
+
+.btn-del {
+  background: #e63946;
+}
+
+.btn-del:hover {
+  background: transparent;
   color: #e63946;
-  margin-top: 15px;
+}
+
+/* ======= Hibák (üzenetek) ======= */
+.msg-error {
+  color: #e63946;
   font-weight: 600;
+  margin-top: 10px;
 }
 
-/* ======= Table styling ======= */
-.table-wrapper {
-  overflow-x: auto;
-  margin-top: 20px;
-}
-
-.table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 10px;
-}
-
-.table th {
-  background-color: #4a90e2;
-  color: white;
-  padding: 15px;
-  text-align: left;
-  border-radius: 10px 10px 0 0;
-  font-size: 16px;
-}
-
-.table td {
-  background: white;
-  padding: 15px;
-  border-radius: 0 0 10px 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-/* ======= Delete button ======= */
-.delete-button {
-  background-color: #e63946;
-  color: white;
-  padding: 10px 18px;
-  border: none;
-  border-radius: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.delete-button:hover {
-  background: white;
-  color: #e63946;
-  border: 2px solid #e63946;
-}
-
-/* ======= Party image ======= */
-.party-image {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
+/* ======= Képek (Párt logók) ======= */
+.img-party {
+  width: 50px;
+  height: 50px;
   object-fit: cover;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* ======= Mobile Responsiveness ======= */
+/* ======= Reszponzív mód ======= */
 @media (max-width: 768px) {
-  .admin-panel-container {
-    padding: 15px;
+  .xr12-panel-wrap {
+    padding: 10px;
+  }
+
+  .tg98-section {
+    padding: 16px;
   }
 
   h2 {
     font-size: 20px;
   }
 
-  .button-group {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .button-group button {
-    margin-right: 0;
+  .bn44-btn-group button,
+  .btn-del {
     width: 100%;
+    margin: 5px 0;
   }
 
-  .table th,
-  .table td {
-    padding: 12px;
+  .er09-table th, 
+  .er09-table td {
+    padding: 10px;
     font-size: 14px;
   }
 
-  .party-image {
-    width: 45px;
-    height: 45px;
+  .img-party {
+    width: 40px;
+    height: 40px;
   }
 }
 
-/* ======= Extra Small Devices ======= */
 @media (max-width: 480px) {
-  .section {
-    padding: 20px;
+  h2 {
+    font-size: 18px;
   }
 
-  .input-group input,
-  .input-group textarea {
-    padding: 12px;
-  }
-
-  .button-group button {
-    padding: 12px 18px;
+  .ip55-input-group input,
+  .ip55-input-group textarea {
+    padding: 10px;
     font-size: 14px;
   }
 
-  h2 {
-    font-size: 18px;
+  .bn44-btn-group button,
+  .btn-del {
+    padding: 10px;
+    font-size: 14px;
   }
 }

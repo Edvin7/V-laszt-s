@@ -144,13 +144,13 @@ const AdminPanel = () => {
   }, []);
 
   return (
-    <div className="admin-panel-container">
+    <div className="xr12-panel-wrap">
       <BackButton />
-
-      <div className="section">
+  
+      <div className="tg98-section">
         <h2>Felhasználók</h2>
-        <div className="table-wrapper">
-          <table className="table">
+        <div className="qw33-table-wrap">
+          <table className="er09-table">
             <thead>
               <tr>
                 <th>Név</th>
@@ -167,40 +167,40 @@ const AdminPanel = () => {
                   <td>{user.email}</td>
                   <td>{user.personal_id}</td>
                   <td>{user.status}</td>
-                  <td><button className="delete-button" onClick={() => deleteUser(user.id_number)}>Törlés</button></td>
+                  <td><button className="btn-del" onClick={() => deleteUser(user.id_number)}>Törlés</button></td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
-
-      <div className="section">
+  
+      <div className="tg98-section">
         <h2>Időzítő beállítás</h2>
-        <div className="input-group">
+        <div className="ip55-input-group">
           <input type="datetime-local" value={newCountdownDate} onChange={(e) => setNewCountdownDate(e.target.value)} />
         </div>
-        <div className="button-group">
+        <div className="bn44-btn-group">
           <button onClick={updateCountdownDate}>Indítás</button>
           <button onClick={resetCountdown}>Leállítás</button>
           <button onClick={resetAll}>Mind törlés + időzítő nullázás</button>
         </div>
       </div>
-
-      <div className="section">
+  
+      <div className="tg98-section">
         <h2>Pártok</h2>
-        <div className="input-group">
+        <div className="ip55-input-group">
           <input type="text" placeholder="Párt neve" value={newParty.name} onChange={(e) => setNewParty({ ...newParty, name: e.target.value })} />
           <textarea placeholder="Leírás" value={newParty.description} onChange={(e) => setNewParty({ ...newParty, description: e.target.value })}></textarea>
           <input type="file" onChange={handleFileChange} />
         </div>
-        <div className="button-group">
+        <div className="bn44-btn-group">
           <button onClick={addParty}>Hozzáadás</button>
         </div>
-        {error && <p className="error-message">{error}</p>}
-
-        <div className="table-wrapper">
-          <table className="table">
+        {error && <p className="msg-error">{error}</p>}
+  
+        <div className="qw33-table-wrap">
+          <table className="er09-table">
             <thead>
               <tr>
                 <th>Név</th>
@@ -214,8 +214,8 @@ const AdminPanel = () => {
                 <tr key={party.id}>
                   <td>{party.name}</td>
                   <td>{party.description}</td>
-                  <td><img src={party.photo} alt="party" className="party-image" /></td>
-                  <td><button className="delete-button" onClick={() => deleteParty(party.id)}>Törlés</button></td>
+                  <td><img src={party.photo} alt="party" className="img-party" /></td>
+                  <td><button className="btn-del" onClick={() => deleteParty(party.id)}>Törlés</button></td>
                 </tr>
               ))}
             </tbody>
