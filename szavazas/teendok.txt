@@ -1,8 +1,5 @@
 frontend: 
--  admin panel
--  responzivitas
 -  teszteles
--  gombokat ne lehessen nyomni ha mar nem aktiv
 
 backend:
 -  admin user adatbazis, idozito adatbazis
@@ -15,6 +12,4 @@ backend:
 
 - statisztika oldal eltuntetese miutan lejart a idozito
 - flhasznalok es partok torlese
-- reset gomb, szavazatokat es az idozitot nullaza
-- url-ek letiltasa
-- a timer lejarata utan ha ott vagyok a szavazolapon akkor onnan kidobjon a fooldalra
+- email verfy
