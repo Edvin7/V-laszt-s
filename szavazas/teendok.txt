@@ -2,9 +2,8 @@ frontend:
 -  teszteles
 
 backend:
--  admin user adatbazis, idozito adatbazis
--  admin oldal: (user: torles), (idozito: start,stop,reset, ido allitas),  (partok: torles,   Politikai irányzat hozzaadas, kep feltoltes a parthoz)
--  profil oldal: adatok frissitese, jelszo valtoztatas
+-  admin oldal: (user: torles),  (partok: torles,   Politikai irányzat hozzaadas, kep feltoltes a parthoz)
+-  profil oldal: jelszo valtoztatas
 -  oldalak frissuljenek egyfolytaban
 
 //dokumentaciot jora megkene meg

@@ -3,24 +3,24 @@ import './Account.css';
 
 const Account = () => {
   const [userInfo, setUserInfo] = useState(null);
-  const [profilePic, setProfilePic] = useState(null);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/users')
-      .then(response => response.json())
-      .then(data => {
-        // Például az első felhasználót tároljuk a userInfo állapotban
-        setUserInfo(data[0]);
-      })
-      .catch(error => console.error('Hiba történt a felhasználók lekérésekor:', error));
+    // Lekérjük a localStorage-ból a bejelentkezett felhasználót
+    const user = JSON.parse(localStorage.getItem('user'));
+    console.log('Lekért felhasználó:', user); // Debug üzenet
+    if (user) {
+      setUserInfo(user);  // Ha van bejelentkezett felhasználó, akkor beállítjuk az állapotot
+    } else {
+      console.log('Nincs bejelentkezett felhasználó');  // Ha nincs bejelentkezett felhasználó
+    }
   }, []);
 
   if (!userInfo) {
-    return <div className="loading">Loading...</div>;
+    return <div className="loading">Loading...</div>;  // Ha nincs felhasználó, betöltési üzenet jelenik meg
   }
 
   const handlePasswordChange = () => {
@@ -29,7 +29,7 @@ const Account = () => {
       return;
     }
     setPasswordError("");
-    // API hívás a jelszó módosításához
+    // Itt hívhatod meg az API-t, hogy frissítsd a felhasználó jelszavát
     fetch(`http://localhost:5000/api/users/${userInfo.id_number}/change-password`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -51,19 +51,16 @@ const Account = () => {
   return (
     <div className="account-container">
       <div className="account-wrapper">
-        <h2 className="account-header">Fiók   <span style={{ color: '#033473' }}>információk</span></h2>
+        <h2 className="account-header">Fiók <span style={{ color: '#033473' }}>információk</span></h2>
         <div className="line-above"></div>
         <p className="account-subheader">
           Itt láthatja fiókja adatait, illetve módosíthatja a jelszavát.
         </p>
 
-
         {/* Felhasználói információk */}
         <div className="user-info">
           <p><strong>Neved:</strong> {userInfo.name}</p>
           <p><strong>Email cím:</strong> {userInfo.email}</p>
-          <p><strong>Személyi igazolvány szám:</strong> {userInfo.personal_id}</p>
-          <p><strong>Regisztráció dátuma:</strong> {userInfo.registered_at}</p>
         </div>
 
         {/* Jelszó változtatás */}
@@ -94,7 +91,6 @@ const Account = () => {
           <button className="account-submit-btn" onClick={handlePasswordChange}>
             Jelszó változtatás
           </button>
-          
         </div>
       </div>
     </div>
