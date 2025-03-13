@@ -1,14 +1,15 @@
 frontend: 
 -  teszteles
+- email verfy
+- statisztika oldal eltuntetese miutan lejart a idozito
+- dokumentaciot jora megkene meg
 
 backend:
--  admin oldal: (user: torles),  (partok: torles,   Politikai irányzat hozzaadas, kep feltoltes a parthoz)
+-  admin oldal: Partok hozzaadasnal minden infot hozza lehessen adni, kep feltoltes a parthoz
 -  profil oldal: jelszo valtoztatas
 -  oldalak frissuljenek egyfolytaban
 
-//dokumentaciot jora megkene meg
 
 
-- statisztika oldal eltuntetese miutan lejart a idozito
-- flhasznalok es partok torlese
-- email verfy
+
+

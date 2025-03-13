@@ -7,7 +7,14 @@ const AdminPanel = () => {
   const [users, setUsers] = useState([]);
   const [votes, setVotes] = useState([]);
   const [parties, setParties] = useState([]);
-  const [newParty, setNewParty] = useState({ name: '', description: '', photo: '' });
+  const [newParty, setNewParty] = useState({
+    name: '',
+    description: '',
+    photo: '',
+    political_ideology: '',
+    political_campaign_description: '',
+    political_year_description: '',
+  });
   const [error, setError] = useState('');
   const [newCountdownDate, setNewCountdownDate] = useState('');
   const [countdownDate, setCountdownDate] = useState(null);
@@ -31,8 +38,6 @@ const AdminPanel = () => {
     }
   };
 
-
-  
   const fetchParties = async () => {
     try {
       const response = await axios.get('/api/parties');
@@ -53,6 +58,41 @@ const AdminPanel = () => {
   };
 
   // ACTIONS
+  const addParty = async () => {
+    if (!newParty.name || !newParty.description || !newParty.political_ideology || !newParty.political_campaign_description || !newParty.political_year_description) {
+      setError('Minden mező kitöltése kötelező.');
+      return;
+    }
+
+    try {
+      await axios.post('/api/parties', newParty);
+      setNewParty({
+        name: '',
+        description: '',
+        photo: '',
+        political_ideology: '',
+        political_campaign_description: '',
+        political_year_description: '',
+      });
+      setError('');
+      fetchParties();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('photo', file);
+
+      axios.post('http://localhost:5000/api/upload', formData)
+        .then(response => setNewParty({ ...newParty, photo: response.data.filePath }))
+        .catch(error => console.error(error));
+    }
+  };
+
   const deleteUser = async (id) => {
     if (!window.confirm('Biztosan törölni szeretnéd a felhasználót?')) return;
   
@@ -76,34 +116,6 @@ const AdminPanel = () => {
       fetchParties();
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  const addParty = async () => {
-    if (!newParty.name || !newParty.description) {
-      setError('A párt neve és leírása kötelező.');
-      return;
-    }
-
-    try {
-      await axios.post('/api/parties', newParty);
-      setNewParty({ name: '', description: '', photo: '' });
-      setError('');
-      fetchParties();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append('photo', file);
-
-      axios.post('http://localhost:5000/api/upload', formData)
-        .then(response => setNewParty({ ...newParty, photo: response.data.filePath }))
-        .catch(error => console.error(error));
     }
   };
 
@@ -202,6 +214,9 @@ const AdminPanel = () => {
         <div className="ip55-input-group">
           <input type="text" placeholder="Párt neve" value={newParty.name} onChange={(e) => setNewParty({ ...newParty, name: e.target.value })} />
           <textarea placeholder="Leírás" value={newParty.description} onChange={(e) => setNewParty({ ...newParty, description: e.target.value })}></textarea>
+          <input type="text" placeholder="Politikai ideológia" value={newParty.political_ideology} onChange={(e) => setNewParty({ ...newParty, political_ideology: e.target.value })} />
+          <textarea placeholder="Politikai kampány leírása" value={newParty.political_campaign_description} onChange={(e) => setNewParty({ ...newParty, political_campaign_description: e.target.value })}></textarea>
+          <textarea placeholder="Politikai év leírása" value={newParty.political_year_description} onChange={(e) => setNewParty({ ...newParty, political_year_description: e.target.value })}></textarea>
           <input type="file" onChange={handleFileChange} />
         </div>
         <div className="bn44-btn-group">
