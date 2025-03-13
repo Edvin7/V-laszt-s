@@ -214,8 +214,6 @@ const AdminPanel = () => {
             <thead>
               <tr>
                 <th>Név</th>
-                <th>Leírás</th>
-                <th>Kép</th>
                 <th>Műveletek</th>
               </tr>
             </thead>
@@ -223,8 +221,6 @@ const AdminPanel = () => {
               {parties.map(party => (
                 <tr key={party.id}>
                   <td>{party.name}</td>
-                  <td>{party.description}</td>
-                  <td><img src={party.photo} alt="party" className="img-party" /></td>
                   <td><button className="btn-del" onClick={() => deleteParty(party.id)}>Törlés</button></td>
                 </tr>
               ))}
