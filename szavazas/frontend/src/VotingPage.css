@@ -14,6 +14,7 @@ html, body {
   padding: 0 20px;
   box-sizing: border-box;
   background-color: #f0f4f8;
+  margin-top: 70px;
 }
 
 .ballot-container {
@@ -25,7 +26,7 @@ html, body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   border: 6px solid transparent;
-  border-image: linear-gradient(
+  /*border-image: linear-gradient(
     to bottom right,
     #033473 0%,
     #033473 15%,
@@ -33,7 +34,7 @@ html, body {
     transparent 85%,
     #033473 85%,
     #033473 100%
-  ) 6;
+  ) 6;*/
   margin: auto;
 }
 
