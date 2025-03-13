@@ -603,6 +603,37 @@ app.post('/api/reset-all', (req, res) => {
   });
 });
 
+//Felhasználó törlés
+app.delete('/api/users/:id', (req, res) => {
+  const userId = req.params.id;
+  const query = 'DELETE FROM users WHERE id_number = ?';
+
+  db.query(query, [userId], (err, result) => {
+    if (err) {
+      console.error('Hiba történt a felhasználó törlésekor:', err);
+
+      // Ha idegen kulcs hiba miatt nem lehet törölni (pl. már szavazott)
+      if (err.code === 'ER_ROW_IS_REFERENCED_2') {
+        return res.status(400).json({
+          error: 'A felhasználó nem törölhető, mert jelenleg futó szavazásban részt vett.',
+          details: 'A felhasználóhoz kapcsolódó rekordok találhatók más táblákban, így törlése nem lehetséges.'
+        });
+      }
+
+      // Egyéb hiba
+      return res.status(500).json({ error: 'Hiba történt a törlés közben', details: err.message });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Felhasználó nem található' });
+    }
+
+    res.json({ message: 'Felhasználó törölve' });
+  });
+});
+
+
+
 
 // Szerver indítása
 app.listen(port, () => {

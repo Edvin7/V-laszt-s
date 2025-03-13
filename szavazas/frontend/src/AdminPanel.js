@@ -31,6 +31,8 @@ const AdminPanel = () => {
     }
   };
 
+
+  
   const fetchParties = async () => {
     try {
       const response = await axios.get('/api/parties');
@@ -52,11 +54,19 @@ const AdminPanel = () => {
 
   // ACTIONS
   const deleteUser = async (id) => {
+    if (!window.confirm('Biztosan törölni szeretnéd a felhasználót?')) return;
+  
     try {
       await axios.delete(`/api/users/${id}`);
-      fetchUsers();
+      fetchUsers(); // Frissíti a felhasználók listáját
+      alert('Felhasználó sikeresen törölve!');
     } catch (error) {
-      console.error(error);
+      if (error.response && error.response.data && error.response.data.error) {
+        alert(error.response.data.error); // pl. ha szavazott már, ezt írja ki
+      } else {
+        alert('A felhasználó már sazvazott, ezért nem tudja törölni.');
+        console.error(error);
+      }
     }
   };
 
