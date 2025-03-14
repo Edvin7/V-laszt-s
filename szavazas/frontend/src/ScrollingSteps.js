@@ -117,9 +117,9 @@ const ScrollingSteps = () => {
                 <h4>{step.title}</h4>
                 <p>{step.description}</p>
                 {isLoggedIn ? (
-                  <span style={{ color: 'purple', fontSize: '24px' }}>✔️</span> // Pipa megjelenése ha be van jelentkezve
+                  <span style={{ color: 'purple', fontSize: '24px' }}>✔️</span> 
                 ) : (
-                  <Link to={step.link} className="vote-button">{step.buttonText}</Link>  // Gombok megjelenítése ha nincs bejelentkezve
+                  <Link to={step.link} className="vote-button">{step.buttonText}</Link> 
                 )}
               </div>
             </div>

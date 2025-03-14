@@ -1,6 +1,6 @@
 frontend: 
 -  teszteles
-- email verfy
+- email verify
 - statisztika oldal eltuntetese miutan lejart a idozito
 - dokumentaciot jora megkene meg
 

@@ -176,6 +176,7 @@ input[type="checkbox"] {
     .signup-content {
         flex-direction: column;
         padding: 20px;
+        margin-top: 70px;
     }
 
     .signup-image {

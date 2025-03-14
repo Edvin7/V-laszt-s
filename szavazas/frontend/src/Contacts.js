@@ -52,7 +52,7 @@ const Contacts = () => {
   return (
     <div className="contact-form-container">
       <div className="contact-form-wrapper">
-        <h2 className="contact-form-header">Kapcsolat  <span style={{ color: '#033473' }}>felvétel</span></h2>
+        <h2 className="contact-form-header">Kapcsolat <span style={{ color: '#033473' }}>felvétel</span></h2>
         <div className="line-above"></div>
         <p className="contact-form-subheader">Ha valami hibát észlel, vagy üzenetet szeretne küldeni itt tudja megtenni.</p>
 
