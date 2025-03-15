@@ -24,10 +24,10 @@ const Contacts = () => {
     e.preventDefault();
 
     emailjs.sendForm(
-      'service_mk48q3j',
-      'template_rx0d99h',
+      'service_okj43zh',
+      'template_y283u9i',
       e.target,
-      'xvGvzwHl7rO8HmBIK'
+      'e23gZwKPhdYed1RRP'
     )
     .then((result) => {
       // Sikeres üzenet küldés
