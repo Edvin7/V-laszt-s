@@ -300,7 +300,29 @@
           }
         },
         "response": []
+      },
+      {
+        "name": "UserLogout",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{your_token}}",
+              "description": "A bearer token szükséges a hitelesítéshez."
+            }
+          ],
+          "url": {
+            "raw": "http://localhost:5000/logout",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["logout"]
+          }
+        },
+        "response": []
       }
+      
     ]
   }
   
