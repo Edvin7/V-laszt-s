@@ -1,0 +1,306 @@
+{
+    "info": {
+      "name": "api_test",
+      "_postman_id": "04f55d04-4a23-4788-b91f-66967286948f",
+      "description": "Generated from Thunder Client",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "DatabaseConnection",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:5000/api/db-test",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "db-test"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "AdminLoginSuccess",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"email\": \"admin@admin.com\",\r\n  \"password\": \"admin\"\r\n}"
+          },
+          "url": {
+            "raw": "http://localhost:5000/login",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["login"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "AdminLoginFailed",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"email\": \"admin@admin.com\",\r\n  \"password\": \"admin123123123\"\r\n}"
+          },
+          "url": {
+            "raw": "http://localhost:5000/login",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["login"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "UserLoginSuccess",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"email\": \"a@g.c\",\r\n  \"password\": \"asd\"\r\n}"
+          },
+          "url": {
+            "raw": "http://localhost:5000/login",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["login"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "UserLoginFailed",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"email\": \"pal.edvin@gmail.com\",\r\n  \"password\": \"Edvin123\"\r\n}"
+          },
+          "url": {
+            "raw": "http://localhost:5000/login",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["login"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "UserRegisterSuccess",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"name\": \"Hotváth Dániel\",\r\n  \"email\": \"hdaniel06@gmail.com\",\r\n  \"pass\": \"ZXcAg78v\",\r\n  \"personal_id\": \"1234567839\",\r\n  \"agreeTerm\": true\r\n}"
+          },
+          "url": {
+            "raw": "http://localhost:5000/register",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["register"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "UserRegisterFailed",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"name\": \"Hotváth Dániel\",\r\n  \"email\": \"hdaniel06@gmail.com\",\r\n  \"pass\": \"ZXcAg78v\",\r\n  \"personal_id\": \"1234567839\",\r\n  \"agreeTerm\": true\r\n}"
+          },
+          "url": {
+            "raw": "http://localhost:5000/register",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["register"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "VoteSend",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"election_id\": 1,\r\n  \"party_id\": 1,\r\n  \"vote_hash\": \"abc123xyz\",\r\n  \"user_id\": 10\r\n}"
+          },
+          "url": {
+            "raw": "http://localhost:5000/voting",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["voting"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "GetParties",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:5000/parties",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["parties"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "GetStats",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:5000/counters",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["counters"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "GetElectionResults",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:5000/election-results",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["election-results"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "GetUsers",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:5000/api/users",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "users"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "UserUpdate",
+        "request": {
+          "method": "PUT",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:5000/api/users/1",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "users", "1"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "PartyAdd",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"name\": \"Párt Neve\",\r\n  \"description\": \"Ez a párt leírása\"\r\n}"
+          },
+          "url": {
+            "raw": "http://localhost:5000/api/parties",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "parties"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "CountdownDateNull",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{ \"countdownDate\": \"2025-04-01T12:00:00Z\" }"
+          },
+          "url": {
+            "raw": "http://localhost:5000/api/countdown-date",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "countdown-date"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "CountdownTimerUpdate",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{ \"countdownDate\": \"2025-04-01T12:00:00Z\" }"
+          },
+          "url": {
+            "raw": "http://localhost:5000/api/date-plus",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "date-plus"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "CountdownTimerStatus",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:5000/api/is-voting-active",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "5000",
+            "path": ["api", "is-voting-active"]
+          }
+        },
+        "response": []
+      }
+    ]
+  }
+  
