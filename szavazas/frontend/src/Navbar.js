@@ -7,7 +7,8 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isVotingActive, setIsVotingActive] = useState(false); // Szavazás aktív státusz
+  const [isVotingActive, setIsVotingActive] = useState(false);
+  const [isStatsVisible, setIsStatsVisible] = useState(false); // Új állapot a statisztika megjelenítéséhez
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
@@ -22,18 +23,17 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
       try {
         const response = await fetch('/api/is-voting-active');
         const data = await response.json();
-        console.log('Voting status:', data.isActive); // Ellenőrizzük, mi érkezik
-        setIsVotingActive(data.isActive); // Frissítjük az állapotot
+        console.log('Voting status:', data.isActive);
+        setIsVotingActive(data.isActive);
+        setIsStatsVisible(!data.isActive); // Ha a szavazás nem aktív, mutassuk a statisztikát
       } catch (error) {
         console.error('Error fetching voting status:', error);
       }
     };
 
-    fetchVotingStatus(); // Elindítjuk az első lekérést
-
-    // Frissítjük 5 másodpercenként
+    fetchVotingStatus();
     const interval = setInterval(fetchVotingStatus, 5000);
-    return () => clearInterval(interval); // Tisztítjuk az interval-t, ha a komponens eltűnik
+    return () => clearInterval(interval);
   }, []);
 
   const handleLogout = () => {
@@ -47,10 +47,9 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Funkció, hogy a menü automatikusan bezáródjon kattintáskor
   const handleMenuLinkClick = () => {
     if (isMenuOpen) {
-      setIsMenuOpen(false); // Bezárjuk a menüt, ha egy linket választunk
+      setIsMenuOpen(false);
     }
   };
 
@@ -71,7 +70,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
           {isLoggedIn ? (
             <>
-              <li><Link to="/stats" onClick={handleMenuLinkClick}>Statisztikák</Link></li>
+              {isStatsVisible && <li><Link to="/stats" onClick={handleMenuLinkClick}>Statisztikák</Link></li>}
               <li><Link to="/account" onClick={handleMenuLinkClick}>Profil</Link></li>
               {isVotingActive && <li><Link to="/voting" onClick={handleMenuLinkClick}>Szavazz</Link></li>}
               <li><button onClick={handleLogout} className="logoutbutton">Kijelentkezés</button></li>
