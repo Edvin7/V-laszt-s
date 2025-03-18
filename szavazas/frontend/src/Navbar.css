@@ -82,6 +82,9 @@ body {
   color: #033473;
   text-decoration: underline;
 }
+.nav-links ul li a:hover{ 
+  color: rgb(3, 52, 115);
+}
 
 .loginbutton, .logoutbutton {
   background: #033473;
