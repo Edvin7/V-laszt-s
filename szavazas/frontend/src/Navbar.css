@@ -1,15 +1,14 @@
-/* --- Alap navbar stílusok --- */
 body {
   font-family: Poppins, sans-serif;
-  margin: 0; /* fontos, hogy ne legyen alap margó */
+  margin: 0; 
   padding: 0;
 }
 .navbar {
-  position: fixed; /* Fixáljuk a tetejére */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000; /* Hogy minden felett legyen */
+  z-index: 1000;
   padding: 10px 5%;
   display: flex;
   justify-content: space-between;
@@ -24,7 +23,6 @@ body {
   width: auto;
 }
 
-/* --- Hamburger ikon --- */
 .hamburger-icon {
   display: none;
   flex-direction: column;
@@ -32,7 +30,7 @@ body {
   height: 25px;
   width: 30px;
   cursor: pointer;
-  z-index: 2000; /* Mindig a menü felett */
+  z-index: 2000; 
 }
 
 .hamburger-icon .bar {
@@ -54,7 +52,6 @@ body {
   transform: rotate(-45deg) translateY(-6px);
 }
 
-/* --- Menü linkek --- */
 .nav-links {
   display: flex;
   align-items: center;
@@ -80,14 +77,12 @@ body {
   font-weight: bold;
 }
 
-/* Aktív menüpont kiemelése */
 .nav-links ul li a.active {
   font-weight: bold;
   color: #033473;
   text-decoration: underline;
 }
 
-/* Bejelentkezés és kijelentkezés gombok */
 .loginbutton, .logoutbutton {
   background: #033473;
   color: white;
@@ -119,7 +114,7 @@ body {
     width: 60%;
     background-color: white;
     padding: 10px;
-    z-index: 1500; /* Mindig a szöveg felett */
+    z-index: 1500;
   }
 
   .nav-links.active {

@@ -6,12 +6,12 @@ function NewsFeed() {
   const [articles, setArticles] = useState([]);
 
   const fetchArticles = () => {
-    fetch('https://telex.hu/rss/politika')  // Politikai RSS feed URL
-      .then(response => response.text())  // Válasz szöveges formátumban
+    fetch('https://telex.hu/rss/politika')  
+      .then(response => response.text()) 
       .then(data => {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(data, 'text/xml');
-        const items = xmlDoc.getElementsByTagName('item');  // Az RSS elemek lekérése
+        const items = xmlDoc.getElementsByTagName('item'); 
         
         const articlesArray = Array.from(items).map(item => ({
           title: item.getElementsByTagName('title')[0].textContent,
@@ -36,7 +36,6 @@ function NewsFeed() {
     <div className="news-feed">
       {articles.length > 0 ? (
         <ul>
-          {/* Kiemelt blokk a legfrissebb hírhez */}
           {articles[0] && (
             <li className="featured-article">
               <a href={articles[0].link} target="_blank" rel="noopener noreferrer">
@@ -46,7 +45,6 @@ function NewsFeed() {
               </a>
             </li>
           )}
-          {/* További hírek megjelenítése */}
           {articles.length > 1 ? (
             articles.slice(1).map((article, index) => (
               <NewsItem key={index} article={article} />

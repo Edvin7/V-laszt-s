@@ -4,7 +4,6 @@ import axios from 'axios';
 import './Login.css';
 import loginImage from './images/loginlogo.png';
 
-// Beállítjuk, hogy az Axios minden kéréshez küldje a cookie-t
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = 'http://localhost:5000';
 
@@ -21,18 +20,15 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
       const response = await axios.post('http://localhost:5000/login', { email, password });
       const user = response.data.user;
 
-      // Mentés a localStorage-ba
       localStorage.setItem('user', JSON.stringify(user));
   
-      // Frissítjük a logged-in és admin állapotokat
       setIsLoggedIn(true);
-      setIsAdmin(user.isAdmin);  // Az isAdmin frissítése közvetlenül itt
+      setIsAdmin(user.isAdmin); 
   
-      // Ha admin a felhasználó, akkor admin oldalra irányítjuk, egyébként főoldalra
       if (user && user.isAdmin) {
-        navigate('/admin'); // Admin oldalra navigálás
+        navigate('/admin'); 
       } else {
-        navigate('/'); // Főoldalra navigálás
+        navigate('/');
       }
     } catch (error) {
       console.error('Hiba a bejelentkezés során:', error.response?.data || error.message);

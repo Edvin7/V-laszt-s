@@ -94,7 +94,6 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
-/* Idővonal */
 .timeline {
   background-color: #fff;
   padding: 30px;
@@ -119,14 +118,14 @@ body {
   font-size: 1.1rem;
   line-height: 1.8;
   display: flex;
-  flex-direction: column; /* A lista elemei egymás alatt */
+  flex-direction: column; 
   align-items: center;
 }
 
 .timeline li {
-  margin-bottom: 15px; /* A lista elemek közötti távolság */
+  margin-bottom: 15px; 
   display: flex;
-  flex-direction: column; /* Az év és a leírás külön sorokban */
+  flex-direction: column; 
   align-items: center;
   text-align: center;
 }
@@ -135,16 +134,15 @@ body {
   font-weight: bold;
   color: var(--secondary-color);
   font-size: 1.3rem;
-  margin-bottom: 5px; /* Az év és leírás közötti távolság */
+  margin-bottom: 5px; 
 }
 
 .timeline-entry p {
-  margin: 0; /* Nincs extra margó */
+  margin: 0; 
   line-height: 1.6;
   
 }
 
-/* Kampányok szekció */
 .campaigns {
   padding: 30px;
   background-color: var(--background-color);
@@ -169,7 +167,6 @@ body {
   max-width: 800px;
 }
 
-/* Betöltés és hibaüzenetek */
 .loading-message,
 .error-message {
   text-align: center;

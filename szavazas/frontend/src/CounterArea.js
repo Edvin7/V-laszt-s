@@ -12,7 +12,6 @@ const CounterArea = () => {
   });
 
   useEffect(() => {
-    // Adatok lekérése a backendből
     const fetchCounters = async () => {
       try {
         const response = await fetch("http://localhost:3000/counters");

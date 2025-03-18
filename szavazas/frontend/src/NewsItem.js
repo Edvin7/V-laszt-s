@@ -1,5 +1,5 @@
 import React from 'react';
-import './NewsItem.css';  // CSS a hír kártya megjelenéséhez
+import './NewsItem.css'; 
 
 function NewsItem({ article }) {
   return (

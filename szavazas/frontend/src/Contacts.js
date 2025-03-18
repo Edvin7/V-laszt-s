@@ -30,21 +30,19 @@ const Contacts = () => {
       'e23gZwKPhdYed1RRP'
     )
     .then((result) => {
-      // Sikeres üzenet küldés
       setStatusMessage('Email sikeresen elküldve!');
-      setStatusType('success');  // Siker üzenet típusa
+      setStatusType('success');  
       console.log(result.text);
       setTimeout(() => {
-        setStatusMessage('');  // Üzenet eltűnik 3 másodperc után
+        setStatusMessage(''); 
       }, 3000);
     })
     .catch((error) => {
-      // Hibaüzenet
       setStatusMessage('Hiba történt az email küldése közben. Kérlek próbáld újra!');
-      setStatusType('error');  // Hiba üzenet típusa
+      setStatusType('error');  
       console.log(error.text);
       setTimeout(() => {
-        setStatusMessage('');  // Üzenet eltűnik 3 másodperc után
+        setStatusMessage('');  
       }, 3000);
     });
   };
@@ -56,7 +54,6 @@ const Contacts = () => {
         <div className="line-above"></div>
         <p className="contact-form-subheader">Ha valami hibát észlel, vagy üzenetet szeretne küldeni itt tudja megtenni.</p>
 
-        {/* Üzenet megjelenítése a bal alsó sarokban */}
         {statusMessage && (
           <div className={`status-message ${statusType}`}>
             {statusMessage}

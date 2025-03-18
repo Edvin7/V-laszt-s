@@ -19,7 +19,6 @@ const AdminPanel = () => {
   const [newCountdownDate, setNewCountdownDate] = useState('');
   const [countdownDate, setCountdownDate] = useState(null);
 
-  // FETCH FUNCTIONS
   const fetchUsers = async () => {
     try {
       const response = await axios.get('/api/users');
@@ -57,7 +56,6 @@ const AdminPanel = () => {
     }
   };
 
-  // ACTIONS
   const addParty = async () => {
     if (!newParty.name || !newParty.description || !newParty.political_ideology || !newParty.political_campaign_description || !newParty.political_year_description) {
       setError('Minden mező kitöltése kötelező.');
@@ -98,11 +96,11 @@ const AdminPanel = () => {
   
     try {
       await axios.delete(`/api/users/${id}`);
-      fetchUsers(); // Frissíti a felhasználók listáját
+      fetchUsers(); 
       alert('Felhasználó sikeresen törölve!');
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
-        alert(error.response.data.error); // pl. ha szavazott már, ezt írja ki
+        alert(error.response.data.error); 
       } else {
         alert('A felhasználó már sazvazott, ezért nem tudja törölni.');
         console.error(error);
@@ -157,7 +155,6 @@ const AdminPanel = () => {
     }
   };
 
-  // INIT FETCH
   useEffect(() => {
     fetchUsers();
     fetchVotes();

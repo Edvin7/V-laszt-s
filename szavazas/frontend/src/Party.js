@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // A useNavigate importálása
+import { useNavigate } from 'react-router-dom'; 
 import './Party.css';
 import Footer from './Footer';
 
 const Partyies = () => {
   const [parties, setParties] = useState([]);
   const [error, setError] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Nyilvántartjuk, hogy a felhasználó be van-e jelentkezve
-  const navigate = useNavigate(); // A navigate hook, hogy átirányíthassunk egy új oldalra
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const navigate = useNavigate(); 
 
   useEffect(() => {
-    // Ellenőrizzük a helyi tárolót, hogy a felhasználó be van-e jelentkezve
     const userData = localStorage.getItem('user');
     if (userData) {
       const user = JSON.parse(userData);
@@ -32,10 +31,9 @@ const Partyies = () => {
     };
 
     fetchParties();
-  }, []);  // Ez egyszer fut le a komponens első betöltődésekor
+  }, []);
 
   const handleViewMore = (partyId) => {
-    // A partyId segítségével átirányítjuk a részletes oldalra
     navigate(`/party/${partyId}`);
   };
 
@@ -51,7 +49,7 @@ const Partyies = () => {
           <div key={party.party_id} className="party-card">
             <div className="party-logo-container">
               <img
-                src={`http://localhost:5000/uploads/${party.photo}`}  // A kép elérési útja a backend által visszaadott relatív útvonal alapján
+                src={`http://localhost:5000/uploads/${party.photo}`}
                 alt={party.name}
                 className="party-logo"
               />
@@ -64,7 +62,6 @@ const Partyies = () => {
         ))}
       </div>
 
-      {/* A Footer itt kapja meg az isLoggedIn prop-ot */}
       <Footer isLoggedIn={isLoggedIn} />
     </div>
   );

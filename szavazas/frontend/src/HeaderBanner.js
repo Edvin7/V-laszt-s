@@ -11,11 +11,10 @@ const HeaderBanner = () => {
     seconds: 0,
   });
 
-  const [countdownDate, setCountdownDate] = useState(null); // Az új countdown date
+  const [countdownDate, setCountdownDate] = useState(null); 
 
-  const [newCountdownDate, setNewCountdownDate] = useState(''); // A bevitt új dátum
+  const [newCountdownDate, setNewCountdownDate] = useState(''); 
 
-  // Az új countdown dátum beállítása az input mezőből
   const handleDateChange = (e) => {
     setNewCountdownDate(e.target.value);
   };
@@ -33,10 +32,10 @@ const HeaderBanner = () => {
 
       const data = await response.json();
       if (response.ok) {
-        console.log(data.message); // Siker üzenet
-        setCountdownDate(new Date(newCountdownDate).getTime()); // Frissítjük az új countdown dátumot
+        console.log(data.message);
+        setCountdownDate(new Date(newCountdownDate).getTime()); 
       } else {
-        console.error(data.error); // Hiba üzenet
+        console.error(data.error); 
       }
     } catch (error) {
       console.error('Error updating countdown date:', error);

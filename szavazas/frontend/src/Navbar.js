@@ -8,7 +8,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVotingActive, setIsVotingActive] = useState(false);
-  const [isStatsVisible, setIsStatsVisible] = useState(false); // Új állapot a statisztika megjelenítéséhez
+  const [isStatsVisible, setIsStatsVisible] = useState(false); 
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
@@ -25,7 +25,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
         const data = await response.json();
         console.log('Voting status:', data.isActive);
         setIsVotingActive(data.isActive);
-        setIsStatsVisible(!data.isActive); // Ha a szavazás nem aktív, mutassuk a statisztikát
+        setIsStatsVisible(!data.isActive); 
       } catch (error) {
         console.error('Error fetching voting status:', error);
       }

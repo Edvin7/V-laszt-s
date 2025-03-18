@@ -3,9 +3,9 @@ import { Navigate } from 'react-router-dom';
 const ProtectedRoute = ({ element, isAdmin }) => {
   if (!isAdmin) {
     console.log('User is not admin, redirecting to login page...');
-    return <Navigate to="/" />;  // Itt átirányíthatod egy login oldalra, ha nincs jogosultsága
+    return <Navigate to="/" />;  
   }
-  return element;  // Ha admin, akkor az AdminPanel jelenik meg
+  return element; 
 };
 
 export default ProtectedRoute;

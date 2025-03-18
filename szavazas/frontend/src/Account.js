@@ -9,22 +9,21 @@ const Account = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   useEffect(() => {
-    // Lekérjük a localStorage-ból a bejelentkezett felhasználót
     const user = JSON.parse(localStorage.getItem('user'));
-    console.log('Lekért felhasználó:', user); // Debug üzenet
+    console.log('Lekért felhasználó:', user);
     if (user) {
-      setUserInfo(user);  // Ha van bejelentkezett felhasználó, akkor beállítjuk az állapotot
+      setUserInfo(user); 
     } else {
-      console.log('Nincs bejelentkezett felhasználó');  // Ha nincs bejelentkezett felhasználó
+      console.log('Nincs bejelentkezett felhasználó'); 
     }
   }, []);
 
   if (!userInfo) {
-    return <div className="loading">Loading...</div>;  // Ha nincs felhasználó, betöltési üzenet jelenik meg
+    return <div className="loading">Loading...</div>; 
   }
 
   const handlePasswordChange = () => {
-    if (!userInfo || !userInfo.id) {  // Az id_number helyett az id kell
+    if (!userInfo || !userInfo.id) { 
       alert('Nincs bejelentkezett felhasználó!');
       return;
     }
@@ -35,8 +34,7 @@ const Account = () => {
     }
     setPasswordError("");
   
-    // Itt az id helyett az id_number kell, mert a backend az id_number-t várja
-    fetch(`http://localhost:5000/api/users/${userInfo.id}/change-password`, {  // Az id_number helyett id
+    fetch(`http://localhost:5000/api/users/${userInfo.id}/change-password`, {  
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password: newPassword }),
@@ -66,13 +64,11 @@ const Account = () => {
           Itt láthatja fiókja adatait, illetve módosíthatja a jelszavát.
         </p>
 
-        {/* Felhasználói információk */}
         <div className="user-info">
           <p><strong>Neved:</strong> {userInfo.name}</p>
           <p><strong>Email cím:</strong> {userInfo.email}</p>
         </div>
 
-        {/* Jelszó változtatás */}
         <div className="password-change-section">
           <h2 className='psschange'>Jelszó változtatás</h2>
           <div className="input-group">

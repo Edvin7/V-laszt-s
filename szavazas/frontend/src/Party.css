@@ -1,4 +1,3 @@
-/* Alap stílusok */
 * {
   margin: 0;
   padding: 0;
@@ -11,7 +10,6 @@ body {
   margin: 0;
 }
 
-/* Stats konténer */
 .stats-container {
   max-width: 1100px;
   margin: 0 auto;
@@ -29,20 +27,17 @@ body {
   margin: 0 auto 25px;
   border-radius: 10px;
 }
-/* Cím stílusok */
 .stats-title {
   font-weight: bold;
     font-size: 40px;
 }
 
-/* Hibajelzés */
 .error-message {
   color: #e74c3c;
   font-weight: bold;
   margin-bottom: 20px;
 }
 
-/* Pártok listája */
 .party-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -51,7 +46,6 @@ body {
   padding-top: 20px;
 }
 
-/* Pártkártya */
 .party-card {
   background-color: #ffffff;
   border-radius: 8px;
@@ -61,8 +55,8 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Ensure the button stays at the bottom */
-  height: 350px; /* Increased height to avoid overlap with text */
+  justify-content: space-between; 
+  height: 350px; 
 }
 
 .party-card:hover {
@@ -70,7 +64,6 @@ body {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Logó */
 .party-logo-container {
   display: flex;
   justify-content: center;
@@ -84,7 +77,6 @@ body {
   border-radius: 8px;
 }
 
-/* Pártkártya neve */
 .party-name {
   font-size: 1.5rem;
   font-weight: bold;
@@ -92,27 +84,25 @@ body {
   margin-bottom: 15px;
 }
 
-/* Gomb stílusok */
 .view-more-button {
   background: #033473;
   color: white;
   transition: background-color 0.3s ease, color 0.3s ease;
   font-weight: bold;
   font-size: 0.4cm;
-  padding: 13px 12px; /* Adj meg paddinget */
-  border: none; /* Eltávolítja a button alapértelmezett keretét */
+  padding: 13px 12px; 
+  border: none; 
   border-radius: 5px;
   text-align: center;
   cursor: pointer;
-  text-decoration: none; /* Eltávolítja a Link alapértelmezett aláhúzását */
-  display: inline-block;  /* Center the button horizontally */
+  text-decoration: none; 
+  display: inline-block;  
 }
 
 .view-more-button:hover {
   background: white;
   color: #033473;
 }
-/* Modális ablak */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -165,7 +155,6 @@ body {
   line-height: 1.5;
 }
 
-/* Reszponzív dizájn: kisebb képernyőkön */
 @media (max-width: 768px) {
   .stats-title {
     font-size: 2rem;
