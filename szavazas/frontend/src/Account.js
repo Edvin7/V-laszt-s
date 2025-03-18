@@ -24,22 +24,29 @@ const Account = () => {
   }
 
   const handlePasswordChange = () => {
+    if (!userInfo || !userInfo.id) {  // Az id_number helyett az id kell
+      alert('Nincs bejelentkezett felhasználó!');
+      return;
+    }
+  
     if (newPassword !== confirmPassword) {
       setPasswordError("A két jelszó nem egyezik.");
       return;
     }
     setPasswordError("");
-    // Itt hívhatod meg az API-t, hogy frissítsd a felhasználó jelszavát
-    fetch(`http://localhost:5000/api/users/${userInfo.id_number}/change-password`, {
+  
+    // Itt az id helyett az id_number kell, mert a backend az id_number-t várja
+    fetch(`http://localhost:5000/api/users/${userInfo.id}/change-password`, {  // Az id_number helyett id
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password: newPassword }),
     })
-      .then(response => {
-        if (response.ok) {
+      .then(response => response.json())
+      .then(data => {
+        if (data.message === 'A jelszó sikeresen megváltozott.') {
           alert('A jelszó sikeresen megváltozott!');
         } else {
-          alert('Hiba történt a jelszó változtatásakor.');
+          alert('Hiba történt a jelszó változtatásakor: ' + data.message);
         }
       })
       .catch(error => {
@@ -47,6 +54,8 @@ const Account = () => {
         alert('Hiba történt a jelszó változtatásakor.');
       });
   };
+  
+  
 
   return (
     <div className="account-container">

@@ -633,7 +633,36 @@ app.delete('/api/users/:id', (req, res) => {
 });
 
 
+// Jelszó változtatás endpoint
+app.put('/api/users/:id_number/change-password', (req, res) => {
+  const { id_number } = req.params;
+  const { password } = req.body;
 
+  if (!password) {
+    return res.status(400).json({ message: 'A jelszó megadása kötelező.' });
+  }
+
+  // Hasheljük a jelszót bcrypt-tel
+  bcrypt.hash(password, 10, (err, hashedPassword) => {
+    if (err) {
+      return res.status(500).json({ message: 'Hiba történt a jelszó hashelésekor.' });
+    }
+
+    // Jelszó frissítése az adatbázisban
+    const query = 'UPDATE users SET password_hash = ? WHERE id_number = ?';
+    db.query(query, [hashedPassword, id_number], (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: 'Hiba történt a jelszó módosítása során.' });
+      }
+
+      if (result.affectedRows > 0) {
+        res.status(200).json({ message: 'A jelszó sikeresen megváltozott.' });
+      } else {
+        res.status(404).json({ message: 'Felhasználó nem található.' });
+      }
+    });
+  });
+});
 
 // Szerver indítása
 app.listen(port, () => {
