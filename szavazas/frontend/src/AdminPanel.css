@@ -40,10 +40,10 @@ h2 {
 
 .er09-table th,
 .er09-table td {
-  padding: 14px;
+  padding: 10px; /* Csökkentett padding */
   text-align: left;
   border-bottom: 1px solid #e0e0e0;
-  font-size: 15px;
+  font-size: 14px; /* Csökkentett font size */
 }
 
 .er09-table th {
@@ -145,12 +145,14 @@ h2 {
   .btn-del {
     width: 100%;
     margin: 5px 0;
+    padding: 10px 16px; /* Kisebb gomb méret */
+    font-size: 14px; /* Kisebb betűméret */
   }
 
   .er09-table th, 
   .er09-table td {
-    padding: 10px;
-    font-size: 14px;
+    padding: 8px; /* Még kisebb padding */
+    font-size: 12px; /* Még kisebb font size */
   }
 
   .img-party {
@@ -172,7 +174,13 @@ h2 {
 
   .bn44-btn-group button,
   .btn-del {
-    padding: 10px;
-    font-size: 14px;
+    padding: 8px 14px; /* Még kisebb gombok mobilra */
+    font-size: 13px; /* Még kisebb betűméret */
+  }
+
+  .er09-table th, 
+  .er09-table td {
+    padding: 6px; /* Tovább csökkentett padding */
+    font-size: 10px; /* Még kisebb betűméret mobilra */
   }
 }

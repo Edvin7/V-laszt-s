@@ -175,7 +175,6 @@ const AdminPanel = () => {
                 <th>Név</th>
                 <th>Email</th>
                 <th>Személyi ID</th>
-                <th>Státusz</th>
                 <th>Műveletek</th>
               </tr>
             </thead>
@@ -185,7 +184,6 @@ const AdminPanel = () => {
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>{user.personal_id}</td>
-                  <td>{user.status}</td>
                   <td><button className="btn-del" onClick={() => deleteUser(user.id_number)}>Törlés</button></td>
                 </tr>
               ))}
