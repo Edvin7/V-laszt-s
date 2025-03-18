@@ -664,6 +664,27 @@ app.put('/api/users/:id_number/change-password', (req, res) => {
   });
 });
 
+// API végpont a szavazatok lekérésére
+app.get('/api/votes', (req, res) => {
+  const userId = req.query.user_id; // A felhasználó ID-ját a query paraméterből kapjuk
+
+  if (!userId) {
+    return res.status(400).json({ message: 'User ID is required' });
+  }
+
+  const query = 'SELECT * FROM votes WHERE user_id = ?';
+
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error('Hiba a szavazatok lekérésekor:', err);
+      return res.status(500).json({ message: 'Hiba történt' });
+    }
+
+    // Visszaadjuk a szavazatokat
+    res.json(results);
+  });
+});
+
 // Szerver indítása
 app.listen(port, () => {
   console.log(`Szerver fut a ${port} porton`);

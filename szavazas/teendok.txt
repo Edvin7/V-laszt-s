@@ -1,12 +1,10 @@
 frontend: 
 -  teszteles
 - email verify
-- statisztika oldal eltuntetese miutan lejart a idozito
 - dokumentaciot jora megkene meg
 
 backend:
 -  admin oldal: Partok hozzaadasnal minden infot hozza lehessen adni, kep feltoltes a parthoz
--  profil oldal: jelszo valtoztatas
 -  oldalak frissuljenek egyfolytaban
 
 
