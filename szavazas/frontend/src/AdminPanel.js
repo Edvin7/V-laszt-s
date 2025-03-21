@@ -57,13 +57,24 @@ const AdminPanel = () => {
   };
 
   const addParty = async () => {
-    if (!newParty.name || !newParty.description || !newParty.political_ideology || !newParty.political_campaign_description || !newParty.political_year_description) {
+    if (!newParty.name || !newParty.description || !newParty.political_ideology || !newParty.political_campaign_description || !newParty.political_year_description || !newParty.photo) {
       setError('Minden mező kitöltése kötelező.');
       return;
     }
-
+  
+    const formData = new FormData();
+    formData.append('name', newParty.name);
+    formData.append('description', newParty.description);
+    formData.append('political_ideology', newParty.political_ideology);
+    formData.append('political_campaign_description', newParty.political_campaign_description);
+    formData.append('political_year_description', newParty.political_year_description);
+    formData.append('photo', newParty.photo); // Képfájl csatolása
+  
     try {
-      await axios.post('/api/parties', newParty);
+      await axios.post('http://localhost:5000/api/parties', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+  
       setNewParty({
         name: '',
         description: '',
@@ -72,8 +83,9 @@ const AdminPanel = () => {
         political_campaign_description: '',
         political_year_description: '',
       });
+  
       setError('');
-      fetchParties();
+      fetchParties(); // Frissíti a listát
     } catch (error) {
       console.error(error);
     }
@@ -84,10 +96,18 @@ const AdminPanel = () => {
     if (file) {
       const formData = new FormData();
       formData.append('photo', file);
-
-      axios.post('http://localhost:5000/api/upload', formData)
-        .then(response => setNewParty({ ...newParty, photo: response.data.filePath }))
-        .catch(error => console.error(error));
+      formData.append('name', newParty.name);
+      formData.append('description', newParty.description);
+      formData.append('political_ideology', newParty.political_ideology);
+      formData.append('political_campaign_description', newParty.political_campaign_description);
+      formData.append('political_year_description', newParty.political_year_description);
+  
+      axios.post('http://localhost:5000/api/parties', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        withCredentials: true // CORS miatt kellhet
+      })
+      .then(response => setNewParty({ ...newParty, photo: response.data.filePath }))
+      .catch(error => console.error(error));
     }
   };
 

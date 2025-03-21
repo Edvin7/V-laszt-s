@@ -31,7 +31,8 @@ db.connect((err) => {
   }
   console.log('Sikeresen csatlakoztunk a MySQL adatbázishoz');
 });
-   
+
+  
 //Adatbázis kapcsolat API
 app.get('/api/db-test', (req, res) => {
   db.query('SELECT 1 + 1 AS result', (err, results) => {
@@ -341,15 +342,52 @@ app.delete('/api/users/:id', (req, res) => {
 
 
 // Új párt hozzáadása
-app.post('/api/parties', (req, res) => {
-  const { name, description } = req.body;
 
-  if (!name || !description) {
-    return res.status(400).json({ error: 'A név és a leírás kötelező mezők!' });
+
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
+
+// Feltöltési könyvtár ellenőrzése és létrehozása, ha nem létezik
+const uploadDir = './uploads';
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+
+// Multer konfiguráció
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage: storage });
+
+// Statikus fájlok elérése
+app.use('/uploads', express.static(uploadDir));
+
+// API végpontok...
+app.post('/api/parties', upload.single('photo'), (req, res) => {
+  const { name, description, political_ideology, political_campaign_description, political_year_description } = req.body;
+  const photo = req.file ? req.file.filename : null;
+
+  if (!name || !description || !political_ideology || !political_campaign_description || !political_year_description) {
+    return res.status(400).json({ error: 'Minden mező kitöltése kötelező!' });
   }
 
-  const sql = 'INSERT INTO parties (name, description) VALUES (?, ?)';
-  db.query(sql, [name, description], (err, results) => {
+  const sql = `
+    INSERT INTO parties 
+    (name, description, photo, political_ideology, political_campaign_description, political_year_description) 
+    VALUES (?, ?, ?, ?, ?, ?)`;
+
+  db.query(sql, [name, description, photo, political_ideology, political_campaign_description, political_year_description], (err, results) => {
     if (err) {
       console.error('Adatbázis hiba:', err);
       return res.status(500).json({ error: 'Hiba történt az adatbázis művelet során.' });
@@ -404,7 +442,6 @@ app.get('/parties', async (req, res) => {
 
 
 //Képek a pártokhoz !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TESZTELNI KELL / nem mukodik
-app.use('/uploads', express.static(path.join(__dirname, 'public', 'images')));
 
 app.get('/parties/:id', (req, res) => {
   const partyId = req.params.id;
@@ -420,7 +457,7 @@ app.get('/parties/:id', (req, res) => {
 });
 
 app.use(cors());
-
+/*
 const uploadDir = './uploads';
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
@@ -447,7 +484,7 @@ app.post('/api/upload', upload.single('photo'), (req, res) => {
   });
 });
 
-app.use('/uploads', express.static(uploadDir));
+app.use('/uploads', express.static(uploadDir));*/
 
 
 // Időzítő dátumának lekérdezése

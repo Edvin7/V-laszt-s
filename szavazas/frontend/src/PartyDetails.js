@@ -3,19 +3,19 @@ import { useParams } from 'react-router-dom';
 import './PartyDetails.css';
 
 const PartyDetails = () => {
-  const { id } = useParams();
+  const { id } = useParams();  // Az id paraméter kinyerése az URL-ből
   const [party, setParty] = useState(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchPartyDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/parties/${id}`);
+        const response = await fetch(`http://localhost:5000/parties/${id}`);  // Lekérjük a részletes adatokat
         if (!response.ok) {
           throw new Error('Failed to fetch party details');
         }
         const data = await response.json();
-        setParty(data);
+        setParty(data);  // A választ beállítjuk a party állapotba
       } catch (error) {
         console.error('Error fetching party details:', error);
         setError('Failed to load party details');
@@ -23,7 +23,7 @@ const PartyDetails = () => {
     };
 
     fetchPartyDetails();
-  }, [id]);
+  }, [id]);  // Az id változásakor újra lekérjük az adatokat
 
   if (error) {
     return <div className="error-message">Hiba történt.</div>;
@@ -33,13 +33,11 @@ const PartyDetails = () => {
     <div className="page-container">
       {party ? (
         <div className="card-container">
-       
-
           <section className="profile">
             <div className="profile-header">
               <div className="profile-image">
                 <img 
-                  src={`/uploads/${party.photo}`} 
+                  src={`/uploads/${party.photo}`}  // Kép elérhetősége
                   alt={party.name} 
                   className="party-logo"
                 />
@@ -52,13 +50,10 @@ const PartyDetails = () => {
             </div>
           </section>
 
-          
-
           <section className="campaigns">
             <h2><strong className='kamp'>Politikai Kampányok</strong></h2>
             <p className='pp'>{party.political_campaign_description}</p>
           </section>
-
         </div>
       ) : (
         <div className="loading-message">Betöltés...</div>

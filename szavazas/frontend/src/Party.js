@@ -34,7 +34,7 @@ const Partyies = () => {
   }, []);
 
   const handleViewMore = (partyId) => {
-    navigate(`/party/${partyId}`);
+    navigate(`/party/${partyId}`);  // Átirányítás a PartyDetails oldalra
   };
 
   return (
