@@ -55,6 +55,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
             <form onSubmit={handleLogin} className="register-form" id="login-form">
               <div className="form-group">
                 <input
+                name='email'
                   type="email"
                   placeholder="Email cím"
                   value={email}
@@ -63,6 +64,7 @@ function Login({ setIsLoggedIn, setIsAdmin }) {
               </div>
               <div className="form-group">
                 <input
+                name='password'
                   type="password"
                   placeholder="Jelszó"
                   value={password}

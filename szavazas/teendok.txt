@@ -1,12 +1,13 @@
 frontend: 
--  teszteles
+- teszteles
 - email verify
 - dokumentaciot jora megkene meg
+- szavazas, admin utan notifi
 
 backend:
 -  admin oldal: Partok hozzaadasnal minden infot hozza lehessen adni, kep feltoltes a parthoz
 -  oldalak frissuljenek egyfolytaban
-
+- account: regi jelszoval lehessen csak uj jelszot
 
 
 

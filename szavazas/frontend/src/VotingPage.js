@@ -34,12 +34,10 @@ const VotingPage = () => {
     setSelectedParty(party); 
   };
 
-  // Véletlenszerű hash generálása a szavazathoz
   const generateVoteHash = () => {
     return Math.random().toString(36).substring(2); // Egyszerű véletlenszerű hash generálása
   };
 
-  // Szavazat leadása
   const handleSubmit = () => {
     if (selectedParty) {
       // Lekérjük a user objektumot a localStorage-ból
@@ -54,7 +52,6 @@ const VotingPage = () => {
         return;
       }
   
-      // Szavazat adatainak előkészítése
       const voteData = {
         election_id: 1, // Ha több választás van, ennek változnia kell
         party_id: selectedParty.party_id,
@@ -92,29 +89,29 @@ const VotingPage = () => {
           setStatusMessage('Ön már szavazott!');
           setStatusType('error');
           setIsMessageVisible(true);
-          setTimeout(() => setIsMessageVisible(false), 3000); // Az üzenet eltűnik 3 másodperc múlva
+          setTimeout(() => setIsMessageVisible(false), 3000);
         });
     } else {
       setStatusMessage('Kérjük, válasszon egy pártot!');
       setStatusType('error');
       setIsMessageVisible(true);
-      setTimeout(() => setIsMessageVisible(false), 3000); // Az üzenet eltűnik 3 másodperc múlva
+      setTimeout(() => setIsMessageVisible(false), 3000);
     }
   };
 
  // Email küldése EmailJS-sel
  const sendConfirmationEmail = (userEmail, userName, partyName) => {
   emailjs.send(
-    'service_3smt6kr', // EmailJS service ID
-    'template_9b68uwi', // Template ID
+    'service_3smt6kr', 
+    'template_9b68uwi', 
     {
-      to_email: userEmail,           // EmailJS sablonban ez fog a "Címzett" mezőbe kerülni
-      name: userName,                // {{name}} a sablonban
-      party: partyName,              // {{party}} a sablonban
-      time: new Date().toLocaleString(), // {{time}} a sablonban
-      message: `Köszönjük, hogy szavazott a(z) ${partyName} pártra!`, // {{message}} a sablonban
+      to_email: userEmail,           
+      name: userName,                
+      party: partyName,            
+      time: new Date().toLocaleString(), 
+      message: `Köszönjük, hogy szavazott a(z) ${partyName} pártra!`, 
     },
-    'e23gZwKPhdYed1RRP' // Public key
+    'e23gZwKPhdYed1RRP' 
   )
   .then((result) => {
     console.log('Email sikeresen elküldve:', result.text);
@@ -131,12 +128,12 @@ const VotingPage = () => {
         <div className="parties">
           {parties.map((party) => (
             <div
-              key={party.party_id} // Párt egyedi azonosítója
+              key={party.party_id} 
               className="party"
-              onClick={() => handleVote(party)} // Párt kiválasztása
+              onClick={() => handleVote(party)} 
             >
               <img
-                src={`http://localhost:3000/uploads/${party.photo}`}  // Kép URL dinamikusan
+                src={`http://localhost:3000/uploads/${party.photo}`} 
                 alt={`${party.name} logo`}
                 className="party-logo"
               />
@@ -155,7 +152,6 @@ const VotingPage = () => {
         </button>
       </div>
 
-      {/* Üzenet megjelenítése a bal alsó sarokban */}
       {statusMessage && isMessageVisible && (
         <div className={`status-message ${statusType}`}>
           {statusMessage}

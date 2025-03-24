@@ -184,7 +184,7 @@ const AdminPanel = () => {
       const response = await fetch('/api/reset-countdown', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
       if (response.ok) alert('Időzítő lenullázva!');
     } catch (error) {
-      console.error('Error resetting countdown:', error);  // Debugging
+      console.error('Error resetting countdown:', error); 
     }
   };
 
@@ -194,7 +194,7 @@ const AdminPanel = () => {
       const response = await fetch('/api/reset-all', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
       if (response.ok) alert('Időzítő nullázva és szavazatok törölve!');
     } catch (error) {
-      console.error('Error resetting all:', error);  // Debugging
+      console.error('Error resetting all:', error);  
     }
   };
 
@@ -260,7 +260,6 @@ const AdminPanel = () => {
         </div>
         {error && <p className="msg-error">{error}</p>}
 
-        {/* Success message */}
         {successMessage && (
           <div className="success-notification">
             {successMessage}
