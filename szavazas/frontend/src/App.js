@@ -21,7 +21,6 @@ import './Transitions.css';
 import Party from './Party';
 import AdminPanel from './AdminPanel';
 import PartyDetails from './PartyDetails';
-import BackButton from './BackButton';
 
 axios.defaults.baseURL = 'http://localhost:5000'; 
 axios.defaults.withCredentials = true;
@@ -52,7 +51,6 @@ const Main = () => {
   return (
     <div className="app-container">
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-      <BackButton />
       <TransitionGroup>
         <CSSTransition key={location.key} classNames="fade" timeout={300}>
           <Routes location={location}>
@@ -65,7 +63,7 @@ const Main = () => {
             <Route path="/stats" element={isLoggedIn ? <Stats /> : <Navigate to="/" />} />
             <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <Login setIsLoggedIn={setIsLoggedIn} setIsAdmin={setIsAdmin} />}/>
             <Route path="/register" element={isLoggedIn ? <Navigate to="/" /> : <Register />}/>
-            <Route path="/account" element={isLoggedIn ? <Account /> : <Navigate to="/login" />} />
+            <Route path="/account" element={isLoggedIn ? <Account /> : <Navigate to="/" />} />
             <Route path="/parties" element={<Party />} />
             <Route path="/party/:id" element={<PartyDetails />} />
             <Route path="/admin" element={isAdmin ? <AdminPanel /> : <Navigate to="/" />} />
