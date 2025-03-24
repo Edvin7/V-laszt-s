@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import BackButton from './BackButton';
 import './AdminPanel.css';
 
 const AdminPanel = () => {
@@ -207,9 +206,7 @@ const AdminPanel = () => {
   }, []);
 
   return (
-    <div className="xr12-panel-wrap">
-      <BackButton />
-  
+    <div className="xr12-panel-wrap">  
       <div className="tg98-section">
         <h2>Felhasználók</h2>
         <div className="qw33-table-wrap">

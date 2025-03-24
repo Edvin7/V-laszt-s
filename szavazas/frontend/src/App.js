@@ -21,7 +21,6 @@ import './Transitions.css';
 import Party from './Party';
 import AdminPanel from './AdminPanel';
 import PartyDetails from './PartyDetails';
-import BackButton from './BackButton';
 
 axios.defaults.baseURL = 'http://localhost:5000'; 
 axios.defaults.withCredentials = true;
@@ -52,7 +51,6 @@ const Main = () => {
   return (
     <div className="app-container">
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-      <BackButton />
       <TransitionGroup>
         <CSSTransition key={location.key} classNames="fade" timeout={300}>
           <Routes location={location}>
