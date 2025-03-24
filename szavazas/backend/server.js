@@ -344,7 +344,6 @@ app.delete('/api/users/:id', (req, res) => {
 // Új párt hozzáadása
 
 
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
@@ -382,19 +381,32 @@ app.post('/api/parties', upload.single('photo'), (req, res) => {
     return res.status(400).json({ error: 'Minden mező kitöltése kötelező!' });
   }
 
-  const sql = `
-    INSERT INTO parties 
-    (name, description, photo, political_ideology, political_campaign_description, political_year_description) 
-    VALUES (?, ?, ?, ?, ?, ?)`;
-
-  db.query(sql, [name, description, photo, political_ideology, political_campaign_description, political_year_description], (err, results) => {
+  // Ellenőrizzük az időzítő értékét
+  const timerSql = 'SELECT countdown_date FROM settings LIMIT 1';
+  db.query(timerSql, (err, results) => {
     if (err) {
-      console.error('Adatbázis hiba:', err);
-      return res.status(500).json({ error: 'Hiba történt az adatbázis művelet során.' });
+      return res.status(500).json({ error: 'Hiba történt az adatbázis lekérdezésekor.' });
     }
-    res.status(201).json({ success: true, message: 'Párt sikeresen hozzáadva!' });
+
+    if (!results.length || results[0].countdown_date > new Date()) {
+      return res.status(403).json({ error: 'Új párt csak az időzítő lejárta után tölthető fel!' });
+    }
+
+    // Ha az időzítő lejárt, beszúrjuk az új pártot
+    const sql = `
+      INSERT INTO parties 
+      (name, description, photo, political_ideology, political_campaign_description, political_year_description) 
+      VALUES (?, ?, ?, ?, ?, ?)`;
+
+    db.query(sql, [name, description, photo, political_ideology, political_campaign_description, political_year_description], (err) => {
+      if (err) {
+        return res.status(500).json({ error: 'Hiba történt az adatbázis művelet során.' });
+      }
+      res.status(201).json({ success: true, message: 'Párt sikeresen hozzáadva!' });
+    });
   });
 });
+
 
 
 // Párt törlése !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TESZTELNI KELL / nem mukodik
