@@ -18,6 +18,8 @@ const AdminPanel = () => {
   const [error, setError] = useState('');
   const [newCountdownDate, setNewCountdownDate] = useState('');
   const [countdownDate, setCountdownDate] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(''); // State for the success notification
 
   const fetchUsers = async () => {
     try {
@@ -58,23 +60,27 @@ const AdminPanel = () => {
 
   const addParty = async () => {
     if (!newParty.name || !newParty.description || !newParty.political_ideology || !newParty.political_campaign_description || !newParty.political_year_description || !newParty.photo) {
-      setError('Minden mező kitöltése kötelező.');
       return;
     }
-  
+
+    console.log('Adding party...');  // Debugging
+    setIsSubmitting(true);
+
     const formData = new FormData();
     formData.append('name', newParty.name);
     formData.append('description', newParty.description);
     formData.append('political_ideology', newParty.political_ideology);
     formData.append('political_campaign_description', newParty.political_campaign_description);
     formData.append('political_year_description', newParty.political_year_description);
-    formData.append('photo', newParty.photo); // Képfájl csatolása
-  
+    formData.append('photo', newParty.photo); 
+
     try {
+      console.log('Sending request...');  // Debugging
       await axios.post('http://localhost:5000/api/parties', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-  
+
+      // Clear input fields
       setNewParty({
         name: '',
         description: '',
@@ -83,11 +89,25 @@ const AdminPanel = () => {
         political_campaign_description: '',
         political_year_description: '',
       });
-  
+
       setError('');
-      fetchParties(); // Frissíti a listát
+      fetchParties(); // Refresh the party list
+      console.log('Party added successfully');  // Debugging
+
+      // Show success message
+      setSuccessMessage('A párt sikeresen hozzáadva!');
+      console.log('Success message set:', 'A párt sikeresen hozzáadva!');  // Debugging
+
+      // Hide the message after 3 seconds
+      setTimeout(() => {
+        console.log('Hiding success message');  // Debugging
+        setSuccessMessage('');
+      }, 3000);
+
     } catch (error) {
-      console.error(error);
+      console.error('Error adding party:', error);  // Debugging
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -101,19 +121,23 @@ const AdminPanel = () => {
       formData.append('political_ideology', newParty.political_ideology);
       formData.append('political_campaign_description', newParty.political_campaign_description);
       formData.append('political_year_description', newParty.political_year_description);
-  
+
       axios.post('http://localhost:5000/api/parties', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
-        withCredentials: true // CORS miatt kellhet
+        withCredentials: true
       })
-      .then(response => setNewParty({ ...newParty, photo: response.data.filePath }))
-      .catch(error => console.error(error));
+        .then(response => {
+          setNewParty({ ...newParty, photo: response.data.filePath });
+        })
+        .catch(error => {
+          console.error('Error handling file change:', error);
+        });
     }
   };
 
   const deleteUser = async (id) => {
     if (!window.confirm('Biztosan törölni szeretnéd a felhasználót?')) return;
-  
+
     try {
       await axios.delete(`/api/users/${id}`);
       fetchUsers(); 
@@ -133,7 +157,7 @@ const AdminPanel = () => {
       await axios.delete(`/api/parties/${id}`);
       fetchParties();
     } catch (error) {
-      console.error(error);
+      console.error('Error deleting party:', error);  // Debugging
     }
   };
 
@@ -152,7 +176,7 @@ const AdminPanel = () => {
         console.error(data.error);
       }
     } catch (error) {
-      console.error(error);
+      console.error('Error updating countdown date:', error);  // Debugging
     }
   };
 
@@ -161,7 +185,7 @@ const AdminPanel = () => {
       const response = await fetch('/api/reset-countdown', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
       if (response.ok) alert('Időzítő lenullázva!');
     } catch (error) {
-      console.error(error);
+      console.error('Error resetting countdown:', error);  // Debugging
     }
   };
 
@@ -171,7 +195,7 @@ const AdminPanel = () => {
       const response = await fetch('/api/reset-all', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
       if (response.ok) alert('Időzítő nullázva és szavazatok törölve!');
     } catch (error) {
-      console.error(error);
+      console.error('Error resetting all:', error);  // Debugging
     }
   };
 
@@ -235,9 +259,16 @@ const AdminPanel = () => {
           <input type="file" onChange={handleFileChange} />
         </div>
         <div className="bn44-btn-group">
-          <button onClick={addParty}>Hozzáadás</button>
+          <button onClick={addParty} disabled={isSubmitting}>Hozzáadás</button>
         </div>
         {error && <p className="msg-error">{error}</p>}
+
+        {/* Success message */}
+        {successMessage && (
+          <div className="success-notification">
+            {successMessage}
+          </div>
+        )}
   
         <div className="qw33-table-wrap">
           <table className="er09-table">
