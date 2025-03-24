@@ -65,7 +65,7 @@ const Main = () => {
             <Route path="/stats" element={isLoggedIn ? <Stats /> : <Navigate to="/" />} />
             <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <Login setIsLoggedIn={setIsLoggedIn} setIsAdmin={setIsAdmin} />}/>
             <Route path="/register" element={isLoggedIn ? <Navigate to="/" /> : <Register />}/>
-            <Route path="/account" element={isLoggedIn ? <Account /> : <Navigate to="/login" />} />
+            <Route path="/account" element={isLoggedIn ? <Account /> : <Navigate to="/" />} />
             <Route path="/parties" element={<Party />} />
             <Route path="/party/:id" element={<PartyDetails />} />
             <Route path="/admin" element={isAdmin ? <AdminPanel /> : <Navigate to="/" />} />

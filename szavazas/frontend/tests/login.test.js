@@ -23,16 +23,17 @@ test.describe('Login functionality', () => {
   });
 
   test('should redirect to home page on successful login', async ({ page }) => {
-
     await page.goto('http://localhost:3000/login');
     await page.fill('input[placeholder="Email cím"]', 'a@g.c');
-    await page.fill('input[placeholder="Jelszó"]', 'newPassword123');
-
+    await page.fill('input[placeholder="Jelszó"]', 'asd');
+  
     await page.click('input[type="submit"][value="Bejelentkezés"]');
-
-    await page.waitForNavigation();
+  
+    await page.waitForURL('http://localhost:3000/');
+  
     await expect(page.url()).toBe('http://localhost:3000/');
   });
+  
 
   test('should redirect to admin page for admin user', async ({ page }) => {
 
