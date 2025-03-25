@@ -10,8 +10,8 @@ const Footer = ({ isLoggedIn }) => {
           <ul>
             <li><Link to="/contact">Kapcsolat</Link></li>
             <li><a href="/voting">Szavazok</a></li>
-            <li><Link to="/privacy">Adatvédelmi szabályzat</Link></li>
-            <li><Link to="/terms">Általános Szerződési Feltételek</Link></li>
+            {/*<li><Link to="/privacy">Adatvédelmi szabályzat</Link></li>*/}
+            {/*<li><Link to="/terms">Általános Szerződési Feltételek</Link></li>*/}
             {!isLoggedIn && <li><Link to="/login">Bejelentkezés</Link></li>}
           </ul>
         </div>

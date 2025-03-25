@@ -14,24 +14,63 @@ const Register = () => {
     agreeTerm: false,
   });
 
-  const navigate = useNavigate();  // Hozzáadjuk a navigate hook-ot
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    
+    // Név mező esetén csak betűk engedélyezése
+    if (name === 'name' && !/^[a-zA-Z\s]*$/.test(value)) {
+      return; // Csak betűk és szóközök engedélyezettek
+    }
+
+    // Adószám esetén csak számok engedélyezettek és maximum 8 karakter
+    if (name === 'personal_id' && !/^\d{0,8}$/.test(value)) {
+      return; // Csak számok és maximum 8 karakter
+    }
+
     setFormData({
       ...formData,
       [name]: type === 'checkbox' ? checked : value,
     });
   };
 
+  // Email validáció (egyszerű regex)
+  const validateEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return emailRegex.test(email);
+  };
+
+  // Adószám validáció (maximum 8 számjegy)
+  const validatePersonalId = (id) => {
+    const personalIdRegex = /^\d{1,8}$/; // maximum 8 számjegy
+    return personalIdRegex.test(id);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    if (formData.pass !== formData.re_pass) {
-      alert('A jelszavak nem egyeznek!');
+    setError(''); // Alapértelmezett hibaüzenet törlés
+
+    // Ellenőrzések
+    if (!validateEmail(formData.email)) {
+      setError('Hibás email formátum!');
+      setTimeout(() => setError(''), 5000); // 5 másodperc után eltűnik
       return;
     }
-  
+
+    if (formData.pass !== formData.re_pass) {
+      setError('A jelszavak nem egyeznek!');
+      setTimeout(() => setError(''), 5000); // 5 másodperc után eltűnik
+      return;
+    }
+
+    if (!validatePersonalId(formData.personal_id)) {
+      setError('Az adószámnak legfeljebb 8 számjegyűnek kell lennie!');
+      setTimeout(() => setError(''), 5000); // 5 másodperc után eltűnik
+      return;
+    }
+
     try {
       const response = await axios.post('http://localhost:5000/register', {
         name: formData.name,
@@ -40,26 +79,18 @@ const Register = () => {
         personal_id: formData.personal_id,
         agreeTerm: formData.agreeTerm,
       });
-  
+
       console.log('Regisztráció sikeres:', response.data);
-      setFormData({ ...formData, message: response.data.message });
-  
+
       // Ha a regisztráció sikeres, átirányítjuk a bejelentkezési oldalra
       setTimeout(() => {
-        navigate('/login');  // 3 másodperc múlva átirányítás
+        navigate('/login'); 
       }, 1000);
-  
+
     } catch (error) {
-      if (error.response) {
-        console.error('Hiba történt a regisztráció során:', error.response.data);
-        alert(`Hiba: ${error.response.data.message || 'Ismeretlen hiba történt.'}`);
-      } else if (error.request) {
-        console.error('A kérés nem érkezett vissza:', error.request);
-        alert('A kérés nem érkezett vissza. Ellenőrizd a szerver elérhetőségét!');
-      } else {
-        console.error('Hiba történt a kérés küldése közben:', error.message);
-        alert(`Hiba: ${error.message}`);
-      }
+      console.error('Hiba történt a regisztráció során:', error);
+      setError('Ismeretlen hiba történt. Kérjük próbálja újra!');
+      setTimeout(() => setError(''), 5000); // 5 másodperc után eltűnik
     }
   };
 
@@ -69,7 +100,11 @@ const Register = () => {
         <div className="signup-content">
           <div className="signup-form">
             <h2 className="form-title">Regisztráció</h2>
-            {formData.message && <p>{formData.message}</p>}
+            {error && (
+              <div className="error-message">
+                {error}
+              </div>
+            )}
             <form method="POST" className="register-form" id="register-form" onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="name"><i className="zmdi zmdi-account material-icons-name"></i></label>
@@ -128,6 +163,7 @@ const Register = () => {
                   placeholder="Adószám"
                   value={formData.personal_id}
                   onChange={handleChange}
+                  maxLength={8} // Maximum 8 karakter
                   required
                 />
               </div>
