@@ -125,7 +125,7 @@ const Register = () => {
                   type="text"
                   name="personal_id"
                   id="personal_id"
-                  placeholder="Személyi ig. szám"
+                  placeholder="Adószám"
                   value={formData.personal_id}
                   onChange={handleChange}
                   required

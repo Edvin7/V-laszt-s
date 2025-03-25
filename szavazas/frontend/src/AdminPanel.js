@@ -19,6 +19,7 @@ const AdminPanel = () => {
   const [countdownDate, setCountdownDate] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState(''); // State for the success notification
+  const [statusMessage, setStatusMessage] = useState(''); // State for status notification
 
   const fetchUsers = async () => {
     try {
@@ -71,7 +72,7 @@ const AdminPanel = () => {
     formData.append('political_ideology', newParty.political_ideology);
     formData.append('political_campaign_description', newParty.political_campaign_description);
     formData.append('political_year_description', newParty.political_year_description);
-    formData.append('photo', newParty.photo); 
+    formData.append('photo', newParty.photo);
 
     try {
       console.log('Sending request...');  // Debugging
@@ -139,15 +140,26 @@ const AdminPanel = () => {
 
     try {
       await axios.delete(`/api/users/${id}`);
-      fetchUsers(); 
-      alert('Felhasználó sikeresen törölve!');
+      fetchUsers();
+      setStatusMessage('Felhasználó sikeresen törölve!');
+      
+      // Hide the status message after 3 seconds
+      setTimeout(() => {
+        setStatusMessage('');
+      }, 3000);
+      
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
-        alert(error.response.data.error); 
+        setStatusMessage(error.response.data.error);
       } else {
-        alert('A felhasználó már sazvazott, ezért nem tudja törölni.');
+        setStatusMessage('A felhasználó már aktiválva van, ezért nem törölhető!');
         console.error(error);
       }
+      
+      // Hide the status message after 3 seconds
+      setTimeout(() => {
+        setStatusMessage('');
+      }, 3000);
     }
   };
 
@@ -155,8 +167,21 @@ const AdminPanel = () => {
     try {
       await axios.delete(`/api/parties/${id}`);
       fetchParties();
+      setStatusMessage('Párt sikeresen törölve!');
+      
+      // Hide the status message after 3 seconds
+      setTimeout(() => {
+        setStatusMessage('');
+      }, 3000);
+
     } catch (error) {
-      console.error('Error deleting party:', error);  // Debugging
+      console.error('Error deleting party:', error);
+      setStatusMessage('Hiba történt a párt törlése közben!');
+      
+      // Hide the status message after 3 seconds
+      setTimeout(() => {
+        setStatusMessage('');
+      }, 3000);
     }
   };
 
@@ -170,21 +195,53 @@ const AdminPanel = () => {
 
       if (response.ok) {
         setCountdownDate(new Date(newCountdownDate).getTime());
+        setStatusMessage('Időzítő sikeresen beállítva!');
+        
+        // Hide the status message after 3 seconds
+        setTimeout(() => {
+          setStatusMessage('');
+        }, 3000);
+
       } else {
         const data = await response.json();
         console.error(data.error);
+        setStatusMessage('Hiba történt az időzítő beállítása közben!');
+        
+        // Hide the status message after 3 seconds
+        setTimeout(() => {
+          setStatusMessage('');
+        }, 3000);
       }
     } catch (error) {
-      console.error('Error updating countdown date:', error);  // Debugging
+      console.error('Error updating countdown date:', error);
+      setStatusMessage('Hiba történt az időzítő frissítése közben!');
+      
+      // Hide the status message after 3 seconds
+      setTimeout(() => {
+        setStatusMessage('');
+      }, 3000);
     }
   };
 
   const resetCountdown = async () => {
     try {
       const response = await fetch('/api/reset-countdown', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
-      if (response.ok) alert('Időzítő lenullázva!');
+      if (response.ok) {
+        setStatusMessage('Időzítő lenullázva!');
+        
+        // Hide the status message after 3 seconds
+        setTimeout(() => {
+          setStatusMessage('');
+        }, 3000);
+      }
     } catch (error) {
-      console.error('Error resetting countdown:', error); 
+      console.error('Error resetting countdown:', error);
+      setStatusMessage('Hiba történt az időzítő lenullázásakor!');
+      
+      // Hide the status message after 3 seconds
+      setTimeout(() => {
+        setStatusMessage('');
+      }, 3000);
     }
   };
 
@@ -192,9 +249,22 @@ const AdminPanel = () => {
     if (!window.confirm('Biztosan törölni szeretnéd az összes szavazatot és nullázni az időzítőt?')) return;
     try {
       const response = await fetch('/api/reset-all', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
-      if (response.ok) alert('Időzítő nullázva és szavazatok törölve!');
+      if (response.ok) {
+        setStatusMessage('Időzítő nullázva és szavazatok törölve!');
+        
+        // Hide the status message after 3 seconds
+        setTimeout(() => {
+          setStatusMessage('');
+        }, 3000);
+      }
     } catch (error) {
-      console.error('Error resetting all:', error);  
+      console.error('Error resetting all:', error);
+      setStatusMessage('Hiba történt az összes adat törlése közben!');
+      
+      // Hide the status message after 3 seconds
+      setTimeout(() => {
+        setStatusMessage('');
+      }, 3000);
     }
   };
 
@@ -206,7 +276,7 @@ const AdminPanel = () => {
   }, []);
 
   return (
-    <div className="xr12-panel-wrap">  
+    <div className="xr12-panel-wrap">
       <div className="tg98-section">
         <h2>Felhasználók</h2>
         <div className="qw33-table-wrap">
@@ -232,7 +302,7 @@ const AdminPanel = () => {
           </table>
         </div>
       </div>
-  
+
       <div className="tg98-section">
         <h2>Időzítő beállítás</h2>
         <div className="ip55-input-group">
@@ -244,7 +314,7 @@ const AdminPanel = () => {
           <button onClick={resetAll}>Mind törlés + időzítő nullázás</button>
         </div>
       </div>
-  
+
       <div className="tg98-section">
         <h2>Pártok</h2>
         <div className="ip55-input-group">
@@ -265,7 +335,7 @@ const AdminPanel = () => {
             {successMessage}
           </div>
         )}
-  
+
         <div className="qw33-table-wrap">
           <table className="er09-table">
             <thead>
@@ -285,6 +355,12 @@ const AdminPanel = () => {
           </table>
         </div>
       </div>
+
+      {statusMessage && (
+        <div className={`status-message ${statusMessage.includes('sikeresen') ? 'success' : 'error'}`}>
+          {statusMessage}
+        </div>
+      )}
     </div>
   );
 };
