@@ -66,7 +66,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
           {isAdmin && <li><Link to="/admin" onClick={handleMenuLinkClick}>Admin</Link></li>}
           <li><Link to="/parties" onClick={handleMenuLinkClick}>Pártok</Link></li>
           <li><Link to="/contact" onClick={handleMenuLinkClick}>Kapcsolat</Link></li>
-          <li><a href="/news" target="_blank" rel="noopener noreferrer" onClick={handleMenuLinkClick}>Hírek</a></li>
+          <li><a href="/news" rel="noopener noreferrer" onClick={handleMenuLinkClick}>Hírek</a></li>
 
           {isLoggedIn ? (
             <>

@@ -8,6 +8,7 @@ backend:
 -  admin oldal: Partok hozzaadasnal minden infot hozza lehessen adni, kep feltoltes a parthoz
 -  oldalak frissuljenek egyfolytaban
 - account: regi jelszoval lehessen csak uj jelszot
+- mezot a jelenlegi jelszora beallitani az account ba
 
 
 

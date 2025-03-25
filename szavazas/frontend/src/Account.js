@@ -65,12 +65,19 @@ const Account = () => {
         </p>
 
         <div className="user-info">
-          <p><strong>Neved:</strong> {userInfo.name}</p>
-          <p><strong>Email cím:</strong> {userInfo.email}</p>
+          <p><strong>Neve: </strong> {userInfo.name}</p>
+          <p><strong>Email cím: </strong> {userInfo.email}</p>
         </div>
 
         <div className="password-change-section">
           <h2 className='psschange'>Jelszó változtatás</h2>
+          <div className="input-group">
+            <input
+              type={passwordVisible ? 'text' : 'password'}
+              placeholder="Jelenlegi jelszó"
+              className="account-input"
+            />
+          </div>
           <div className="input-group">
             <input
               type={passwordVisible ? 'text' : 'password'}
