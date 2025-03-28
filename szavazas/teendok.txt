@@ -12,4 +12,9 @@ backend:
 
 
 
+https://www.infojegyzet.hu/webszerkesztes/dokumentacio/
+dookumentacio segitseg
+
+
+
 
