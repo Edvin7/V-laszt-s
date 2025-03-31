@@ -411,20 +411,24 @@ app.post('/api/parties', upload.single('photo'), (req, res) => {
 
 // Párt törlése !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TESZTELNI KELL / nem mukodik
 app.delete('/api/parties/:id', (req, res) => {
-  const partyId = req.params.id;
+  const partyId = parseInt(req.params.id, 10); // Biztosítsuk, hogy szám legyen
+  
+  if (isNaN(partyId)) {
+    return res.status(400).json({ error: 'Érvénytelen ID' });
+  }
 
   db.query('DELETE FROM parties WHERE party_id = ?', [partyId], (err, results) => {
     if (err) {
-      res.status(500).json({ error: err.message });
-      return;
+      console.error('DB hiba:', err);
+      return res.status(500).json({ error: err.message });
     }
     if (results.affectedRows === 0) {
-      res.status(404).json({ error: 'Nem található a párt.' });
-      return;
+      return res.status(404).json({ error: 'Nem található a párt.' });
     }
     res.json({ success: true, message: 'Párt sikeresen törölve' });
   });
 });
+
 
 
 // Adatvédelmi szabályzat lekérdezése

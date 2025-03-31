@@ -42,6 +42,7 @@ const AdminPanel = () => {
   const fetchParties = async () => {
     try {
       const response = await axios.get('/api/parties');
+      console.log('Pártok a szerverről:', response.data); // Konzolba írja az adatokat
       setParties(response.data);
     } catch (error) {
       console.error(error);
@@ -164,21 +165,20 @@ const AdminPanel = () => {
   };
 
   const deleteParty = async (id) => {
+    if (!window.confirm('Biztosan törölni szeretnéd ezt a pártot?')) return;
+  
     try {
-      await axios.delete(`/api/parties/${id}`);
-      fetchParties();
+      await axios.delete(`http://localhost:5000/api/parties/${id}`);
+      fetchParties(); // Frissítjük a listát
       setStatusMessage('Párt sikeresen törölve!');
       
-      // Hide the status message after 3 seconds
       setTimeout(() => {
         setStatusMessage('');
       }, 3000);
-
     } catch (error) {
-      console.error('Error deleting party:', error);
+      console.error('Hiba a törlésnél:', error);
       setStatusMessage('Hiba történt a párt törlése közben!');
       
-      // Hide the status message after 3 seconds
       setTimeout(() => {
         setStatusMessage('');
       }, 3000);
@@ -348,7 +348,8 @@ const AdminPanel = () => {
               {parties.map(party => (
                 <tr key={party.id}>
                   <td>{party.name}</td>
-                  <td><button className="btn-del" onClick={() => deleteParty(party.id)}>Törlés</button></td>
+                  <td><button className="btn-del" onClick={() => console.log(party) || deleteParty(party.party_id)}>Törlés</button></td>
+
                 </tr>
               ))}
             </tbody>
