@@ -685,34 +685,58 @@ app.delete('/api/users/:id', (req, res) => {
   });
 });
 
-
 // Jelszó változtatás endpoint
 app.put('/api/users/:id_number/change-password', (req, res) => {
   const { id_number } = req.params;
-  const { password } = req.body;
+  const { currentPassword, newPassword } = req.body;
 
-  if (!password) {
-    return res.status(400).json({ message: 'A jelszó megadása kötelező.' });
+  // Ellenőrizzük, hogy mindkét jelszó meg van adva
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ message: 'A jelenlegi és az új jelszó megadása kötelező.' });
   }
 
-  // Hasheljük a jelszót bcrypt-tel
-  bcrypt.hash(password, 10, (err, hashedPassword) => {
+  // Először lekérjük a felhasználó jelenlegi jelszavát az adatbázisból
+  const query = 'SELECT password_hash FROM users WHERE id_number = ?';
+  db.query(query, [id_number], (err, result) => {
     if (err) {
-      return res.status(500).json({ message: 'Hiba történt a jelszó hashelésekor.' });
+      return res.status(500).json({ message: 'Hiba történt a felhasználó keresésekor.' });
     }
 
-    // Jelszó frissítése az adatbázisban
-    const query = 'UPDATE users SET password_hash = ? WHERE id_number = ?';
-    db.query(query, [hashedPassword, id_number], (err, result) => {
+    if (result.length === 0) {
+      return res.status(404).json({ message: 'Felhasználó nem található.' });
+    }
+
+    // A jelenlegi jelszó összehasonlítása
+    const storedPasswordHash = result[0].password_hash;
+    bcrypt.compare(currentPassword, storedPasswordHash, (err, isMatch) => {
       if (err) {
-        return res.status(500).json({ message: 'Hiba történt a jelszó módosítása során.' });
+        return res.status(500).json({ message: 'Hiba történt a jelszó ellenőrzésekor.' });
       }
 
-      if (result.affectedRows > 0) {
-        res.status(200).json({ message: 'A jelszó sikeresen megváltozott.' });
-      } else {
-        res.status(404).json({ message: 'Felhasználó nem található.' });
+      if (!isMatch) {
+        return res.status(400).json({ message: 'A jelenlegi jelszó nem helyes.' });
       }
+
+      // Ha a jelenlegi jelszó helyes, titkosítjuk az új jelszót
+      bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
+        if (err) {
+          return res.status(500).json({ message: 'Hiba történt az új jelszó hashelésekor.' });
+        }
+
+        // Az új jelszó frissítése az adatbázisban
+        const updateQuery = 'UPDATE users SET password_hash = ? WHERE id_number = ?';
+        db.query(updateQuery, [hashedPassword, id_number], (err, result) => {
+          if (err) {
+            return res.status(500).json({ message: 'Hiba történt a jelszó módosítása során.' });
+          }
+
+          if (result.affectedRows > 0) {
+            res.status(200).json({ message: 'A jelszó sikeresen megváltozott.' });
+          } else {
+            res.status(404).json({ message: 'Felhasználó nem található.' });
+          }
+        });
+      });
     });
   });
 });
