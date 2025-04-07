@@ -3,6 +3,7 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
@@ -15,6 +16,34 @@ app.use(cors({
   credentials: true,
 }));
 app.use(bodyParser.json());
+
+// Titkosítási kulcs és fix IV
+const algorithm = 'aes-256-cbc';
+let secretKey = '32byte-long-secret-key-123456789012'; // Biztonságos helyen kell tárolni
+if (secretKey.length < 32) {
+  secretKey = secretKey.padEnd(32, '0');  // Ha rövidebb, akkor 0-t adunk hozzá
+} else if (secretKey.length > 32) {
+  secretKey = secretKey.slice(0, 32);  // Ha hosszabb, akkor levágjuk
+}
+
+// Fix IV, amit minden titkosításhoz ugyanazt használunk, 16 bájt hosszú
+const iv = Buffer.from('asdihgtlksvgkjdt', 'utf8'); // 16 bájt hosszú fix IV
+
+// Titkosítás (kódolás)
+function encryptData(data) {
+  const cipher = crypto.createCipheriv(algorithm, secretKey, iv);
+  let encrypted = cipher.update(data, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  return encrypted;
+}
+
+// Visszafejtés (dekódolás)
+function decryptData(encryptedData) {
+  const decipher = crypto.createDecipheriv(algorithm, secretKey, iv);
+  let decrypted = decipher.update(encryptedData, 'hex', 'utf8');
+  decrypted += decipher.final('utf8');
+  return decrypted;
+}
 
 // MySQL kapcsolat
 const db = mysql.createConnection({
@@ -64,6 +93,11 @@ app.post('/register', (req, res) => {
       return res.status(400).json({ message: 'Ez az email már regisztrálva van' });
     }
 
+    // Titkosítjuk az emailt, nevet, és személyi számot
+    const encryptedEmail = encryptData(email);
+    const encryptedName = encryptData(name);
+    const encryptedPersonalId = encryptData(personal_id);
+
     const insertQuery = `INSERT INTO users (name, email, password_hash, personal_id, agree_terms, status) 
                          VALUES (?, ?, ?, ?, ?, 'active')`;
 
@@ -73,7 +107,7 @@ app.post('/register', (req, res) => {
         return res.status(500).json({ message: 'Belső hiba történt' });
       }
 
-      db.query(insertQuery, [name, email, hashedPassword, personal_id, agreeTerm ? 1 : 0], (err, result) => {
+      db.query(insertQuery, [encryptedName, encryptedEmail, hashedPassword, encryptedPersonalId, agreeTerm ? 1 : 0], (err, result) => {
         if (err) {
           console.error('Hiba a felhasználó hozzáadása közben:', err);
           return res.status(500).json({ message: 'Belső hiba történt' });
@@ -85,11 +119,13 @@ app.post('/register', (req, res) => {
   });
 });
 
+
 // Bejelentkezés végpont
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
 
-  db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+  // Először a felhasználókat ellenőrizzük
+  db.query('SELECT * FROM users WHERE email = ?', [encryptData(email)], (err, results) => {
     if (err) {
       console.error('Hiba történt a users lekérdezésekor:', err);
       return res.status(500).json({ message: 'Belső hiba történt!' });
@@ -97,6 +133,14 @@ app.post('/login', (req, res) => {
 
     if (results.length > 0) {
       const user = results[0];
+
+      // Titkosított email visszafejtése
+      const decryptedEmail = decryptData(user.email); // Visszafejtjük az emailt
+
+      if (decryptedEmail !== email) {
+        return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
+      }
+
       bcrypt.compare(password, user.password_hash, (err, isMatch) => {
         if (err) {
           console.error('Hiba a jelszó ellenőrzésekor:', err);
@@ -111,13 +155,14 @@ app.post('/login', (req, res) => {
           message: 'Sikeres bejelentkezés',
           user: {
             id: user.id_number,
-            name: user.name,
-            email: user.email,
+            name: decryptData(user.name), // Visszafejtett név
+            email: decryptedEmail, // Visszafejtett email
             isAdmin: false,
           },
         });
       });
     } else {
+      // Admin ellenőrzése (admin email nem titkosított, közvetlenül az "admin@admin" emailt keresünk)
       db.query('SELECT * FROM admin WHERE email = ?', [email], (err, results) => {
         if (err) {
           console.error('Hiba történt az admin lekérdezésekor:', err);
@@ -129,6 +174,11 @@ app.post('/login', (req, res) => {
         }
 
         const admin = results[0];
+
+        // Admin email közvetlenül "admin@admin", nem szükséges visszafejteni
+        if (admin.email !== email) {
+          return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
+        }
 
         bcrypt.compare(password, admin.password_hash, (err, isMatch) => {
           if (err) {
@@ -144,8 +194,8 @@ app.post('/login', (req, res) => {
             message: 'Sikeres bejelentkezés',
             user: {
               id: admin.admin_id,
-              name: admin.name,
-              email: admin.email,
+              name: admin.name, // Admin név visszaadása (nem titkosítva)
+              email: admin.email, // Admin email (nem titkosítva)
               isAdmin: true,
             },
           });
@@ -154,6 +204,7 @@ app.post('/login', (req, res) => {
     }
   });
 });
+
 
 // Bejelentkezett felhasználó ellenőrzése
 app.get('/api/user', (req, res) => {
