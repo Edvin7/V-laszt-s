@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql2');
+const { Pool } = require('pg');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
@@ -7,357 +7,279 @@ const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
 const app = express();
-const port = 5000;
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: ['https://szavazz.vercel.app', 'http://localhost:3000'],
   credentials: true,
 }));
 app.use(bodyParser.json());
 
-// MySQL kapcsolat
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'vote',
-});
-
-db.connect((err) => {
-  if (err) {
-    console.error('Hiba a MySQL kapcsolódás során:', err);
-    return;
+// PostgreSQL connection
+const pool = new Pool({
+  connectionString: process.env.POSTGRES_URL,
+  ssl: {
+    rejectUnauthorized: false
   }
-  console.log('Sikeresen csatlakoztunk a MySQL adatbázishoz');
 });
 
-  
-//Adatbázis kapcsolat API
-app.get('/api/db-test', (req, res) => {
-  db.query('SELECT 1 + 1 AS result', (err, results) => {
-    if (err) {
-      console.error('Hiba a MySQL lekérdezés során:', err);
-      return res.status(500).json({ error: 'Hiba történt az adatbázis kapcsolat ellenőrzésekor.' });
-    }
-    res.status(200).json({ success: true, result: results[0].result });
-  });
+// Database connection test
+app.get('/api/db-test', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT 1 + 1 AS result');
+    res.status(200).json({ success: true, result: result.rows[0].result });
+  } catch (err) {
+    console.error('Database query error:', err);
+    res.status(500).json({ error: 'Database connection error' });
+  }
 });
 
-// Regisztrációs endpoint
-app.post('/register', (req, res) => {
+// Registration endpoint
+app.post('/register', async (req, res) => {
   const { name, email, pass, personal_id, agreeTerm } = req.body;
 
   if (!name || !email || !pass || !personal_id || agreeTerm === undefined) {
     return res.status(400).json({ message: 'Minden mezőt ki kell tölteni!' });
   }
 
-  const checkQuery = 'SELECT * FROM users WHERE email = ?';
-  db.query(checkQuery, [email], (err, result) => {
-    if (err) {
-      console.error('Hiba a felhasználó ellenőrzésekor:', err);
-      return res.status(500).json({ message: 'Belső hiba történt' });
-    }
-
-    if (result.length > 0) {
+  try {
+    // Check if email exists
+    const checkResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    
+    if (checkResult.rows.length > 0) {
       return res.status(400).json({ message: 'Ez az email már regisztrálva van' });
     }
 
-    const insertQuery = `INSERT INTO users (name, email, password_hash, personal_id, agree_terms, status) 
-                         VALUES (?, ?, ?, ?, ?, 'active')`;
+    // Hash password and insert user
+    const hashedPassword = await bcrypt.hash(pass, 10);
+    const insertResult = await pool.query(
+      `INSERT INTO users (name, email, password_hash, personal_id, agree_terms, status) 
+       VALUES ($1, $2, $3, $4, $5, 'active') RETURNING *`,
+      [name, email, hashedPassword, personal_id, agreeTerm ? true : false]
+    );
 
-    bcrypt.hash(pass, 10, (err, hashedPassword) => {
-      if (err) {
-        console.error('Hiba a jelszó hash-elésekor:', err);
-        return res.status(500).json({ message: 'Belső hiba történt' });
-      }
-
-      db.query(insertQuery, [name, email, hashedPassword, personal_id, agreeTerm ? 1 : 0], (err, result) => {
-        if (err) {
-          console.error('Hiba a felhasználó hozzáadása közben:', err);
-          return res.status(500).json({ message: 'Belső hiba történt' });
-        }
-
-        res.status(200).json({ message: 'Sikeres regisztráció!' });
-      });
-    });
-  });
+    res.status(200).json({ message: 'Sikeres regisztráció!' });
+  } catch (err) {
+    console.error('Registration error:', err);
+    res.status(500).json({ message: 'Belső hiba történt' });
+  }
 });
 
-// Bejelentkezés végpont
-app.post('/login', (req, res) => {
+// Login endpoint
+app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
-    if (err) {
-      console.error('Hiba történt a users lekérdezésekor:', err);
-      return res.status(500).json({ message: 'Belső hiba történt!' });
-    }
+  try {
+    // Check users table first
+    const userResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    
+    if (userResult.rows.length > 0) {
+      const user = userResult.rows[0];
+      const isMatch = await bcrypt.compare(password, user.password_hash);
+      
+      if (!isMatch) {
+        return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
+      }
 
-    if (results.length > 0) {
-      const user = results[0];
-      bcrypt.compare(password, user.password_hash, (err, isMatch) => {
-        if (err) {
-          console.error('Hiba a jelszó ellenőrzésekor:', err);
-          return res.status(500).json({ message: 'Belső hiba történt' });
-        }
-
-        if (!isMatch) {
-          return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
-        }
-
-        return res.status(200).json({
-          message: 'Sikeres bejelentkezés',
-          user: {
-            id: user.id_number,
-            name: user.name,
-            email: user.email,
-            isAdmin: false,
-          },
-        });
-      });
-    } else {
-      db.query('SELECT * FROM admin WHERE email = ?', [email], (err, results) => {
-        if (err) {
-          console.error('Hiba történt az admin lekérdezésekor:', err);
-          return res.status(500).json({ message: 'Belső hiba történt!' });
-        }
-
-        if (results.length === 0) {
-          return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
-        }
-
-        const admin = results[0];
-
-        bcrypt.compare(password, admin.password_hash, (err, isMatch) => {
-          if (err) {
-            console.error('Hiba a jelszó ellenőrzésekor:', err);
-            return res.status(500).json({ message: 'Belső hiba történt' });
-          }
-
-          if (!isMatch) {
-            return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
-          }
-
-          return res.status(200).json({
-            message: 'Sikeres bejelentkezés',
-            user: {
-              id: admin.admin_id,
-              name: admin.name,
-              email: admin.email,
-              isAdmin: true,
-            },
-          });
-        });
+      return res.status(200).json({
+        message: 'Sikeres bejelentkezés',
+        user: {
+          id: user.id_number,
+          name: user.name,
+          email: user.email,
+          isAdmin: false,
+        },
       });
     }
-  });
-});
 
-// Bejelentkezett felhasználó ellenőrzése
-app.get('/api/user', (req, res) => {
-  if (req.session.user) {
-    return res.status(200).json({ loggedIn: true, user: req.session.user });
+    // If not found in users, check admin table
+    const adminResult = await pool.query('SELECT * FROM admin WHERE email = $1', [email]);
+    
+    if (adminResult.rows.length === 0) {
+      return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
+    }
+
+    const admin = adminResult.rows[0];
+    const isMatch = await bcrypt.compare(password, admin.password_hash);
+    
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Helytelen email vagy jelszó' });
+    }
+
+    return res.status(200).json({
+      message: 'Sikeres bejelentkezés',
+      user: {
+        id: admin.admin_id,
+        name: admin.name,
+        email: admin.email,
+        isAdmin: true,
+      },
+    });
+
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ message: 'Belső hiba történt' });
   }
-  res.status(200).json({ loggedIn: false });
 });
 
-// Szavazat leadása
-app.post('/voting', (req, res) => {
+// Voting endpoint
+app.post('/voting', async (req, res) => {
   const { election_id, party_id, vote_hash, user_id } = req.body;
 
   if (!election_id || !party_id || !vote_hash || !user_id) {
     return res.status(400).json({ message: 'Minden mezőt ki kell tölteni!' });
   }
 
-  const checkVoteQuery = 'SELECT * FROM votes WHERE election_id = ? AND user_id = ?';
-  db.query(checkVoteQuery, [election_id, user_id], (err, result) => {
-    if (err) {
-      console.error('Hiba történt a szavazat ellenőrzésekor:', err);
-      return res.status(500).json({ message: 'Hiba történt a szavazat ellenőrzésekor!' });
-    }
+  try {
+    // Check if user already voted
+    const voteCheck = await pool.query(
+      'SELECT * FROM votes WHERE election_id = $1 AND user_id = $2',
+      [election_id, user_id]
+    );
 
-    if (result.length > 0) {
+    if (voteCheck.rows.length > 0) {
       return res.status(400).json({ message: 'Már leadtad a szavazatot!' });
     }
 
-    const query = 'INSERT INTO votes (election_id, party_id, vote_hash, user_id) VALUES (?, ?, ?, ?)';
-    db.query(query, [election_id, party_id, vote_hash, user_id], (err, result) => {
-      if (err) {
-        console.error('Hiba történt a szavazat mentésekor:', err);
-        return res.status(500).json({ message: 'Hiba történt a szavazat leadásakor!' });
-      }
-      res.status(200).json({ message: 'Sikeresen leadta a szavazatot!' });
-    });
-  });
+    // Insert vote
+    await pool.query(
+      'INSERT INTO votes (election_id, party_id, vote_hash, user_id) VALUES ($1, $2, $3, $4)',
+      [election_id, party_id, vote_hash, user_id]
+    );
+
+    res.status(200).json({ message: 'Sikeresen leadta a szavazatot!' });
+  } catch (err) {
+    console.error('Voting error:', err);
+    res.status(500).json({ message: 'Hiba történt a szavazat leadásakor!' });
+  }
 });
 
-// Új endpoint a pártok adatainak lekérésére
-app.get('/parties', (req, res) => {
-    const query = 'SELECT * FROM parties';
-    db.query(query, (err, results) => {
-      if (err) {
-        console.error('Hiba történt a pártok lekérésekor:', err);
-        return res.status(500).json({ message: 'Belső hiba történt' });
-      }
-      res.status(200).json(results);
-    });
-  });
-
-  app.get('/api/parties', (req, res) => {
-    const query = 'SELECT * FROM parties';
-    db.query(query, (err, results) => {
-      if (err) {
-        res.status(500).json({ error: 'Database query failed' });
-        return;
-      }
-      res.json(results);
-    });
-  });
- 
-  app.get('/voting', (req, res) => {
-    const query = 'SELECT * FROM parties';
-    db.query(query, (err, results) => {
-      if (err) {
-        console.error('Hiba történt a pártok lekérésekor:', err);
-        return res.status(500).json({ message: 'Belső hiba történt' });
-      }
-      res.json(results);
-    });
-  });
-
-  // API végpont a számok lekéréséhez
-app.get('/counters', (req, res) => {
-  const queries = {
-    parties: 'SELECT COUNT(*) AS partyCount FROM parties',
-    users: 'SELECT COUNT(*) AS userCount FROM users',
-    votes: 'SELECT COUNT(*) AS voteCount FROM votes',
-  };
-
-  const results = {};
-
-  db.query(queries.parties, (err, partyResults) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: 'Hiba történt a pártok számának lekérésekor.' });
-    }
-    results.parties = partyResults[0].partyCount;
-
-    db.query(queries.users, (err, userResults) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'Hiba történt a felhasználók számának lekérésekor.' });
-      }
-      results.users = userResults[0].userCount;
-
-      db.query(queries.votes, (err, voteResults) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).json({ error: 'Hiba történt a leadott szavazatok számának lekérésekor.' });
-        }
-        results.votes = voteResults[0].voteCount;
-
-        return res.json([
-          { id: 1, icon: 'https://cdn.jsdelivr.net/gh/Edvin7/V-laszt-s/szavazas/frontend/public/icons/campaign.png', value: results.parties, label: 'Pártok' },
-          { id: 2, icon: 'https://cdn.jsdelivr.net/gh/Edvin7/V-laszt-s/szavazas/frontend/public/icons/friend.png', value: results.users, label: 'Felhasználók' },
-          { id: 3, icon: 'https://cdn.jsdelivr.net/gh/Edvin7/V-laszt-s/szavazas/frontend/public/icons/vote.png', value: results.votes, label: 'Leadott Szavazatok' },
-        ]);
-        
-      });
-    });
-  });
+// Get parties
+app.get('/parties', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM parties');
+    res.status(200).json(result.rows);
+  } catch (err) {
+    console.error('Parties query error:', err);
+    res.status(500).json({ message: 'Belső hiba történt' });
+  }
 });
- 
 
-// API végpont a választási eredmények lekéréséhez
-app.get('/election-results', (req, res) => {
-  const  query = `
-    SELECT p.party_id, p.name AS party_name, COUNT(v.vote_id) AS totalVotes
-    FROM parties p
-    LEFT JOIN votes v ON p.party_id = v.party_id
-    GROUP BY p.party_id, p.name
-    ORDER BY totalVotes DESC;
-`;
+// Get counters
+app.get('/counters', async (req, res) => {
+  try {
+    const parties = await pool.query('SELECT COUNT(*) AS party_count FROM parties');
+    const users = await pool.query('SELECT COUNT(*) AS user_count FROM users');
+    const votes = await pool.query('SELECT COUNT(*) AS vote_count FROM votes');
 
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: 'Hiba történt a pártokra leadott szavazatok lekérésekor.' });
-    }
-    return res.json(results.map((row) => ({
+    res.json([
+      { 
+        id: 1, 
+        icon: 'https://cdn.jsdelivr.net/gh/Edvin7/V-laszt-s/szavazas/frontend/public/icons/campaign.png', 
+        value: parseInt(parties.rows[0].party_count), 
+        label: 'Pártok' 
+      },
+      { 
+        id: 2, 
+        icon: 'https://cdn.jsdelivr.net/gh/Edvin7/V-laszt-s/szavazas/frontend/public/icons/friend.png', 
+        value: parseInt(users.rows[0].user_count), 
+        label: 'Felhasználók' 
+      },
+      { 
+        id: 3, 
+        icon: 'https://cdn.jsdelivr.net/gh/Edvin7/V-laszt-s/szavazas/frontend/public/icons/vote.png', 
+        value: parseInt(votes.rows[0].vote_count), 
+        label: 'Leadott Szavazatok' 
+      },
+    ]);
+  } catch (err) {
+    console.error('Counters error:', err);
+    res.status(500).json({ error: 'Hiba történt a számok lekérésekor.' });
+  }
+});
+
+// Get election results
+app.get('/election-results', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT p.party_id, p.name AS party_name, COUNT(v.vote_id) AS total_votes
+      FROM parties p
+      LEFT JOIN votes v ON p.party_id = v.party_id
+      GROUP BY p.party_id, p.name
+      ORDER BY total_votes DESC;
+    `);
+
+    res.json(result.rows.map(row => ({
       party_id: row.party_id,
       party: row.party_name,
-      votes: row.totalVotes
+      votes: parseInt(row.total_votes)
     })));
-  });
+  } catch (err) {
+    console.error('Election results error:', err);
+    res.status(500).json({ error: 'Hiba történt az eredmények lekérésekor.' });
+  }
 });
 
-
-// Felhasználó lekérése
-app.get('/api/users', (req, res) => {
-  const query = 'SELECT * FROM users';
-  db.query(query, (err, result) => {
-    if (err) {
-      res.status(500).send('Error fetching users');
-      return;
-    }
-    res.json(result);
-  });
+// Get users
+app.get('/api/users', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM users');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Users query error:', err);
+    res.status(500).send('Error fetching users');
+  }
 });
 
-// Felhasználói adatok frissítése
-app.put('/api/users/:id', (req, res) => {
+// Update user
+app.put('/api/users/:id', async (req, res) => {
   const { name, email, personal_id, status } = req.body;
   const userId = req.params.id;
-  const query = 'UPDATE users SET name = ?, email = ?, personal_id = ?, status = ? WHERE id_number = ?';
-  
-  db.query(query, [name, email, personal_id, status, userId], (err, result) => {
-    if (err) {
-      res.status(500).send('Error updating user');
-      return;
-    }
+
+  try {
+    await pool.query(
+      'UPDATE users SET name = $1, email = $2, personal_id = $3, status = $4 WHERE id_number = $5',
+      [name, email, personal_id, status, userId]
+    );
     res.send('User updated');
-  });
+  } catch (err) {
+    console.error('User update error:', err);
+    res.status(500).send('Error updating user');
+  }
 });
 
-
-// Felhasználó törlése !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TESZTELNI KELL / nem mukodik
-app.delete('/api/users/:id', (req, res) => {
+// Delete user
+app.delete('/api/users/:id', async (req, res) => {
   const userId = req.params.id;
-  const query = 'DELETE FROM users WHERE id_number = ?';
-  
-  db.query(query, [userId], (err, result) => {
-    if (err) {
-      console.error('Hiba történt a felhasználó törlésekor:', err);
-      return res.status(500).send('Hiba történt a törlés közben');
-    }
+
+  try {
+    const result = await pool.query('DELETE FROM users WHERE id_number = $1 RETURNING *', [userId]);
     
-    if (result.affectedRows === 0) {
+    if (result.rowCount === 0) {
       return res.status(404).send('Felhasználó nem található');
     }
 
     res.send('Felhasználó törölve');
-  });
+  } catch (err) {
+    console.error('User delete error:', err);
+    
+    if (err.code === '23503') { // Foreign key violation
+      return res.status(400).json({
+        error: 'A felhasználó nem törölhető, mert jelenleg futó szavazásban részt vett.',
+        details: 'A felhasználóhoz kapcsolódó rekordok találhatók más táblákban, így törlése nem lehetséges.'
+      });
+    }
+
+    res.status(500).send('Hiba történt a törlés közben');
+  }
 });
 
-
-// Új párt hozzáadása
-
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
-}));
-
-// Feltöltési könyvtár ellenőrzése és létrehozása, ha nem létezik
-const uploadDir = './uploads';
+// File upload setup
+const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
+  fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Multer konfiguráció
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadDir);
@@ -367,13 +289,10 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
-// Statikus fájlok elérése
-app.use('/uploads', express.static(uploadDir));
-
-// API végpontok...
-app.post('/api/parties', upload.single('photo'), (req, res) => {
+// Add new party with photo upload
+app.post('/api/parties', upload.single('photo'), async (req, res) => {
   const { name, description, political_ideology, political_campaign_description, political_year_description } = req.body;
   const photo = req.file ? req.file.filename : null;
 
@@ -381,216 +300,116 @@ app.post('/api/parties', upload.single('photo'), (req, res) => {
     return res.status(400).json({ error: 'Minden mező kitöltése kötelező!' });
   }
 
-  // Ellenőrizzük az időzítő értékét
-  const timerSql = 'SELECT countdown_date FROM settings LIMIT 1';
-  db.query(timerSql, (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: 'Hiba történt az adatbázis lekérdezésekor.' });
-    }
-
-    if (!results.length || results[0].countdown_date > new Date()) {
-      return res.status(403).json({ error: 'Új párt csak az időzítő lejárta után tölthető fel!' });
-    }
-
-    // Ha az időzítő lejárt, beszúrjuk az új pártot
-    const sql = `
-      INSERT INTO parties 
-      (name, description, photo, political_ideology, political_campaign_description, political_year_description) 
-      VALUES (?, ?, ?, ?, ?, ?)`;
-
-    db.query(sql, [name, description, photo, political_ideology, political_campaign_description, political_year_description], (err) => {
-      if (err) {
-        return res.status(500).json({ error: 'Hiba történt az adatbázis művelet során.' });
+  try {
+    // Check timer
+    const timerResult = await pool.query('SELECT countdown_date FROM settings LIMIT 1');
+    
+    if (timerResult.rows.length > 0) {
+      const countdownDate = timerResult.rows[0].countdown_date;
+      if (countdownDate && new Date(countdownDate) > new Date()) {
+        return res.status(403).json({ error: 'Új párt csak az időzítő lejárta után tölthető fel!' });
       }
-      res.status(201).json({ success: true, message: 'Párt sikeresen hozzáadva!' });
-    });
-  });
+    }
+
+    // Insert new party
+    await pool.query(
+      `INSERT INTO parties 
+      (name, description, photo, political_ideology, political_campaign_description, political_year_description) 
+      VALUES ($1, $2, $3, $4, $5, $6)`,
+      [name, description, photo, political_ideology, political_campaign_description, political_year_description]
+    );
+
+    res.status(201).json({ success: true, message: 'Párt sikeresen hozzáadva!' });
+  } catch (err) {
+    console.error('Add party error:', err);
+    res.status(500).json({ error: 'Hiba történt az adatbázis művelet során.' });
+  }
 });
 
+// Delete party
+app.delete('/api/parties/:id', async (req, res) => {
+  const partyId = parseInt(req.params.id);
 
-
-// Párt törlése !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TESZTELNI KELL / nem mukodik
-app.delete('/api/parties/:id', (req, res) => {
-  const partyId = parseInt(req.params.id, 10); // Biztosítsuk, hogy szám legyen
-  
   if (isNaN(partyId)) {
     return res.status(400).json({ error: 'Érvénytelen ID' });
   }
 
-  db.query('DELETE FROM parties WHERE party_id = ?', [partyId], (err, results) => {
-    if (err) {
-      console.error('DB hiba:', err);
-      return res.status(500).json({ error: err.message });
-    }
-    if (results.affectedRows === 0) {
+  try {
+    const result = await pool.query('DELETE FROM parties WHERE party_id = $1 RETURNING *', [partyId]);
+    
+    if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Nem található a párt.' });
     }
+    
     res.json({ success: true, message: 'Párt sikeresen törölve' });
-  });
-});
-
-
-
-// Adatvédelmi szabályzat lekérdezése
-app.get('/api/privacyTerms', (req, res) => {
-  const query = 'SELECT content FROM privacy_terms WHERE id = 1'; 
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error('Hiba a szabályzat lekérdezésekor:', err);
-      return res.status(500).send('Hiba történt az adatbázis lekérdezésekor');
-    }
-    res.json({ privacyTerms: results[0].content });
-  });
-});
-
-
-
-
-
-app.get('/parties', async (req, res) => {
-  const parties = await getPartiesFromDatabase();
-  const partiesWithImageUrls = parties.map(party => ({
-    ...party,
-    photo: `/uploads/${party.photo}`
-  }));
-  res.json(partiesWithImageUrls);
-});
-
-
-//Képek a pártokhoz !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TESZTELNI KELL / nem mukodik
-
-app.get('/parties/:id', (req, res) => {
-  const partyId = req.params.id;
-  db.query('SELECT * FROM parties WHERE party_id = ?', [partyId], (err, results) => {
-    if (err) {
-      return res.status(500).json({ message: 'Database query error' });
-    }
-    if (results.length === 0) {
-      return res.status(404).json({ message: 'Party not found' });
-    }
-    res.json(results[0]);  
-  });
-});
-
-app.use(cors());
-/*
-const uploadDir = './uploads';
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir); 
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+  } catch (err) {
+    console.error('Delete party error:', err);
+    res.status(500).json({ error: err.message });
   }
 });
 
-const upload = multer({ storage: storage });
-
-app.post('/api/upload', upload.single('photo'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).send('Nincs fájl feltöltve.');
+// Get privacy terms
+app.get('/api/privacyTerms', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT content FROM privacy_terms WHERE id = 1');
+    res.json({ privacyTerms: result.rows[0].content });
+  } catch (err) {
+    console.error('Privacy terms error:', err);
+    res.status(500).send('Hiba történt az adatbázis lekérdezésekor');
   }
-  res.json({
-    message: 'Fájl sikeresen feltöltve!',
-    filePath: `/uploads/${req.file.filename}`
-  });
 });
 
-app.use('/uploads', express.static(uploadDir));*/
-
-
-// Időzítő dátumának lekérdezése
-app.get('/api/countdown-date', (req, res) => {
-  db.query('SELECT countdown_date FROM settings LIMIT 1', (err, results) => {
-    if (err) {
-      console.error('Database error:', err);
-      return res.status(500).json({ error: 'Database error' });
-    }
-
-    if (results.length > 0) {
-      const countdownDate = results[0].countdown_date;
-      res.json({ countdownDate });
+// Get countdown date
+app.get('/api/countdown-date', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT countdown_date FROM settings LIMIT 1');
+    
+    if (result.rows.length > 0) {
+      res.json({ countdownDate: result.rows[0].countdown_date });
     } else {
       res.status(404).json({ error: 'Countdown date not found' });
     }
-  });
+  } catch (err) {
+    console.error('Countdown date error:', err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
-app.post('/api/date-plus', (req, res) => {
- const { countdownDate } = req.body;
+// Update countdown date
+app.post('/api/date-plus', async (req, res) => {
+  const { countdownDate } = req.body;
 
   if (!countdownDate) {
     return res.status(400).json({ error: 'A név és a leírás kötelező mezők!' });
   }
+
   const date = new Date(countdownDate);
   if (isNaN(date.getTime())) {
     return res.status(400).json({ error: 'Invalid date format' });
   }
 
-  db.query('UPDATE settings SET countdown_date = ? WHERE id = 1', [countdownDate], (err, results) => {
-    if (err) {
-      console.error('Database error:', err);
-      return res.status(500).json({ error: 'Database error' });
-    }
-
+  try {
+    await pool.query('UPDATE settings SET countdown_date = $1 WHERE id = 1', [countdownDate]);
     res.json({ message: 'Countdown date updated successfully' });
-  });
+  } catch (err) {
+    console.error('Update countdown error:', err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
-
-
-const checkAndResetCountdown = () => {
-  const now = new Date();
-  
-  db.query('SELECT countdown_date FROM settings WHERE id = 1', (err, results) => {
-    if (err) {
-      console.error('Database error:', err);
-      return;
-    }
-
-    if (results.length > 0) {
-      const countdownDate = new Date(results[0].countdown_date);
-      
-      if (countdownDate <= now) {
-        db.query('UPDATE settings SET countdown_date = NULL WHERE id = 1', (updateErr) => {
-          if (updateErr) {
-            console.error('Database update error:', updateErr);
-          } else {
-            console.log('Countdown date reset to NULL.');
-          }
-        });
-      }
-    }
-  });
-};
-
-setInterval(checkAndResetCountdown, 1 * 1000);
-
-
-// Időzítő állapotának lekérdezése
-app.get('/api/is-voting-active', (req, res) => {
-  db.query('SELECT countdown_date FROM settings WHERE id = 1', (err, results) => {
-    if (err) {
-      console.error('Database error:', err);
-      return res.status(500).json({ error: 'Database error' });
-    }
-
-    if (results.length > 0) {
-      const countdownDate = results[0].countdown_date;
+// Check voting status
+app.get('/api/is-voting-active', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT countdown_date FROM settings WHERE id = 1');
+    
+    if (result.rows.length > 0) {
+      const countdownDate = result.rows[0].countdown_date;
 
       if (!countdownDate || countdownDate === '0000-00-00 00:00:00') {
         return res.json({ isActive: false });
       }
 
       const countdownDateObj = new Date(countdownDate);
-      if (isNaN(countdownDateObj.getTime())) {
-        return res.json({ isActive: false });
-      }
-
       const now = new Date();
 
       if (countdownDateObj <= now) {
@@ -600,169 +419,116 @@ app.get('/api/is-voting-active', (req, res) => {
     } else {
       res.status(404).json({ error: 'Countdown date not found' });
     }
-  });
+  } catch (err) {
+    console.error('Voting status error:', err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
-
-app.post('/api/reset-countdown', (req, res) => {
-  db.query('UPDATE settings SET countdown_date = "0000-00-00 00:00:00" WHERE id = 1', (err, results) => {
-    if (err) {
-      console.error('Database error:', err);
-      return res.status(500).json({ error: 'Database error' });
-    }
+// Reset countdown
+app.post('/api/reset-countdown', async (req, res) => {
+  try {
+    await pool.query('UPDATE settings SET countdown_date = \'0000-00-00 00:00:00\' WHERE id = 1');
     res.json({ message: 'Countdown date reset successfully' });
-  });
+  } catch (err) {
+    console.error('Reset countdown error:', err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
-
-
-app.post('/api/reset-all', (req, res) => {
-  db.beginTransaction((err) => {
-    if (err) {
-      console.error('Transaction error:', err);
-      return res.status(500).json({ error: 'Transaction error' });
-    }
-
-    // 1. Az időzítő lenullázása
-    db.query('UPDATE settings SET countdown_date = "0000-00-00 00:00:00" WHERE id = 1', (updateErr) => {
-      if (updateErr) {
-        return db.rollback(() => {
-          console.error('Database update error:', updateErr);
-          res.status(500).json({ error: 'Failed to reset countdown date' });
-        });
-      }
-
-      // 2. Szavazatok törlése
-      db.query('DELETE FROM votes', (deleteErr) => {
-        if (deleteErr) {
-          return db.rollback(() => {
-            console.error('Vote deletion error:', deleteErr);
-            res.status(500).json({ error: 'Failed to delete votes' });
-          });
-        }
-
-        // Ha minden sikerült, akkor commit
-        db.commit((commitErr) => {
-          if (commitErr) {
-            return db.rollback(() => {
-              console.error('Commit error:', commitErr);
-              res.status(500).json({ error: 'Transaction commit failed' });
-            });
-          }
-          res.json({ message: 'Reset successful: countdown reset and votes deleted' });
-        });
-      });
-    });
-  });
+// Reset all (countdown and votes)
+app.post('/api/reset-all', async (req, res) => {
+  const client = await pool.connect();
+  
+  try {
+    await client.query('BEGIN');
+    
+    // Reset countdown
+    await client.query('UPDATE settings SET countdown_date = \'0000-00-00 00:00:00\' WHERE id = 1');
+    
+    // Delete all votes
+    await client.query('DELETE FROM votes');
+    
+    await client.query('COMMIT');
+    res.json({ message: 'Reset successful: countdown reset and votes deleted' });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error('Reset all error:', err);
+    res.status(500).json({ error: 'Transaction failed' });
+  } finally {
+    client.release();
+  }
 });
 
-//Felhasználó törlés
-app.delete('/api/users/:id', (req, res) => {
-  const userId = req.params.id;
-  const query = 'DELETE FROM users WHERE id_number = ?';
-
-  db.query(query, [userId], (err, result) => {
-    if (err) {
-      console.error('Hiba történt a felhasználó törlésekor:', err);
-
-      // Ha idegen kulcs hiba miatt nem lehet törölni (pl. már szavazott)
-      if (err.code === 'ER_ROW_IS_REFERENCED_2') {
-        return res.status(400).json({
-          error: 'A felhasználó nem törölhető, mert jelenleg futó szavazásban részt vett.',
-          details: 'A felhasználóhoz kapcsolódó rekordok találhatók más táblákban, így törlése nem lehetséges.'
-        });
-      }
-
-      // Egyéb hiba
-      return res.status(500).json({ error: 'Hiba történt a törlés közben', details: err.message });
-    }
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: 'Felhasználó nem található' });
-    }
-
-    res.json({ message: 'Felhasználó törölve' });
-  });
-});
-
-// Jelszó változtatás endpoint
-app.put('/api/users/:id_number/change-password', (req, res) => {
+// Change password
+app.put('/api/users/:id_number/change-password', async (req, res) => {
   const { id_number } = req.params;
   const { currentPassword, newPassword } = req.body;
 
-  // Ellenőrizzük, hogy mindkét jelszó meg van adva
   if (!currentPassword || !newPassword) {
     return res.status(400).json({ message: 'A jelenlegi és az új jelszó megadása kötelező.' });
   }
 
-  // Először lekérjük a felhasználó jelenlegi jelszavát az adatbázisból
-  const query = 'SELECT password_hash FROM users WHERE id_number = ?';
-  db.query(query, [id_number], (err, result) => {
-    if (err) {
-      return res.status(500).json({ message: 'Hiba történt a felhasználó keresésekor.' });
-    }
-
-    if (result.length === 0) {
+  try {
+    // Get current password hash
+    const result = await pool.query('SELECT password_hash FROM users WHERE id_number = $1', [id_number]);
+    
+    if (result.rows.length === 0) {
       return res.status(404).json({ message: 'Felhasználó nem található.' });
     }
 
-    // A jelenlegi jelszó összehasonlítása
-    const storedPasswordHash = result[0].password_hash;
-    bcrypt.compare(currentPassword, storedPasswordHash, (err, isMatch) => {
-      if (err) {
-        return res.status(500).json({ message: 'Hiba történt a jelszó ellenőrzésekor.' });
-      }
+    const storedPasswordHash = result.rows[0].password_hash;
+    const isMatch = await bcrypt.compare(currentPassword, storedPasswordHash);
+    
+    if (!isMatch) {
+      return res.status(400).json({ message: 'A jelenlegi jelszó nem helyes.' });
+    }
 
-      if (!isMatch) {
-        return res.status(400).json({ message: 'A jelenlegi jelszó nem helyes.' });
-      }
+    // Hash new password and update
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const updateResult = await pool.query(
+      'UPDATE users SET password_hash = $1 WHERE id_number = $2 RETURNING *',
+      [hashedPassword, id_number]
+    );
 
-      // Ha a jelenlegi jelszó helyes, titkosítjuk az új jelszót
-      bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
-        if (err) {
-          return res.status(500).json({ message: 'Hiba történt az új jelszó hashelésekor.' });
-        }
-
-        // Az új jelszó frissítése az adatbázisban
-        const updateQuery = 'UPDATE users SET password_hash = ? WHERE id_number = ?';
-        db.query(updateQuery, [hashedPassword, id_number], (err, result) => {
-          if (err) {
-            return res.status(500).json({ message: 'Hiba történt a jelszó módosítása során.' });
-          }
-
-          if (result.affectedRows > 0) {
-            res.status(200).json({ message: 'A jelszó sikeresen megváltozott.' });
-          } else {
-            res.status(404).json({ message: 'Felhasználó nem található.' });
-          }
-        });
-      });
-    });
-  });
+    if (updateResult.rowCount > 0) {
+      res.status(200).json({ message: 'A jelszó sikeresen megváltozott.' });
+    } else {
+      res.status(404).json({ message: 'Felhasználó nem található.' });
+    }
+  } catch (err) {
+    console.error('Password change error:', err);
+    res.status(500).json({ message: 'Hiba történt a jelszó módosítása során.' });
+  }
 });
 
-// API végpont a szavazatok lekérésére
-app.get('/api/votes', (req, res) => {
-  const userId = req.query.user_id; // A felhasználó ID-ját a query paraméterből kapjuk
+// Get user votes
+app.get('/api/votes', async (req, res) => {
+  const userId = req.query.user_id;
 
   if (!userId) {
     return res.status(400).json({ message: 'User ID is required' });
   }
 
-  const query = 'SELECT * FROM votes WHERE user_id = ?';
+  try {
+    const result = await pool.query('SELECT * FROM votes WHERE user_id = $1', [userId]);
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Votes query error:', err);
+    res.status(500).json({ message: 'Hiba történt' });
+  }
+});
 
-  db.query(query, [userId], (err, results) => {
-    if (err) {
-      console.error('Hiba a szavazatok lekérésekor:', err);
-      return res.status(500).json({ message: 'Hiba történt' });
-    }
+// Serve static files from uploads directory
+app.use('/uploads', express.static(uploadDir));
 
-    // Visszaadjuk a szavazatokat
-    res.json(results);
+// Export the app for Vercel
+module.exports = app;
+
+// Local development server
+if (require.main === module) {
+  const port = process.env.PORT || 5000;
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
   });
-});
-
-// Szerver indítása
-app.listen(port, () => {
-  console.log(`Szerver fut a ${port} porton`);
-});
+}
