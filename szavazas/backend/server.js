@@ -11,7 +11,7 @@ const port = 5000;
 
 // Middleware
 app.use(cors({
-  origin: 'https://szavazz.vercel.app/',
+  origin: 'http://localhost:3000',
   credentials: true,
 }));
 app.use(bodyParser.json());
