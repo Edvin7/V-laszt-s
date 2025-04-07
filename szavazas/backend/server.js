@@ -22,6 +22,7 @@ const db = mysql.createConnection({
   user: 'root',
   password: '',
   database: 'vote',
+  dateStrings: true,
 });
 
 db.connect((err) => {
@@ -320,23 +321,52 @@ app.put('/api/users/:id', (req, res) => {
   });
 });
 
-
-// Felhasználó törlése !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TESZTELNI KELL / nem mukodik
+//Felhasználó törlés
 app.delete('/api/users/:id', (req, res) => {
   const userId = req.params.id;
-  const query = 'DELETE FROM users WHERE id_number = ?';
-  
-  db.query(query, [userId], (err, result) => {
-    if (err) {
-      console.error('Hiba történt a felhasználó törlésekor:', err);
-      return res.status(500).send('Hiba történt a törlés közben');
-    }
-    
-    if (result.affectedRows === 0) {
-      return res.status(404).send('Felhasználó nem található');
+
+  const checkQuery = 'SELECT countdown_date FROM settings WHERE id = 1';
+
+  db.query(checkQuery, (checkErr, checkResult) => {
+    if (checkErr) {
+      console.error('Hiba történt a countdown_date lekérdezésekor:', checkErr);
+      return res.status(500).json({ error: 'Hiba a countdown_date ellenőrzésénél' });
     }
 
-    res.send('Felhasználó törölve');
+    if (checkResult.length === 0) {
+      return res.status(400).json({ error: 'A beállítások nem találhatók' });
+    }
+
+    // A mező stringként jön vissza
+    const countdownDate = checkResult[0].countdown_date;
+
+    if (countdownDate !== '0000-00-00 00:00:00') {
+      return res.status(400).json({ error: 'A felhasználó csak akkor törölhető, ha a vége a szavazásnak!' });
+    }
+
+    // Mehet a törlés
+    const deleteQuery = 'DELETE FROM users WHERE id_number = ?';
+
+    db.query(deleteQuery, [userId], (err, result) => {
+      if (err) {
+        console.error('Hiba történt a felhasználó törlésekor:', err);
+
+        if (err.code === 'ER_ROW_IS_REFERENCED_2') {
+          return res.status(400).json({
+            error: 'A felhasználó nem törölhető, mert szavazásban vett részt.',
+            details: 'Más táblák hivatkoznak erre a felhasználóra.'
+          });
+        }
+
+        return res.status(500).json({ error: 'Hiba történt a törlés során', details: err.message });
+      }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: 'Felhasználó nem található' });
+      }
+
+      res.json({ message: 'Felhasználó sikeresen törölve' });
+    });
   });
 });
 
@@ -411,21 +441,45 @@ app.post('/api/parties', upload.single('photo'), (req, res) => {
 
 // Párt törlése !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TESZTELNI KELL / nem mukodik
 app.delete('/api/parties/:id', (req, res) => {
-  const partyId = parseInt(req.params.id, 10); // Biztosítsuk, hogy szám legyen
-  
+  const partyId = parseInt(req.params.id, 10);
+
   if (isNaN(partyId)) {
     return res.status(400).json({ error: 'Érvénytelen ID' });
   }
 
-  db.query('DELETE FROM parties WHERE party_id = ?', [partyId], (err, results) => {
-    if (err) {
-      console.error('DB hiba:', err);
-      return res.status(500).json({ error: err.message });
+  // Először ellenőrizzük a countdown_date-et
+  const checkQuery = 'SELECT countdown_date FROM settings WHERE id = 1';
+
+  db.query(checkQuery, (checkErr, checkResult) => {
+    if (checkErr) {
+      console.error('Hiba történt a countdown_date lekérdezésekor:', checkErr);
+      return res.status(500).json({ error: 'Hiba a countdown_date ellenőrzésénél' });
     }
-    if (results.affectedRows === 0) {
-      return res.status(404).json({ error: 'Nem található a párt.' });
+
+    if (checkResult.length === 0) {
+      return res.status(400).json({ error: 'A beállítások nem találhatók' });
     }
-    res.json({ success: true, message: 'Párt sikeresen törölve' });
+
+    const countdownDate = checkResult[0].countdown_date;
+    console.log('Lekérdezett countdown_date:', countdownDate); // Debug log
+
+    if (countdownDate !== '0000-00-00 00:00:00') {
+      return res.status(400).json({ error: 'Párt csak akkor törölhető, ha a lejárt a szavazás!' });
+    }
+
+    // Mehet a törlés
+    db.query('DELETE FROM parties WHERE party_id = ?', [partyId], (err, results) => {
+      if (err) {
+        console.error('DB hiba:', err);
+        return res.status(500).json({ error: err.message });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ error: 'Nem található a párt.' });
+      }
+
+      res.json({ success: true, message: 'Párt sikeresen törölve' });
+    });
   });
 });
 
@@ -641,49 +695,33 @@ app.post('/api/reset-all', (req, res) => {
           });
         }
 
-        // Ha minden sikerült, akkor commit
-        db.commit((commitErr) => {
-          if (commitErr) {
+        // 3. Auto-increment visszaállítása
+        db.query('ALTER TABLE votes AUTO_INCREMENT = 1;', (alterErr) => {
+          if (alterErr) {
             return db.rollback(() => {
-              console.error('Commit error:', commitErr);
-              res.status(500).json({ error: 'Transaction commit failed' });
+              console.error('Auto-increment reset error:', alterErr);
+              res.status(500).json({ error: 'Failed to reset auto-increment' });
             });
           }
-          res.json({ message: 'Reset successful: countdown reset and votes deleted' });
+
+          // Ha minden sikerült, akkor commit
+          db.commit((commitErr) => {
+            if (commitErr) {
+              return db.rollback(() => {
+                console.error('Commit error:', commitErr);
+                res.status(500).json({ error: 'Transaction commit failed' });
+              });
+            }
+            res.json({ message: 'Reset successful: countdown reset, votes deleted, and auto-increment reset' });
+          });
         });
       });
     });
   });
 });
 
-//Felhasználó törlés
-app.delete('/api/users/:id', (req, res) => {
-  const userId = req.params.id;
-  const query = 'DELETE FROM users WHERE id_number = ?';
 
-  db.query(query, [userId], (err, result) => {
-    if (err) {
-      console.error('Hiba történt a felhasználó törlésekor:', err);
 
-      // Ha idegen kulcs hiba miatt nem lehet törölni (pl. már szavazott)
-      if (err.code === 'ER_ROW_IS_REFERENCED_2') {
-        return res.status(400).json({
-          error: 'A felhasználó nem törölhető, mert jelenleg futó szavazásban részt vett.',
-          details: 'A felhasználóhoz kapcsolódó rekordok találhatók más táblákban, így törlése nem lehetséges.'
-        });
-      }
-
-      // Egyéb hiba
-      return res.status(500).json({ error: 'Hiba történt a törlés közben', details: err.message });
-    }
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: 'Felhasználó nem található' });
-    }
-
-    res.json({ message: 'Felhasználó törölve' });
-  });
-});
 
 // Jelszó változtatás endpoint
 app.put('/api/users/:id_number/change-password', (req, res) => {
