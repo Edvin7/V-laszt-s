@@ -20,13 +20,30 @@ const AdminPanel = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState(''); // State for the success notification
   const [statusMessage, setStatusMessage] = useState(''); // State for status notification
-
+  
   const fetchUsers = async () => {
     try {
       const response = await axios.get('/api/users');
-      setUsers(response.data);
+      
+      // Ellenőrizzük, hogy a válasz valóban tartalmaz-e adatokat
+      if (Array.isArray(response.data)) {
+        console.log('Felhasználók:', response.data);
+        setUsers(response.data);
+      } else {
+        console.error('A válasz nem tömb formátumban érkezett:', response.data);
+      }
     } catch (error) {
-      console.error(error);
+      if (error.response) {
+        // Ha van válasz, akkor azt logoljuk
+        console.error('Hiba a felhasználók lekérésekor:', error.response.data);
+        console.error('Status kód:', error.response.status);
+      } else if (error.request) {
+        // Ha nem kaptunk választ a kérésre
+        console.error('A kérés elküldve, de nem kaptunk választ:', error.request);
+      } else {
+        // Más hiba, pl. konfigurációs hiba
+        console.error('Hiba történt:', error.message);
+      }
     }
   };
 

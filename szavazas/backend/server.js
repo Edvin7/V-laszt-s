@@ -17,33 +17,46 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
-// Titkosítási kulcs és fix IV
+// 32 bájt titkos kulcs (fix hosszúságú)
+const secretKey = Buffer.from('qwertzui12345678asdfghjk98765432', 'utf8'); // 32 bájt kulcs
+
+// 16 bájt IV (fix hosszúságú)
+const iv = Buffer.from('asdfghjkqwertzui', 'utf8'); // 16 bájt IV
+
+// Titkosítási algoritmus
 const algorithm = 'aes-256-cbc';
-let secretKey = '32byte-long-secret-key-123456789012'; // Biztonságos helyen kell tárolni
-if (secretKey.length < 32) {
-  secretKey = secretKey.padEnd(32, '0');  // Ha rövidebb, akkor 0-t adunk hozzá
-} else if (secretKey.length > 32) {
-  secretKey = secretKey.slice(0, 32);  // Ha hosszabb, akkor levágjuk
-}
 
-// Fix IV, amit minden titkosításhoz ugyanazt használunk, 16 bájt hosszú
-const iv = Buffer.from('asdihgtlksvgkjdt', 'utf8'); // 16 bájt hosszú fix IV
-
-// Titkosítás (kódolás)
+// Titkosítási függvény
 function encryptData(data) {
+  // Győződj meg róla, hogy az IV pontosan 16 bájt hosszú!
+  if (iv.length !== 16) {
+    throw new Error('Az IV nem megfelelő hosszúságú. 16 bájtnak kell lennie.');
+  }
+
   const cipher = crypto.createCipheriv(algorithm, secretKey, iv);
+  cipher.setAutoPadding(true);  // Automatikus padding engedélyezése
   let encrypted = cipher.update(data, 'utf8', 'hex');
-  encrypted += cipher.final('hex');
+  encrypted += cipher.final('hex');  // Titkosított adat
   return encrypted;
 }
 
 // Visszafejtés (dekódolás)
 function decryptData(encryptedData) {
-  const decipher = crypto.createDecipheriv(algorithm, secretKey, iv);
-  let decrypted = decipher.update(encryptedData, 'hex', 'utf8');
-  decrypted += decipher.final('utf8');
-  return decrypted;
+  if (encryptedData && /^[a-f0-9]+$/i.test(encryptedData) && encryptedData.length % 2 === 0) {
+    try {
+      const decipher = crypto.createDecipheriv(algorithm, secretKey, iv);
+      decipher.setAutoPadding(true);  // Automatikus padding engedélyezése
+      let decrypted = decipher.update(encryptedData, 'hex', 'utf8');
+      decrypted += decipher.final('utf8');  // Visszafejtett adat
+      return decrypted;
+    } catch (error) {
+      throw new Error("Error during decryption: " + error.message);
+    }
+  } else {
+    throw new Error("Invalid encrypted data format.");
+  }
 }
+
 
 // MySQL kapcsolat
 const db = mysql.createConnection({
@@ -118,6 +131,7 @@ app.post('/register', (req, res) => {
     });
   });
 });
+
 
 
 // Bejelentkezés végpont
@@ -347,15 +361,55 @@ app.get('/election-results', (req, res) => {
 
 // Felhasználó lekérése
 app.get('/api/users', (req, res) => {
-  const query = 'SELECT * FROM users';
+  const query = 'SELECT id_number, email, name, personal_id FROM users'; // Csak a szükséges mezőket kérjük le
   db.query(query, (err, result) => {
     if (err) {
       res.status(500).send('Error fetching users');
       return;
     }
-    res.json(result);
+
+    try {
+      const users = result.map(user => {
+        // Titkosított adatok visszafejtése
+        let decryptedEmail = null;
+        let decryptedName = null;
+        let decryptedPersonalId = null;
+
+        try {
+          decryptedEmail = decryptData(user.email); // Dekódoljuk az email-t
+        } catch (error) {
+          console.error('Error decrypting email:', error.message);
+        }
+
+        try {
+          decryptedName = decryptData(user.name); // Dekódoljuk a nevet
+        } catch (error) {
+          console.error('Error decrypting name:', error.message);
+        }
+
+        try {
+          decryptedPersonalId = decryptData(user.personal_id); // Dekódoljuk a személyi azonosítót
+        } catch (error) {
+          console.error('Error decrypting personal_id:', error.message);
+        }
+
+        // Visszaadjuk a dekódolt adatokat
+        return {
+          id_number: user.id_number,
+          email: decryptedEmail,
+          name: decryptedName,
+          personal_id: decryptedPersonalId
+        };
+      });
+
+      res.json(users); // Visszaküldjük a felhasználók listáját
+    } catch (err) {
+      console.error('Error decrypting data:', err.message);
+      res.status(500).send('Error decrypting data');
+    }
   });
 });
+
 
 // Felhasználói adatok frissítése
 app.put('/api/users/:id', (req, res) => {
