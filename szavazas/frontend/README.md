@@ -1,70 +1,137 @@
-# Getting Started with Create React App
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+# 📦 Szavazás Alkalmazás – Telepítési Útmutató
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Ez a projekt egy teljes körű szavazóalkalmazás frontenddel, backenddel és MySQL adatbázissal. Az alábbi lépésekben bemutatjuk, hogyan tudod helyileg elindítani a rendszert.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🛠️ Előkészületek
 
-### `npm start`
+### 1. Apache és MySQL elindítása
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Indítsd el az **Apache** és **MySQL** szervereket (például **XAMPP** segítségével).
+- A MySQL szervernek a `localhost`-on kell futnia (alapértelmezett port: `3306`).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 2. Adatbázis betöltése
 
-### `npm test`
+1. Nyisd meg a böngészőben a **phpMyAdmin**-t:  
+   `http://localhost/phpmyadmin`
+2. Hozz létre egy új adatbázist például `vote` néven.
+3. Importáld a `vote.sql` fájlt ebbe az adatbázisba.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🚀 Projekt indítása
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 1. Frontend elindítása
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+cd szavazas/frontend
+npm install
+npm start
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 2. backend elindítása
 
-### `npm run eject`
+cd szavazas/backend
+npm install
+node server.js
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# 📦 Szavazás Alkalmazás – Backend Tesztelés
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+A backend tesztjei Postman-ban futtathatók. Az alábbiakban bemutatjuk a lépéseket, hogy hogyan kell futtatni a backend API teszteket a **Postman** használatával.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 🛠️ Előkészületek
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 1. Postman Extension Telepítése
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Először is telepítened kell a **Postman** Visual Studio Code bővítményt.
 
-### Code Splitting
+### 2. Postman Bejelentkezés
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. Nyisd meg a **Postman** alkalmazást.
+2. Ha még nincs Postman fiókod, regisztrálj, és jelentkezz be a Postman alkalmazásba.
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🚀 Tesztfájl Importálása
 
-### Making a Progressive Web App
+A backend tesztjei a `postman-api-test.json` fájlban találhatók, és az alábbi lépésekkel futtathatók:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 1. Importálás a Postman-ba
 
-### Advanced Configuration
+1. Nyisd meg a Postman alkalmazást.
+2. Kattints a bal felső sarokban található **Import** gombra.
+3. Válaszd ki a **File** opciót, és keresd meg a következő fájlt a projektben:  
+   `szavazas/backend/tests/testjson/postman-api-test.json`
+4. Kattints az **Open** gombra, majd az **Import** gombra a fájl importálásához.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## ▶️ Tesztek Futattása
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Miután a tesztfájl importálva lett a Postman-ba, az alábbi lépésekkel tudod futtatni a teszteket:
 
-### `npm run build` fails to minify
+### 1. Tesztek Futatása
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Az importált fájlban található összes tesztet látnod kell a Postman alkalmazásban.
+2. Kattints a **Send** gombra minden egyes teszt esetében, hogy lefuttasd őket.
+3. A teszt eredményei az alsó ablakban jelennek meg, ahol láthatod a választ és a teszt státuszát (sikeres vagy hibás).
+
+---
+
+## ✅ Teszt Eredmények
+
+Miután lefuttattad a teszteket, az eredményeket a Postman automatikusan megjeleníti. Ellenőrizd a válaszokat és a státuszkódokat (pl. 200, 404, 500), hogy megbizonyosodj a rendszer helyes működéséről.
+
+---
+
+## 📝 Megjegyzés
+
+- Ha bármilyen hibát tapasztalsz, ellenőrizd, hogy a backend szerver fut-e, és hogy a megfelelő portokon elérhető-e az API.
+- Az adatbázisnak be kell legyen töltve a szükséges tesztadatok, különben a tesztek hibát okozhatnak.
+
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+
+### Frontend Tesztelés Playwright-tal
+
+Ez a projekt a **Playwright** tesztkeretrendszert használja a frontend automatizált teszteléséhez.
+
+#### 1. Telepítés
+
+A teszteléshez először telepíteni kell a **Playwright**-ot:
+
+npm install -D @playwright/test
+npx playwright install
+
+Ez letölti a szükséges böngészőmotorokat (Chromium, Firefox, WebKit).
+
+#### 2. Tesztek futtatása
+
+A tesztek a **szavazas/frontend/tests** mappában találhatók. Fontos, hogy a **projekt gyökérkönyvtárában** állva futtasd az alábbi parancsot:
+
+npx playwright test
+
+Ez automatikusan lefuttatja az összes tesztet a `tests` mappán belül.
+
+#### 3. Csak egy konkrét teszt futtatása
+
+Ha csak egy adott tesztfájlt szeretnél futtatni:
+
+npx playwright test szavazas/frontend/tests/nevtetsztes.spec.ts
+
+#### 4. Tesztek UI-val (interaktív mód)
+
+Interaktív felület megnyitása a tesztek futtatásához:
+
+npx playwright test --ui
+
+Ez megnyit egy interaktív felületet, ahol könnyen navigálhatsz a tesztek között és futtathatod őket.

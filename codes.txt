@@ -1,7 +1,0 @@
-Github:
-git reset --soft 8f89039
-git push origin main
-
-Playwright frontend test: 
-    Install: npx playwright install 
-    Start: npx playwright test 
