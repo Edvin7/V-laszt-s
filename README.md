@@ -9,6 +9,22 @@ Ez a projekt egy teljes körű szavazóalkalmazás frontenddel, backenddel és M
 
 ## 🛠️ Előkészületek
 
+## Szükséges alkalmazás telepítések
+
+A projekt futtatásához az alábbi programokat kell telepíteni:
+
+### 1. XAMPP
+Az adatbázis (MySQL) futtatási környezet biztosításához szükséges.
+
+Letöltés: [https://www.apachefriends.org/hu/download.html](https://www.apachefriends.org/hu/download.html)
+
+### 2. Node.js
+A backend (Node.js + Express) működéséhez szükséges.
+
+Letöltés: [https://nodejs.org/en](https://nodejs.org/en)
+
+---
+
 ### 1. Apache és MySQL elindítása
 
 - Indítsd el az **Apache** és **MySQL** szervereket (például **XAMPP** segítségével).
@@ -41,7 +57,7 @@ node server.js
 -------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------
 
-# 📦 Szavazás Alkalmazás – Backend Tesztelés
+# 📦 SzavazzHu Alkalmazás – Backend Tesztelés
 
 A backend tesztjei Postman-ban futtathatók. Az alábbiakban bemutatjuk a lépéseket, hogy hogyan kell futtatni a backend API teszteket a **Postman** használatával.
 
